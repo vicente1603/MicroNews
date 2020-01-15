@@ -2,7 +2,6 @@ import 'package:chat_online/tiles/drawer_tile.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatelessWidget {
-
   final PageController pageController;
 
   CustomDrawer(this.pageController);
@@ -10,12 +9,12 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget _buildDrawerBack() => Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [Color.fromARGB(255, 100, 236, 241), Colors.white],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter)),
-    );
+          decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+            Colors.blueAccent,
+            Colors.white,
+          ], begin: Alignment.topLeft, end: Alignment.bottomLeft)),
+        );
 
     return Drawer(
       child: Stack(
@@ -50,13 +49,13 @@ class CustomDrawer extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 18.0, fontWeight: FontWeight.bold),
                           ),
-                             Text(
-                              "Sejam bem-vindos!",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold),
-                            ),
+                          Text(
+                            "Sejam bem-vindos!",
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ],
                       ),
                     ),
