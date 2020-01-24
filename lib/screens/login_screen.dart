@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: Colors.blueAccent,
-          title: Text("Entrar"),
+          title: Text("MicroNews"),
           centerTitle: true,
           actions: <Widget>[
             FlatButton(
@@ -58,6 +58,9 @@ class _LoginScreenState extends State<LoginScreen> {
               child: ListView(
                 padding: EdgeInsets.all(16.0),
                 children: <Widget>[
+              Image.asset('assets/images/login.png',
+                height: 250,
+              ),
                   TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(hintText: "E-mail"),
@@ -80,13 +83,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     alignment: Alignment.centerRight,
                     child: FlatButton(
                       onPressed: () {
-                        if(_emailController.text.isEmpty){
+                        if (_emailController.text.isEmpty) {
                           _scaffoldKey.currentState.showSnackBar(SnackBar(
-                            content: Text("Insira seu e-mail para recuperação."),
+                            content:
+                                Text("Insira seu e-mail para recuperação."),
                             backgroundColor: Colors.redAccent,
                             duration: Duration(seconds: 2),
                           ));
-                        }else{
+                        } else {
                           model.recoverPass(_emailController.text);
                           _scaffoldKey.currentState.showSnackBar(SnackBar(
                             content: Text("Confira seu e-mail."),

@@ -29,20 +29,20 @@ class CustomDrawer extends StatelessWidget {
               Container(
                 margin: EdgeInsets.only(bottom: 8.0),
                 padding: EdgeInsets.fromLTRB(0.0, 16.0, 16.0, 8.0),
-                height: 170.0,
+                height: 200.0,
                 child: Stack(
                   children: <Widget>[
                     Positioned(
-                      top: 8.0,
+                      top: 0.0,
                       left: 0.0,
                       child: Text(
-                        "Micro News",
+                        "MicroNews",
                         style: TextStyle(
                             fontSize: 40.0, fontWeight: FontWeight.bold),
                       ),
                     ),
                     Positioned(
-                      bottom: 0.0,
+                      top: 50.0,
                       left: 0.0,
                       child: ScopedModelDescendant<UserModel>(
                         builder: (context, child, model) {
@@ -50,17 +50,18 @@ class CustomDrawer extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Olá, ${!model.isLoggedIn() ? "" : model.userData["nome"]}!",
+                                "Olá, \n${!model.isLoggedIn() ? "" : model.userData["nome"]}!",
                                 style: TextStyle(
                                     fontSize: 25.0,
                                     fontWeight: FontWeight.bold),
                               ),
+                              Divider(height: 16.0),
                               GestureDetector(
                                 child: Text(
                                   "Sair",
                                   style: TextStyle(
                                       color: Colors.blueAccent,
-                                      fontSize: 20.0,
+                                      fontSize: 25.0,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 onTap: () {
@@ -81,7 +82,12 @@ class CustomDrawer extends StatelessWidget {
               Divider(),
               DrawerTile(Icons.home, "Ínicio", pageController, 0),
               DrawerTile(Icons.chat, "Chat", pageController, 1),
-              DrawerTile(Icons.cloud, "Dicas", pageController, 2),
+              DrawerTile(Icons.help, "Dicas", pageController, 2),
+              DrawerTile(Icons.calendar_today, "Consultas e Terapias", pageController, 3),
+              DrawerTile(Icons.alarm_add, "Medicações", pageController, 4),
+              DrawerTile(Icons.restaurant, "Alimentação", pageController, 5),
+              Divider(),
+              DrawerTile(Icons.star, "Créditos", pageController, 6),
             ],
           )
         ],
