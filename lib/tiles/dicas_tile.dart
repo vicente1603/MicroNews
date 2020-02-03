@@ -19,7 +19,16 @@ class DicasTile extends StatelessWidget {
                 padding: EdgeInsets.all(8.0),
                 child: Column(
                   children: <Widget>[
-                    Text(" ${dicas.title}: ${dicas.description}"),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(" ${dicas.description}",
+                              style: TextStyle(
+                                  fontSize: 20.0, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ),
