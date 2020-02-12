@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -12,51 +13,30 @@ class _HomeState extends State<MedicacoesTab> {
   final _medicamento = TextEditingController();
   final _posologia = TextEditingController();
 
-  List _toDoList = [];
-  Map<String, dynamic> _lastRemoved = Map();
-  int _lastRemovedPos;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _readData().then((data) {
-      setState(() {
-        _toDoList = json.decode(data);
-      });
-    });
-  }
-
   void addToDo() {
     setState(() {
-      Map<String, dynamic> newToDo = Map();
-      newToDo["title"] = _medicamento.text;
-      newToDo["posologia"] = _posologia.text;
-      _medicamento.text = "";
-      _posologia.text = "";
-      newToDo["ok"] = false;
-      _toDoList.add(newToDo);
-      _saveData();
-    });
-  }
+      var id = Timestamp
+          .now()
+          .nanoseconds
+          .toString()
+          .trim() +
+          DateTime.now()
+              .toString()
+              .replaceAll(":", "")
+              .replaceAll("-", "")
+              .replaceAll(".", "")
+              .trim();
 
-  Future<Null> _refresh() async {
-    await Future.delayed(Duration(seconds: 1));
-
-    setState(() {
-      _toDoList.sort((a, b) {
-        if (a["ok"] && !b["ok"])
-          return 1;
-        else if (!a["ok"] && b["ok"])
-          return -1;
-        else
-          return 0;
+      Firestore.instance.collection("medicacoes").document(id).setData({
+        "id": id,
+        "medicamento": _medicamento.text,
+        "posologia": _posologia.text,
+        "checked": false,
       });
 
-      _saveData();
+      _medicamento.text = "";
+      _posologia.text = "";
     });
-
-    return null;
   }
 
   @override
@@ -104,93 +84,101 @@ class _HomeState extends State<MedicacoesTab> {
             ),
           ),
           Expanded(
-            child: RefreshIndicator(
-              onRefresh: _refresh,
-              child: ListView.builder(
-                  padding: EdgeInsets.only(top: 10.0),
-                  itemCount: _toDoList.length,
-                  itemBuilder: buildItem),
+            child: StreamBuilder(
+              stream: Firestore.instance.collection("medicacoes").snapshots(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  default:
+                    return ListView.builder(
+                        reverse: false,
+                        itemCount: snapshot.data.documents.length,
+                        itemBuilder: (context, index) {
+                          List r = snapshot.data.documents.reversed.toList();
+                          return MedicacoesList(r[index].data);
+                        });
+                }
+              },
             ),
           ),
         ],
       ),
     );
   }
+}
 
-  Widget buildItem(context, index) {
+class MedicacoesList extends StatelessWidget {
+  final Map<String, dynamic> data;
+
+  MedicacoesList(this.data);
+
+  @override
+  Widget build(BuildContext context) {
     return Dismissible(
-      key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
-      background: Container(
-        color: Colors.red,
-        child: Align(
-          alignment: Alignment(-0.9, 0.0),
-          child: Icon(
-            Icons.delete,
-            color: Colors.white,
+        key: Key(DateTime
+            .now()
+            .millisecondsSinceEpoch
+            .toString()),
+        background: Container(
+          color: Colors.red,
+          child: Align(
+            alignment: Alignment(-0.9, 0.0),
+            child: Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
           ),
         ),
-      ),
-      direction: DismissDirection.startToEnd,
-      child: CheckboxListTile(
-        title: Text(_toDoList[index]["title"]),
-        subtitle:  Text(_toDoList[index]["posologia"]),
-        value: _toDoList[index]["ok"],
-        secondary: CircleAvatar(
-          child: Icon(_toDoList[index]["ok"] ? Icons.check : Icons.error),
+        direction: DismissDirection.startToEnd,
+        child: CheckboxListTile(
+          title: Text("Medicamento: " + data["medicamento"]),
+          subtitle: Text("Posologia: " + data["posologia"]),
+          value: data["checked"],
+          secondary: CircleAvatar(
+            child: Icon(data["checked"] == true ? Icons.check : Icons.error),
+          ),
+          onChanged: (c) {
+            if (data["checked"] == true) {
+              Firestore.instance
+                  .collection("medicacoes")
+                  .document(data["id"])
+                  .setData({
+                "id": data["id"],
+                "medicamento": data["medicamento"],
+                "posologia": data["posologia"],
+                "checked": false,
+              });
+            } else {
+              Firestore.instance
+                  .collection("medicacoes")
+                  .document(data["id"])
+                  .setData({
+                "id": data["id"],
+                "medicamento": data["medicamento"],
+                "posologia": data["posologia"],
+                "checked": true,
+              });
+            }
+          },
         ),
-        onChanged: (c) {
-          setState(() {
-            _toDoList[index]["ok"] = c;
-            _saveData();
-          });
-        },
-      ),
-      onDismissed: (direction) {
-        setState(() {
-          _lastRemoved = Map.from(_toDoList[index]);
-          _lastRemovedPos = index;
-          _toDoList.removeAt(index);
+        onDismissed: (direction) {
 
-          _saveData();
+          Firestore.instance
+              .collection("medicacoes")
+              .document(data["id"]).delete();
 
           final snack = SnackBar(
-            content: Text("Tarefa \"${_lastRemoved["title"]}\" removida"),
-            action: SnackBarAction(
-              label: "Desfazer",
-              onPressed: () {
-                setState(() {
-                  _toDoList.insert(_lastRemovedPos, _lastRemoved);
-                  _saveData();
-                });
-              },
-            ),
+            content: Text("Medicamento removido"),
             duration: Duration(seconds: 2),
           );
 
           Scaffold.of(context).removeCurrentSnackBar();
           Scaffold.of(context).showSnackBar(snack);
         });
-      },
-    );
-  }
-
-  Future<File> _getFile() async {
-    final directory = await getApplicationDocumentsDirectory();
-    return File("${directory.path}/data.json");
-  }
-
-  Future<File> _saveData() async {
-    String data = json.encode(_toDoList);
-    final file = await _getFile();
-    return file.writeAsString(data);
-  }
-
-  Future<String> _readData() async {
-    try {
-      final file = await _getFile();
-      return file.readAsString();
-    } catch (e) {
-      return null;
-    }
   }
 }
+
