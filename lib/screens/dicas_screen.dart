@@ -13,25 +13,33 @@ class DicasScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(snapshot.data["title"]),
+        backgroundColor: Colors.blueAccent,
         centerTitle: true,
       ),
-      body: FutureBuilder<QuerySnapshot>(
-          future: Firestore.instance
-              .collection("dicas")
-              .document(snapshot.documentID)
-              .collection("items")
-              .getDocuments(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData)
-              return Center(child: CircularProgressIndicator());
-            else
-              return ListView.builder(
-                padding: EdgeInsets.all(4.0),
-                itemCount: snapshot.data.documents.length,
-                itemBuilder: (context, index){
-                  return DicasTile("list", DicasData.fromDocument(snapshot.data.documents[index]));
-                },
-              );
+      body:
+      Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+              Colors.blueAccent,
+              Colors.white,
+            ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+        child: FutureBuilder<QuerySnapshot>(
+            future: Firestore.instance
+                .collection("dicas")
+                .document(snapshot.documentID)
+                .collection("items")
+                .getDocuments(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData)
+                return Center(child: CircularProgressIndicator());
+              else
+                return ListView.builder(
+                  padding: EdgeInsets.all(4.0),
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (context, index){
+                    return DicasTile("list", DicasData.fromDocument(snapshot.data.documents[index]));
+                  },
+                );
 
 //              return GridView.builder(
 //                  padding: EdgeInsets.all(4.0),
@@ -44,7 +52,8 @@ class DicasScreen extends StatelessWidget {
 //                  itemBuilder: (context, index){
 //                    return DicasTile("grid", DicasData.fromDocument(snapshot.data.documents[index]));
 //                  });
-          }),
+            }),
+      )
     );
   }
 }

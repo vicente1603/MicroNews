@@ -21,7 +21,6 @@ class UserModel extends Model {
     super.addListener(listener);
 
     _loadCurrentUser();
-
   }
 
   void signUp(
@@ -100,11 +99,13 @@ class UserModel extends Model {
         .setData(userData);
   }
 
-  Future<Null> _loadCurrentUser() async{
-    if(firebaseUser == null)
-      firebaseUser = await _auth.currentUser();
-    if(firebaseUser != null){
-      DocumentSnapshot docUser = await Firestore.instance.collection("users").document(firebaseUser.uid).get();
+  Future<Null> _loadCurrentUser() async {
+    if (firebaseUser == null) firebaseUser = await _auth.currentUser();
+    if (firebaseUser != null) {
+      DocumentSnapshot docUser = await Firestore.instance
+          .collection("users")
+          .document(firebaseUser.uid)
+          .get();
       userData = docUser.data;
     }
     notifyListeners();

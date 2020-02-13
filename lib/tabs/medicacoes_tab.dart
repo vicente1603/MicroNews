@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:chat_online/tabs/chat_tab.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -13,13 +15,16 @@ class _HomeState extends State<MedicacoesTab> {
   final _medicamento = TextEditingController();
   final _posologia = TextEditingController();
 
-  void addToDo() {
+  FirebaseUser firebaseUser;
+
+  String userID = "";
+
+  void inputData() async {
+    final FirebaseUser user = await auth.currentUser();
+    final uid = user.uid;
+
     setState(() {
-      var id = Timestamp
-          .now()
-          .nanoseconds
-          .toString()
-          .trim() +
+      var id = Timestamp.now().nanoseconds.toString().trim() +
           DateTime.now()
               .toString()
               .replaceAll(":", "")
@@ -27,7 +32,12 @@ class _HomeState extends State<MedicacoesTab> {
               .replaceAll(".", "")
               .trim();
 
-      Firestore.instance.collection("medicacoes").document(id).setData({
+      Firestore.instance
+          .collection("users")
+          .document(uid)
+          .collection("medicacoes")
+          .document(id)
+          .setData({
         "id": id,
         "medicamento": _medicamento.text,
         "posologia": _posologia.text,
@@ -39,8 +49,17 @@ class _HomeState extends State<MedicacoesTab> {
     });
   }
 
+  void readDataUser() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    userID = user.uid;
+  }
+
+  //inputDataTest();
+
   @override
   Widget build(BuildContext context) {
+    readDataUser();
+
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -50,6 +69,7 @@ class _HomeState extends State<MedicacoesTab> {
               children: <Widget>[
                 Expanded(
                   child: TextField(
+                    autofocus: true,
                     decoration: InputDecoration(
                         labelText: "Medicamento",
                         labelStyle: TextStyle(color: Colors.blueAccent)),
@@ -80,12 +100,16 @@ class _HomeState extends State<MedicacoesTab> {
               color: Colors.blueAccent,
               child: Text("Adicionar"),
               textColor: Colors.white,
-              onPressed: addToDo,
+              onPressed: inputData,
             ),
           ),
           Expanded(
             child: StreamBuilder(
-              stream: Firestore.instance.collection("medicacoes").snapshots(),
+              stream: Firestore.instance
+                  .collection("users")
+                  .document(userID)
+                  .collection("medicacoes")
+                  .snapshots(),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
@@ -113,16 +137,16 @@ class _HomeState extends State<MedicacoesTab> {
 
 class MedicacoesList extends StatelessWidget {
   final Map<String, dynamic> data;
+  String userID = "";
 
   MedicacoesList(this.data);
 
   @override
   Widget build(BuildContext context) {
+    readDataUser();
+
     return Dismissible(
-        key: Key(DateTime
-            .now()
-            .millisecondsSinceEpoch
-            .toString()),
+        key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
         background: Container(
           color: Colors.red,
           child: Align(
@@ -144,6 +168,8 @@ class MedicacoesList extends StatelessWidget {
           onChanged: (c) {
             if (data["checked"] == true) {
               Firestore.instance
+                  .collection("users")
+                  .document(userID)
                   .collection("medicacoes")
                   .document(data["id"])
                   .setData({
@@ -154,6 +180,8 @@ class MedicacoesList extends StatelessWidget {
               });
             } else {
               Firestore.instance
+                  .collection("users")
+                  .document(userID)
                   .collection("medicacoes")
                   .document(data["id"])
                   .setData({
@@ -166,10 +194,10 @@ class MedicacoesList extends StatelessWidget {
           },
         ),
         onDismissed: (direction) {
-
           Firestore.instance
               .collection("medicacoes")
-              .document(data["id"]).delete();
+              .document(data["id"])
+              .delete();
 
           final snack = SnackBar(
             content: Text("Medicamento removido"),
@@ -180,5 +208,9 @@ class MedicacoesList extends StatelessWidget {
           Scaffold.of(context).showSnackBar(snack);
         });
   }
-}
 
+  void readDataUser() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    userID = user.uid;
+  }
+}
