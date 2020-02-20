@@ -6,11 +6,13 @@ import 'package:chat_online/tabs/dicas_tab.dart';
 import 'package:chat_online/tabs/home_tab.dart';
 import 'package:chat_online/tabs/medicacoes_tab.dart';
 import 'package:chat_online/widgets/custom_drawer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
 
   final _pageController = PageController();
+  final DocumentSnapshot snapshot = null;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class HomeScreen extends StatelessWidget {
         Scaffold(
           appBar: AppBar(title: Text("Consultas e Terapias"),
               centerTitle: true),
-          body: ConsultasTab(),
+          body: ConsultasTab(snapshot),
           drawer: CustomDrawer(_pageController),
         ),
         Scaffold(

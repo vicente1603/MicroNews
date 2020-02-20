@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:chat_online/models/user_model.dart';
 import 'package:chat_online/tabs/chat_tab.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -11,13 +13,15 @@ class MedicacoesTab extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
+void readDataUser() async {
+  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  _HomeState.userID = user.uid;
+}
+
 class _HomeState extends State<MedicacoesTab> {
   final _medicamento = TextEditingController();
   final _posologia = TextEditingController();
-
-  FirebaseUser firebaseUser;
-
-  String userID = "";
+  static String userID = "";
 
   void inputData() async {
     final FirebaseUser user = await auth.currentUser();
@@ -49,17 +53,8 @@ class _HomeState extends State<MedicacoesTab> {
     });
   }
 
-  void readDataUser() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    userID = user.uid;
-  }
-
-  //inputDataTest();
-
   @override
   Widget build(BuildContext context) {
-    readDataUser();
-
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -111,6 +106,7 @@ class _HomeState extends State<MedicacoesTab> {
                   .collection("medicacoes")
                   .snapshots(),
               builder: (context, snapshot) {
+                readDataUser();
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
                   case ConnectionState.waiting:
@@ -137,14 +133,13 @@ class _HomeState extends State<MedicacoesTab> {
 
 class MedicacoesList extends StatelessWidget {
   final Map<String, dynamic> data;
-  String userID = "";
+
+  String userID = _HomeState.userID;
 
   MedicacoesList(this.data);
 
   @override
   Widget build(BuildContext context) {
-    readDataUser();
-
     return Dismissible(
         key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
         background: Container(
@@ -169,7 +164,7 @@ class MedicacoesList extends StatelessWidget {
             if (data["checked"] == true) {
               Firestore.instance
                   .collection("users")
-                  .document(userID)
+                  .document("NphGuvRhhrYrRb6SFv9ab0rSbJ42")
                   .collection("medicacoes")
                   .document(data["id"])
                   .setData({
@@ -195,6 +190,8 @@ class MedicacoesList extends StatelessWidget {
         ),
         onDismissed: (direction) {
           Firestore.instance
+              .collection("users")
+              .document(userID)
               .collection("medicacoes")
               .document(data["id"])
               .delete();
@@ -207,10 +204,5 @@ class MedicacoesList extends StatelessWidget {
           Scaffold.of(context).removeCurrentSnackBar();
           Scaffold.of(context).showSnackBar(snack);
         });
-  }
-
-  void readDataUser() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    userID = user.uid;
   }
 }
