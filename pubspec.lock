@@ -106,6 +106,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.3"
+  english_words:
+    dependency: "direct main"
+    description:
+      name: english_words
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.5"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -359,6 +366,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.5"
+  timeline:
+    dependency: "direct main"
+    description:
+      name: timeline
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   transparent_image:
     dependency: "direct main"
     description:

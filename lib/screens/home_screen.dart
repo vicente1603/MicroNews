@@ -21,7 +21,9 @@ class HomeScreen extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
         Scaffold(
-          body: HomeTab(this._pageController),
+          appBar: AppBar(title: Text("MicroNews"),
+              centerTitle: true),
+          body: HomeTab(),
           drawer: CustomDrawer(_pageController),
         ),
         Scaffold(
