@@ -16,12 +16,13 @@ class HomeTab extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(colors: [
-          Colors.blueAccent,
-          Colors.white,
-        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+              Colors.blueAccent,
+              Colors.white,
+            ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
         child: FutureBuilder<QuerySnapshot>(
             future: Firestore.instance
                 .collection("home")
+                .orderBy("title")
                 .getDocuments(),
             builder: (context, snapshot) {
               if (!snapshot.hasData)

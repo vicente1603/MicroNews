@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeData{
 
-  String titulo;
-  String descricao;
+  String title;
+  String description;
+  List eventos;
 
   HomeData.fromDocument(DocumentSnapshot snapshot){
-    titulo = snapshot.data["title"];
-    descricao = snapshot.data["title"];
+    title = snapshot.data["title"];
+    description = snapshot.data["description"];
   }
 
 }

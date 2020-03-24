@@ -1,4 +1,5 @@
 import 'package:chat_online/data/home_data.dart';
+import 'package:chat_online/screens/detalhes_eventos.dart';
 import 'package:flutter/material.dart';
 
 class HomeTile extends StatelessWidget {
@@ -22,44 +23,46 @@ class HomeTile extends StatelessWidget {
               ),
               width: double.infinity,
               height: 200.0,
-              child: Card(
-                color: Colors.white70,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                elevation: 10,
-                child: Padding(
-                  padding: EdgeInsets.all(7),
-                  child: Stack(children: <Widget>[
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                              padding: const EdgeInsets.only(left: 10, top: 5),
-                              child: Column(
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      Text(
-                                        "${home.titulo}",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20.0),
-                                        textAlign: TextAlign.center,
-                                      )
-                                    ],
-                                  ),
-
-                                ],
-                              ))
-                        ],
-                      ),
-                    )
-                  ]),
-                ),
-              ),
             )),
+        new Padding(
+          padding: const EdgeInsets.only(right: 10.0, left: 70.0, top: 60.0),
+          child: new Container(
+            height: 100.0,
+            color: Colors.black45,
+            child: ListTile(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailEvent()));                },
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                leading: Container(
+                  padding: EdgeInsets.only(right: 12.0),
+                  decoration: new BoxDecoration(
+                      border: new Border(
+                          right: new BorderSide(
+                              width: 1.0, color: Colors.white24))),
+                  child: Image.network("https://img.icons8.com/dusk/2x/babys-room.png"),
+                ),
+                title: Text(
+                  "${home.title}",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+
+                subtitle: Row(
+                  children: <Widget>[
+                    Icon(Icons.linear_scale, color: Colors.blueAccent),
+                    Text(" Nº de eventos: 3",
+                        style: TextStyle(color: Colors.white))
+                  ],
+                ),
+                trailing: Icon(Icons.keyboard_arrow_right,
+                    color: Colors.white, size: 30.0)),
+          ),
+        ),
         new Positioned(
           top: 0.0,
           bottom: 0.0,
