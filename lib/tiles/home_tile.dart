@@ -12,17 +12,54 @@ class HomeTile extends StatelessWidget {
     return new Stack(
       children: <Widget>[
         new Padding(
-          padding: const EdgeInsets.only(left: 50.0),
-          child: new Card(
-            margin: new EdgeInsets.all(20.0),
+            padding: const EdgeInsets.only(left: 50.0),
             child: new Container(
+              margin: const EdgeInsets.only(
+                top: 16.0,
+                bottom: 16.0,
+                left: 24.0,
+                right: 24.0,
+              ),
               width: double.infinity,
               height: 200.0,
-              color: Colors.white,
-              child: Text("${home.titulo}"),
-            ),
-          ),
-        ),
+              child: Card(
+                color: Colors.white70,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                elevation: 10,
+                child: Padding(
+                  padding: EdgeInsets.all(7),
+                  child: Stack(children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Stack(
+                        children: <Widget>[
+                          Padding(
+                              padding: const EdgeInsets.only(left: 10, top: 5),
+                              child: Column(
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      Text(
+                                        "${home.titulo}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20.0),
+                                        textAlign: TextAlign.center,
+                                      )
+                                    ],
+                                  ),
+
+                                ],
+                              ))
+                        ],
+                      ),
+                    )
+                  ]),
+                ),
+              ),
+            )),
         new Positioned(
           top: 0.0,
           bottom: 0.0,
