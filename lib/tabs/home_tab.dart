@@ -20,25 +20,19 @@ class HomeTab extends StatelessWidget {
               Colors.white,
             ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
         child: FutureBuilder<QuerySnapshot>(
-            future: Firestore.instance
-                .collection("home")
-                .orderBy("title")
-                .getDocuments(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData)
-                return Center(child: CircularProgressIndicator());
-              else
-                return ListView.builder(
-                  padding: EdgeInsets.all(4.0),
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (context, index) {
-                    return HomeTile(
-                        "list",
-                        HomeData.fromDocument(
-                            snapshot.data.documents[index]));
-                  },
-                );
-            }),
+          future: Firestore.instance.collection("home").getDocuments(),
+          builder: (context, snapshot){
+            if(!snapshot.hasData){
+              return Center(child: CircularProgressIndicator(),);
+            }else{
+              return ListView(
+                children: snapshot.data.documents.map((doc){
+                  return HomeTile(doc);
+                }).toList(),
+              );
+            }
+          },
+        ),
       ),
     );
   }

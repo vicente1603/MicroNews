@@ -1,12 +1,11 @@
-import 'package:chat_online/data/home_data.dart';
-import 'package:chat_online/screens/detalhes_eventos.dart';
+import 'package:chat_online/screens/home_details_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class HomeTile extends StatelessWidget {
-  final String type;
-  final HomeData home;
+  final DocumentSnapshot snapshot;
 
-  HomeTile(this.type, this.home);
+  HomeTile(this.snapshot);
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +30,9 @@ class HomeTile extends StatelessWidget {
             color: Colors.black45,
             child: ListTile(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailEvent()));                },
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => HomeDetailScreen(snapshot)));
+                },
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                 leading: Container(
@@ -43,10 +41,11 @@ class HomeTile extends StatelessWidget {
                       border: new Border(
                           right: new BorderSide(
                               width: 1.0, color: Colors.white24))),
-                  child: Image.network("https://img.icons8.com/dusk/2x/babys-room.png"),
+                  child: Image.network(
+                      "https://img.icons8.com/dusk/2x/babys-room.png"),
                 ),
                 title: Text(
-                  "${home.title}",
+                  snapshot.data["title"],
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),
@@ -55,7 +54,7 @@ class HomeTile extends StatelessWidget {
                 subtitle: Row(
                   children: <Widget>[
                     Icon(Icons.linear_scale, color: Colors.blueAccent),
-                    Text(" Nº de eventos: 3",
+                    Text(" Nº de eventos: 0",
                         style: TextStyle(color: Colors.white))
                   ],
                 ),
