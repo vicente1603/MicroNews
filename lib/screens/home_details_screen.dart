@@ -1,5 +1,7 @@
 import 'package:chat_online/data/dicas_data.dart';
+import 'package:chat_online/data/home_data.dart';
 import 'package:chat_online/tiles/dicas_tile.dart';
+import 'package:chat_online/tiles/home_details_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -36,9 +38,9 @@ class HomeDetailScreen extends StatelessWidget {
                     padding: EdgeInsets.all(4.0),
                     itemCount: snapshot.data.documents.length,
                     itemBuilder: (context, index) {
-                      return DicasTile(
+                      return HomeDetailTile(
                           "list",
-                          DicasData.fromDocument(
+                          HomeData.fromDocument(
                               snapshot.data.documents[index]));
                     },
                   );
