@@ -11,7 +11,6 @@ class HomeDetailTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Container(
-        height: 120.0,
         margin: const EdgeInsets.symmetric(
           vertical: 16.0,
           horizontal: 24.0,
@@ -24,22 +23,22 @@ class HomeDetailTile extends StatelessWidget {
                   Flexible(
                     flex: 1,
                     child: Container(
-                        height: 124.0,
-                        margin: new EdgeInsets.only(left: 46.0),
+                        margin: new EdgeInsets.only(left: 20.0, right: 10.0),
                         decoration: new BoxDecoration(
-                          color: Colors.black45,
+                          color: Colors.white,
                           shape: BoxShape.rectangle,
-                          borderRadius: new BorderRadius.circular(8.0),
+                          borderRadius: new BorderRadius.circular(20.0),
                           boxShadow: <BoxShadow>[
                             new BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 10.0,
+                              color: Colors.blueGrey,
+                              blurRadius: 20.0,
                               offset: new Offset(0.0, 10.0),
                             ),
                           ],
                         ),
                         child: Padding(
-                          padding: EdgeInsets.only(top: 16.0, left: 16.0),
+                          padding: EdgeInsets.only(
+                              top: 50.0, left: 30.0, right: 30.0, bottom: 10.0),
                           child: Column(
                             children: <Widget>[
                               Row(
@@ -49,7 +48,7 @@ class HomeDetailTile extends StatelessWidget {
                                         style: TextStyle(
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white),
+                                            color: Colors.black),
                                         textAlign: TextAlign.center),
                                   )
                                 ],
@@ -57,18 +56,23 @@ class HomeDetailTile extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.all(12.0),
                                 child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    Expanded(
-                                      child: Text("0",
-                                          style: TextStyle(
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                          textAlign: TextAlign.center),
-                                    )
+                                    IconButton(
+                                      icon:
+                                          Icon(Icons.outlined_flag, size: 40.0),
+                                      color: Colors.black,
+                                      onPressed: () {},
+                                    ),
+                                    Text("0",
+                                        style: TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black)),
                                   ],
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         )),
@@ -76,18 +80,6 @@ class HomeDetailTile extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-                alignment: FractionalOffset.centerLeft,
-                child: new Container(
-                  decoration: const ShapeDecoration(
-                      color: Colors.lightBlue, shape: CircleBorder()),
-                  margin: EdgeInsets.all(20),
-                  child: IconButton(
-                    icon: Icon(Icons.add),
-                    color: Colors.white,
-                    onPressed: () {},
-                  ),
-                )),
           ],
         ));
   }
