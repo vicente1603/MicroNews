@@ -4,6 +4,7 @@ import 'package:chat_online/tabs/consultas_tab.dart';
 import 'package:chat_online/tabs/creditos_tab.dart';
 import 'package:chat_online/tabs/dicas_tab.dart';
 import 'package:chat_online/tabs/home_tab.dart';
+import 'package:chat_online/tabs/jogos_tab.dart';
 import 'package:chat_online/tabs/medicacoes_tab.dart';
 import 'package:chat_online/widgets/custom_drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -54,6 +55,12 @@ class HomeScreen extends StatelessWidget {
           appBar: AppBar(title: Text("Alimentação"),
               centerTitle: true),
           body: AlimentacaoTab(),
+          drawer: CustomDrawer(_pageController),
+        ),
+        Scaffold(
+          appBar: AppBar(title: Text("Jogos"),
+              centerTitle: true),
+          body: JogosTab(),
           drawer: CustomDrawer(_pageController),
         ),
         Scaffold(
