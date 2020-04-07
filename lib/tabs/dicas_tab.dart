@@ -1,4 +1,4 @@
-import 'package:chat_online/tiles/category_tile.dart';
+import 'package:micro_news/tiles/category_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

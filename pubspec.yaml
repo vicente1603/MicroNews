@@ -1,4 +1,4 @@
-name: chat_online
+name: micro_news
 description: A new Flutter application.
 
 # The following defines the version and build number for your application.
@@ -41,10 +41,16 @@ dependencies:
   english_words: 3.1.5
   timeline: 0.0.1
   webview_flutter: ^0.3.14+1
+  flutter_launcher_icons: ^0.7.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+#flutter_icons:
+#  android: "launcher_icon"
+#  ios: true
+#  image_path: "assets/images/114.png"
 
 
 # For information on the generic Dart part of this file, see the
@@ -60,6 +66,7 @@ flutter:
 
   assets:
     - assets/images/login.png
+#    - assets/images/114.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

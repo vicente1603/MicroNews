@@ -1,4 +1,4 @@
-import 'package:chat_online/screens/login_screen.dart';
+import 'package:micro_news/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'models/user_model.dart';

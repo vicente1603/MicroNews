@@ -1,5 +1,5 @@
-import 'package:chat_online/data/dicas_data.dart';
-import 'package:chat_online/data/home_data.dart';
+import 'package:micro_news/data/dicas_data.dart';
+import 'package:micro_news/data/home_data.dart';
 import 'package:flutter/material.dart';
 
 class HomeDetailTile extends StatelessWidget {

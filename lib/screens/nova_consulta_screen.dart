@@ -1,5 +1,5 @@
-import 'package:chat_online/tabs/chat_tab.dart';
-import 'package:chat_online/tabs/consultas_tab.dart';
+import 'package:micro_news/tabs/chat_tab.dart';
+import 'package:micro_news/tabs/consultas_tab.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';

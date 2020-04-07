@@ -1,27 +1,17 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:chat_online/models/user_model.dart';
-import 'package:chat_online/tabs/chat_tab.dart';
+import 'package:micro_news/models/user_model.dart';
+import 'package:micro_news/tabs/chat_tab.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 
 class MedicacoesTab extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
-void readDataUser() async {
-  FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  _HomeState.userID = user.uid;
-}
-
 class _HomeState extends State<MedicacoesTab> {
   final _medicamento = TextEditingController();
   final _posologia = TextEditingController();
-  static String userID = "";
 
   void inputData() async {
     final FirebaseUser user = await auth.currentUser();
@@ -55,154 +45,159 @@ class _HomeState extends State<MedicacoesTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    autofocus: true,
-                    decoration: InputDecoration(
-                        labelText: "Medicamento",
-                        labelStyle: TextStyle(color: Colors.blueAccent)),
-                    controller: _medicamento,
+    if (UserModel.of(context).isLoggedIn()) {
+      String uid = UserModel.of(context).firebaseUser.uid;
+
+      return Scaffold(
+        body: Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      autofocus: true,
+                      decoration: InputDecoration(
+                          labelText: "Medicamento",
+                          labelStyle: TextStyle(color: Colors.blueAccent)),
+                      controller: _medicamento,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                        labelText: "Posologia / Quantidade",
-                        labelStyle: TextStyle(color: Colors.blueAccent)),
-                    controller: _posologia,
+            Container(
+              padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                          labelText: "Posologia / Quantidade",
+                          labelStyle: TextStyle(color: Colors.blueAccent)),
+                      controller: _posologia,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: RaisedButton(
-              color: Colors.blueAccent,
-              child: Text("Adicionar"),
-              textColor: Colors.white,
-              onPressed: inputData,
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: RaisedButton(
+                color: Colors.blueAccent,
+                child: Text("Adicionar"),
+                textColor: Colors.white,
+                onPressed: inputData,
+              ),
             ),
-          ),
-          Expanded(
-            child: StreamBuilder(
-              stream: Firestore.instance
-                  .collection("users")
-                  .document(userID)
-                  .collection("medicacoes")
-                  .snapshots(),
-              builder: (context, snapshot) {
-                readDataUser();
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                  case ConnectionState.waiting:
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  default:
-                    return ListView.builder(
-                        reverse: false,
-                        itemCount: snapshot.data.documents.length,
-                        itemBuilder: (context, index) {
-                          List r = snapshot.data.documents.reversed.toList();
-                          return MedicacoesList(r[index].data);
-                        });
-                }
-              },
+            Expanded(
+              child: StreamBuilder(
+                stream: Firestore.instance
+                    .collection("users")
+                    .document(uid)
+                    .collection("medicacoes")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                    case ConnectionState.waiting:
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    default:
+                      return ListView.builder(
+                          reverse: false,
+                          itemCount: snapshot.data.documents.length,
+                          itemBuilder: (context, index) {
+                            List r = snapshot.data.documents.reversed.toList();
+                            return MedicacoesList(r[index].data);
+                          });
+                  }
+                },
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    }
   }
 }
 
 class MedicacoesList extends StatelessWidget {
   final Map<String, dynamic> data;
 
-  String userID = _HomeState.userID;
-
   MedicacoesList(this.data);
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-        key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
-        background: Container(
-          color: Colors.red,
-          child: Align(
-            alignment: Alignment(-0.9, 0.0),
-            child: Icon(
-              Icons.delete,
-              color: Colors.white,
+    if (UserModel.of(context).isLoggedIn()) {
+      String uid = UserModel.of(context).firebaseUser.uid;
+
+      return Dismissible(
+          key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
+          background: Container(
+            color: Colors.red,
+            child: Align(
+              alignment: Alignment(-0.9, 0.0),
+              child: Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
             ),
           ),
-        ),
-        direction: DismissDirection.startToEnd,
-        child: CheckboxListTile(
-          title: Text("Medicamento: " + data["medicamento"]),
-          subtitle: Text("Posologia: " + data["posologia"]),
-          value: data["checked"],
-          secondary: CircleAvatar(
-            child: Icon(data["checked"] == true ? Icons.check : Icons.error),
+          direction: DismissDirection.startToEnd,
+          child: CheckboxListTile(
+            title: Text("Medicamento: " + data["medicamento"]),
+            subtitle: Text("Posologia: " + data["posologia"]),
+            value: data["checked"],
+            secondary: CircleAvatar(
+              child: Icon(data["checked"] == true ? Icons.check : Icons.error),
+            ),
+            onChanged: (c) {
+              if (data["checked"] == true) {
+                Firestore.instance
+                    .collection("users")
+                    .document("NphGuvRhhrYrRb6SFv9ab0rSbJ42")
+                    .collection("medicacoes")
+                    .document(data["id"])
+                    .setData({
+                  "id": data["id"],
+                  "medicamento": data["medicamento"],
+                  "posologia": data["posologia"],
+                  "checked": false,
+                });
+              } else {
+                Firestore.instance
+                    .collection("users")
+                    .document(uid)
+                    .collection("medicacoes")
+                    .document(data["id"])
+                    .setData({
+                  "id": data["id"],
+                  "medicamento": data["medicamento"],
+                  "posologia": data["posologia"],
+                  "checked": true,
+                });
+              }
+            },
           ),
-          onChanged: (c) {
-            if (data["checked"] == true) {
-              Firestore.instance
-                  .collection("users")
-                  .document("NphGuvRhhrYrRb6SFv9ab0rSbJ42")
-                  .collection("medicacoes")
-                  .document(data["id"])
-                  .setData({
-                "id": data["id"],
-                "medicamento": data["medicamento"],
-                "posologia": data["posologia"],
-                "checked": false,
-              });
-            } else {
-              Firestore.instance
-                  .collection("users")
-                  .document(userID)
-                  .collection("medicacoes")
-                  .document(data["id"])
-                  .setData({
-                "id": data["id"],
-                "medicamento": data["medicamento"],
-                "posologia": data["posologia"],
-                "checked": true,
-              });
-            }
-          },
-        ),
-        onDismissed: (direction) {
-          Firestore.instance
-              .collection("users")
-              .document(userID)
-              .collection("medicacoes")
-              .document(data["id"])
-              .delete();
+          onDismissed: (direction) {
+            Firestore.instance
+                .collection("users")
+                .document(uid)
+                .collection("medicacoes")
+                .document(data["id"])
+                .delete();
 
-          final snack = SnackBar(
-            content: Text("Medicamento removido"),
-            duration: Duration(seconds: 2),
-          );
+            final snack = SnackBar(
+              content: Text("Medicamento removido"),
+              duration: Duration(seconds: 2),
+            );
 
-          Scaffold.of(context).removeCurrentSnackBar();
-          Scaffold.of(context).showSnackBar(snack);
-        });
+            Scaffold.of(context).removeCurrentSnackBar();
+            Scaffold.of(context).showSnackBar(snack);
+          });
+    }
   }
 }

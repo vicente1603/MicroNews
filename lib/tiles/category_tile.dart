@@ -1,4 +1,4 @@
-import 'package:chat_online/screens/dicas_screen.dart';
+import 'package:micro_news/screens/dicas_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

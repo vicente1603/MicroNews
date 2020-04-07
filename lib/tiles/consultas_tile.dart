@@ -1,4 +1,4 @@
-import 'package:chat_online/data/consultas_data.dart';
+import 'package:micro_news/data/consultas_data.dart';
 import 'package:flutter/material.dart';
 
 class ConsultasTile extends StatelessWidget {

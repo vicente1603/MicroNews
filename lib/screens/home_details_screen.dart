@@ -1,7 +1,7 @@
-import 'package:chat_online/data/dicas_data.dart';
-import 'package:chat_online/data/home_data.dart';
-import 'package:chat_online/tiles/dicas_tile.dart';
-import 'package:chat_online/tiles/home_details_tile.dart';
+import 'package:micro_news/data/dicas_data.dart';
+import 'package:micro_news/data/home_data.dart';
+import 'package:micro_news/tiles/dicas_tile.dart';
+import 'package:micro_news/tiles/home_details_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

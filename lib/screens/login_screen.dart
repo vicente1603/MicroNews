@@ -1,5 +1,5 @@
-import 'package:chat_online/models/user_model.dart';
-import 'package:chat_online/screens/signup_screen.dart';
+import 'package:micro_news/models/user_model.dart';
+import 'package:micro_news/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 

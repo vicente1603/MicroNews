@@ -1,7 +1,7 @@
-import 'package:chat_online/data/consultas_data.dart';
-import 'package:chat_online/models/user_model.dart';
-import 'package:chat_online/screens/nova_consulta_screen.dart';
-import 'package:chat_online/tiles/consultas_tile.dart';
+import 'package:micro_news/data/consultas_data.dart';
+import 'package:micro_news/models/user_model.dart';
+import 'package:micro_news/screens/nova_consulta_screen.dart';
+import 'package:micro_news/tiles/consultas_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +15,8 @@ class ConsultasTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (UserModel.of(context).isLoggedIn()) {
+      String uid = UserModel.of(context).firebaseUser.uid;
 
       return Scaffold(
           body: Container(
@@ -26,7 +28,7 @@ class ConsultasTab extends StatelessWidget {
             child: FutureBuilder<QuerySnapshot>(
                 future: Firestore.instance
                     .collection("users")
-                    .document("NphGuvRhhrYrRb6SFv9ab0rSbJ42")
+                    .document(uid)
                     .collection("consultas")
                     .getDocuments(),
                 builder: (context, snapshot) {
@@ -54,6 +56,7 @@ class ConsultasTab extends StatelessWidget {
             backgroundColor: Colors.blueAccent,
           ));
     }
+  }
 
   void readDataUser() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();

@@ -1,9 +1,9 @@
-import 'package:chat_online/data/consultas_data.dart';
-import 'package:chat_online/data/home_data.dart';
-import 'package:chat_online/screens/nova_consulta_screen.dart';
-import 'package:chat_online/tiles/consultas_tile.dart';
-import 'package:chat_online/tiles/home_tile.dart';
-import 'package:chat_online/widgets/custom_drawer.dart';
+import 'package:micro_news/data/consultas_data.dart';
+import 'package:micro_news/data/home_data.dart';
+import 'package:micro_news/screens/nova_consulta_screen.dart';
+import 'package:micro_news/tiles/consultas_tile.dart';
+import 'package:micro_news/tiles/home_tile.dart';
+import 'package:micro_news/widgets/custom_drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

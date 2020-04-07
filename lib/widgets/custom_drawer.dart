@@ -1,6 +1,6 @@
-import 'package:chat_online/models/user_model.dart';
-import 'package:chat_online/screens/login_screen.dart';
-import 'package:chat_online/tiles/drawer_tile.dart';
+import 'package:micro_news/models/user_model.dart';
+import 'package:micro_news/screens/login_screen.dart';
+import 'package:micro_news/tiles/drawer_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 

@@ -1,12 +1,12 @@
-import 'package:chat_online/tabs/alimentacao_tab.dart';
-import 'package:chat_online/tabs/chat_tab.dart';
-import 'package:chat_online/tabs/consultas_tab.dart';
-import 'package:chat_online/tabs/creditos_tab.dart';
-import 'package:chat_online/tabs/dicas_tab.dart';
-import 'package:chat_online/tabs/home_tab.dart';
-import 'package:chat_online/tabs/jogos_tab.dart';
-import 'package:chat_online/tabs/medicacoes_tab.dart';
-import 'package:chat_online/widgets/custom_drawer.dart';
+import 'package:micro_news/tabs/alimentacao_tab.dart';
+import 'package:micro_news/tabs/chat_tab.dart';
+import 'package:micro_news/tabs/consultas_tab.dart';
+import 'package:micro_news/tabs/creditos_tab.dart';
+import 'package:micro_news/tabs/dicas_tab.dart';
+import 'package:micro_news/tabs/home_tab.dart';
+import 'package:micro_news/tabs/jogos_tab.dart';
+import 'package:micro_news/tabs/medicacoes_tab.dart';
+import 'package:micro_news/widgets/custom_drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
