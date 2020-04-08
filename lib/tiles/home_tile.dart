@@ -105,6 +105,26 @@ class HomeTile extends StatelessWidget {
               ),
             ),
           )
+        else if (snapshot.data["color"] == "pink")
+            new Positioned(
+              top: 100.0,
+              left: 15.0,
+              child: new Container(
+                height: 40.0,
+                width: 40.0,
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                ),
+                child: new Container(
+                  margin: new EdgeInsets.all(5.0),
+                  height: 30.0,
+                  width: 30.0,
+                  decoration: new BoxDecoration(
+                      shape: BoxShape.circle, color: Colors.pinkAccent),
+                ),
+              ),
+            )
         else if (snapshot.data["color"] == "purple")
           new Positioned(
             top: 100.0,
