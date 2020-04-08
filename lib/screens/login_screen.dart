@@ -2,6 +2,7 @@ import 'package:micro_news/models/user_model.dart';
 import 'package:micro_news/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home_screen.dart';
 
@@ -11,11 +12,29 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    rememberUser();
+  }
+
+  static String email ;
+
+  final _emailController = TextEditingController(text: email);
   final _senhaController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  bool remember = false;
+
+  Future<void> rememberUser() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    email = prefs.getString('email');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
               child: ListView(
                 padding: EdgeInsets.all(16.0),
                 children: <Widget>[
-              Image.asset('assets/images/login.png',
-                height: 250,
-              ),
+                  Image.asset(
+                    'assets/images/login.png',
+                    height: 250,
+                  ),
                   TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(hintText: "E-mail"),
@@ -78,6 +98,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (text.isEmpty || text.length < 6)
                         return "Senha inválida";
                     },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Checkbox(
+                        value: remember,
+                        onChanged: (bool value) {
+                          setState(() {
+                            remember = value;
+                          });
+                        },
+                      ),
+                      Text("Lembrar-me"),
+                    ],
                   ),
                   Align(
                     alignment: Alignment.centerRight,
@@ -129,7 +163,16 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
   }
 
-  void _onSuccess() {
+  void _onSuccess() async {
+    if (remember == true) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('email', _emailController.text.trim()); //a
+
+      setState(() {
+        email = _emailController.text.trim();
+      });
+    }
+
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
   }
