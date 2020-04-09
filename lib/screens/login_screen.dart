@@ -1,9 +1,10 @@
+import 'dart:io';
+
 import 'package:micro_news/models/user_model.dart';
 import 'package:micro_news/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -12,29 +13,21 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   @override
   void initState() {
     super.initState();
 
-    rememberUser();
+    readcontentEmail();
+    readcontentPass();
   }
 
-  static String email ;
-
-  final _emailController = TextEditingController(text: email);
+  final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool remember = false;
-
-  Future<void> rememberUser() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    email = prefs.getString('email');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,12 +158,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _onSuccess() async {
     if (remember == true) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('email', _emailController.text.trim()); //a
-
-      setState(() {
-        email = _emailController.text.trim();
-      });
+      writeContentPass();
+      writeContentEmail();
     }
 
     Navigator.of(context)
@@ -183,5 +172,52 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.redAccent,
       duration: Duration(seconds: 2),
     ));
+  }
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
+  Future<File> get _localFileEmail async {
+    final path = await _localPath;
+    return File("$path/dataE.txt");
+  }
+
+  Future<File> get _localFilePass async {
+    final path = await _localPath;
+    return File("$path/dataP.txt");
+  }
+
+  Future<File> writeContentEmail() async {
+    final file = await _localFileEmail;
+    return file.writeAsString(_emailController.text.trim());
+  }
+
+  Future<File> writeContentPass() async {
+    final file = await _localFilePass;
+    return file.writeAsString(_senhaController.text.trim());
+  }
+
+  Future<String> readcontentEmail() async {
+    try {
+      final file = await _localFileEmail;
+      String contents = await file.readAsString();
+      _emailController.text = contents;
+      return contents;
+    } catch (e) {
+      return 'Error';
+    }
+  }
+
+  Future<String> readcontentPass() async {
+    try {
+      final file = await _localFilePass;
+      String contents = await file.readAsString();
+      _senhaController.text = contents;
+      return contents;
+    } catch (e) {
+      return 'Error';
+    }
   }
 }
