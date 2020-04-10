@@ -38,7 +38,7 @@ class CustomDrawer extends StatelessWidget {
                       child: Text(
                         "MicroNews",
                         style: TextStyle(
-                            fontSize: 40.0, fontWeight: FontWeight.bold),
+                            fontSize: 40.0, fontWeight: FontWeight.bold, color: Colors.black54),
                       ),
                     ),
                     Positioned(
@@ -53,14 +53,14 @@ class CustomDrawer extends StatelessWidget {
                                 "Olá, \n${!model.isLoggedIn() ? "" : model.userData["nome"]}!",
                                 style: TextStyle(
                                     fontSize: 25.0,
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold, color: Colors.black54),
                               ),
                               Divider(height: 16.0),
                               GestureDetector(
                                 child: Text(
                                   "Sair",
                                   style: TextStyle(
-                                      color: Colors.blueAccent,
+                                      color: Colors.indigo,
                                       fontSize: 25.0,
                                       fontWeight: FontWeight.bold),
                                 ),
