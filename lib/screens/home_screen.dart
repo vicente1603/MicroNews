@@ -3,6 +3,7 @@ import 'package:micro_news/tabs/chat_tab.dart';
 import 'package:micro_news/tabs/consultas_tab.dart';
 import 'package:micro_news/tabs/creditos_tab.dart';
 import 'package:micro_news/tabs/dicas_tab.dart';
+import 'package:micro_news/tabs/exercicios_tab.dart';
 import 'package:micro_news/tabs/home_tab.dart';
 import 'package:micro_news/tabs/jogos_tab.dart';
 import 'package:micro_news/tabs/medicacoes_tab.dart';
@@ -55,6 +56,12 @@ class HomeScreen extends StatelessWidget {
           appBar: AppBar(title: Text("Alimentação"),
               centerTitle: true),
           body: AlimentacaoTab(),
+          drawer: CustomDrawer(_pageController),
+        ),
+        Scaffold(
+          appBar: AppBar(title: Text("Exercícios"),
+              centerTitle: true),
+          body: Exerciciostab(),
           drawer: CustomDrawer(_pageController),
         ),
         Scaffold(

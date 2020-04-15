@@ -4,6 +4,7 @@ import 'package:micro_news/tiles/dicas_tile.dart';
 import 'package:micro_news/tiles/home_details_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:micro_news/tiles/home_tile.dart';
 
 class HomeDetailScreen extends StatelessWidget {
   final DocumentSnapshot snapshot;
@@ -28,23 +29,39 @@ class HomeDetailScreen extends StatelessWidget {
               future: Firestore.instance
                   .collection("home")
                   .document(snapshot.documentID)
-                  .collection("eventos")
+                  .collection("faixas")
+                  .orderBy("id")
                   .getDocuments(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData)
-                  return Center(child: CircularProgressIndicator());
-                else
-                  return ListView.builder(
-                    padding: EdgeInsets.all(4.0),
-                    itemCount: snapshot.data.documents.length,
-                    itemBuilder: (context, index) {
-                      return HomeDetailTile(
-                          "list",
-                          HomeData.fromDocument(
-                              snapshot.data.documents[index]));
-                    },
-                  );
-              }),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return ListView(
+                  children: snapshot.data.documents.map((doc) {
+                    return HomeTile(doc);
+                  }).toList(),
+                );
+              }
+            },
+              ),
         ));
   }
 }
+
+//builder: (context, snapshot) {
+//if (!snapshot.hasData)
+//return Center(child: CircularProgressIndicator());
+//else
+//return ListView.builder(
+//padding: EdgeInsets.all(4.0),
+//itemCount: snapshot.data.documents.length,
+//itemBuilder: (context, index) {
+//return HomeDetailTile(
+//"list",
+//HomeData.fromDocument(
+//snapshot.data.documents[index]));
+//},
+//);
+//}
