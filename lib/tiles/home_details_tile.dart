@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:micro_news/data/dicas_data.dart';
 import 'package:micro_news/data/home_data.dart';
 import 'package:flutter/material.dart';
@@ -48,30 +49,14 @@ class HomeDetailTile extends StatelessWidget {
                                         style: TextStyle(
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.black),
+                                            color: Colors.black38),
                                         textAlign: TextAlign.center),
                                   )
                                 ],
                               ),
                               Padding(
                                 padding: EdgeInsets.all(12.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    IconButton(
-                                      icon:
-                                          Icon(Icons.outlined_flag, size: 40.0),
-                                      color: Colors.black,
-                                      onPressed: () {},
-                                    ),
-                                    Text("0",
-                                        style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black)),
-                                  ],
-                                ),
+                                child: Counter(eventos.marcacao),
                               ),
                             ],
                           ),
@@ -82,5 +67,57 @@ class HomeDetailTile extends StatelessWidget {
             ),
           ],
         ));
+  }
+}
+
+class Counter extends StatefulWidget {
+  int marcacao;
+
+  Counter(this.marcacao);
+
+  static _CounterState of(BuildContext context) =>
+      context.ancestorStateOfType(const TypeMatcher<_CounterState>());
+
+  @override
+  _CounterState createState() => _CounterState();
+}
+
+class _CounterState extends State<Counter> {
+  int marcacao;
+
+  @override
+  void initState() {
+    marcacao = widget.marcacao;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(Icons.outlined_flag, size: 40.0),
+          color: Colors.black38,
+          onPressed: () {
+//            setState(() {
+//              Firestore.instance
+//                  .collection("users")
+//                  .document(sn)
+//                  .collection("medicacoes")
+//                  .document(id)
+//                  .setData({
+//                "marcacoes": marcacao++,
+//              });            });
+          },
+        ),
+        Text(marcacao.toString(),
+            style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.black38)),
+      ],
+    );
   }
 }

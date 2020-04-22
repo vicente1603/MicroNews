@@ -5,6 +5,7 @@ import 'package:micro_news/tiles/home_details_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_news/tiles/home_tile.dart';
+import 'package:micro_news/tiles/home_tile_faixas.dart';
 
 class HomeDetailScreen extends StatelessWidget {
   final DocumentSnapshot snapshot;
@@ -13,9 +14,13 @@ class HomeDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    String docHome = snapshot.documentID;
+
     return Scaffold(
         appBar: AppBar(
-          title: Text(snapshot.data["title"]),
+          title: Text("Faixas"),
+//          title: Text(snapshot.data["title"]),
           backgroundColor: Colors.blueAccent,
           centerTitle: true,
         ),
@@ -33,6 +38,8 @@ class HomeDetailScreen extends StatelessWidget {
                   .orderBy("id")
                   .getDocuments(),
             builder: (context, snapshot) {
+
+
               if (!snapshot.hasData) {
                 return Center(
                   child: CircularProgressIndicator(),
@@ -40,7 +47,7 @@ class HomeDetailScreen extends StatelessWidget {
               } else {
                 return ListView(
                   children: snapshot.data.documents.map((doc) {
-                    return HomeTile(doc);
+                    return HomeTileFaixas(doc, docHome);
                   }).toList(),
                 );
               }

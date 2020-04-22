@@ -60,7 +60,7 @@ class CustomDrawer extends StatelessWidget {
                                 child: Text(
                                   "Sair",
                                   style: TextStyle(
-                                      color: Colors.indigo,
+                                      color: Colors.redAccent,
                                       fontSize: 25.0,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -89,7 +89,7 @@ class CustomDrawer extends StatelessWidget {
               DrawerTile(Icons.accessibility, "Exercícios", pageController, 6),
               DrawerTile(Icons.videogame_asset, "Jogos Infatis", pageController, 7),
               Divider(color: Colors.blueGrey),
-              DrawerTile(Icons.star, "Créditos", pageController, 7),
+              DrawerTile(Icons.star, "Créditos", pageController, 8),
             ],
           )
         ],
