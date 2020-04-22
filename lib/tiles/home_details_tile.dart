@@ -101,15 +101,18 @@ class _CounterState extends State<Counter> {
           icon: Icon(Icons.outlined_flag, size: 40.0),
           color: Colors.black38,
           onPressed: () {
-//            setState(() {
-//              Firestore.instance
-//                  .collection("users")
-//                  .document(sn)
-//                  .collection("medicacoes")
-//                  .document(id)
-//                  .setData({
-//                "marcacoes": marcacao++,
-//              });            });
+              setState(() {
+                Firestore.instance
+                    .collection("home")
+                    .document("0ano")
+                    .collection("faixas")
+                    .document("01mes")
+                    .collection("eventos")
+                    .document("-M5P753lQS1VSai_yQIY")
+                    .updateData({
+                  "marcacoes": marcacao + 1,
+                });
+              });
           },
         ),
         Text(marcacao.toString(),

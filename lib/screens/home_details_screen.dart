@@ -19,8 +19,7 @@ class HomeDetailScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("Faixas"),
-//          title: Text(snapshot.data["title"]),
+          title: Text(snapshot.data["title"]),
           backgroundColor: Colors.blueAccent,
           centerTitle: true,
         ),
