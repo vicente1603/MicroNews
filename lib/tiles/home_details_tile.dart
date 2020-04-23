@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:micro_news/data/dicas_data.dart';
 import 'package:micro_news/data/home_data.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +15,7 @@ class HomeDetailTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return new Container(
         margin: const EdgeInsets.symmetric(
           vertical: 16.0,
@@ -61,7 +61,7 @@ class HomeDetailTile extends StatelessWidget {
                               ),
                               Padding(
                                 padding: EdgeInsets.all(12.0),
-                                child: Counter(snapshot, docHome, docFaixas, eventos.marcacao),
+                                child: Counter(docHome, docFaixas, eventos.marcacao, eventos.id),
                               ),
                             ],
                           ),
@@ -79,9 +79,9 @@ class Counter extends StatefulWidget {
   int marcacao;
   String docHome;
   String docFaixas;
-  DocumentSnapshot snapshot;
+  String id;
 
-  Counter(this.snapshot, this.docHome, this.docFaixas, this.marcacao);
+  Counter(this.docHome, this.docFaixas, this.marcacao, this.id);
 
   static _CounterState of(BuildContext context) =>
       context.ancestorStateOfType(const TypeMatcher<_CounterState>());
@@ -94,14 +94,14 @@ class _CounterState extends State<Counter> {
   int marcacao;
   String docHome;
   String docFaixas;
-  DocumentSnapshot snapshot;
+  String id;
 
   @override
   void initState() {
     marcacao = widget.marcacao;
     docHome = widget.docHome;
     docFaixas = widget.docFaixas;
-    snapshot = widget.snapshot;
+    id = widget.id;
     super.initState();
   }
 
@@ -115,18 +115,20 @@ class _CounterState extends State<Counter> {
           icon: Icon(Icons.outlined_flag, size: 40.0),
           color: Colors.black38,
           onPressed: () {
-              setState(() {
                 Firestore.instance
                     .collection("home")
                     .document(docHome)
                     .collection("faixas")
                     .document(docFaixas)
                     .collection("eventos")
-                    .document(snapshot.documentID)
+                    .document(id)
                     .updateData({
                   "marcacoes": marcacao + 1,
                 });
-              });
+
+                setState(() {
+                  marcacao++;
+                });
           },
         ),
         Text(marcacao.toString(),

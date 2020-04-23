@@ -1,6 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:micro_news/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -10,11 +7,10 @@ import 'models/user_model.dart';
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
+  var doc;
+
   @override
   Widget build(BuildContext context) {
-
-
-
     return ScopedModel<UserModel>(
         model: UserModel(),
         child: MaterialApp(
