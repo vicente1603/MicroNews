@@ -4,10 +4,15 @@ import 'package:micro_news/data/home_data.dart';
 import 'package:flutter/material.dart';
 
 class HomeDetailTile extends StatelessWidget {
+
+  final String docHome;
+  final String docFaixas;
   final String type;
   final HomeData eventos;
 
-  HomeDetailTile(this.type, this.eventos);
+  DocumentSnapshot snapshot;
+
+  HomeDetailTile(this.docHome, this. docFaixas, this.type, this.eventos);
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +61,7 @@ class HomeDetailTile extends StatelessWidget {
                               ),
                               Padding(
                                 padding: EdgeInsets.all(12.0),
-                                child: Counter(eventos.marcacao),
+                                child: Counter(snapshot, docHome, docFaixas, eventos.marcacao),
                               ),
                             ],
                           ),
@@ -72,8 +77,11 @@ class HomeDetailTile extends StatelessWidget {
 
 class Counter extends StatefulWidget {
   int marcacao;
+  String docHome;
+  String docFaixas;
+  DocumentSnapshot snapshot;
 
-  Counter(this.marcacao);
+  Counter(this.snapshot, this.docHome, this.docFaixas, this.marcacao);
 
   static _CounterState of(BuildContext context) =>
       context.ancestorStateOfType(const TypeMatcher<_CounterState>());
@@ -84,10 +92,16 @@ class Counter extends StatefulWidget {
 
 class _CounterState extends State<Counter> {
   int marcacao;
+  String docHome;
+  String docFaixas;
+  DocumentSnapshot snapshot;
 
   @override
   void initState() {
     marcacao = widget.marcacao;
+    docHome = widget.docHome;
+    docFaixas = widget.docFaixas;
+    snapshot = widget.snapshot;
     super.initState();
   }
 
@@ -104,11 +118,11 @@ class _CounterState extends State<Counter> {
               setState(() {
                 Firestore.instance
                     .collection("home")
-                    .document("0ano")
+                    .document(docHome)
                     .collection("faixas")
-                    .document("01mes")
+                    .document(docFaixas)
                     .collection("eventos")
-                    .document("-M5P753lQS1VSai_yQIY")
+                    .document(snapshot.documentID)
                     .updateData({
                   "marcacoes": marcacao + 1,
                 });

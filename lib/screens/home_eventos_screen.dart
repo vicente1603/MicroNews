@@ -8,11 +8,14 @@ import 'package:flutter/material.dart';
 class HomeEventosScreen extends StatelessWidget {
   final DocumentSnapshot snapshot;
   String docHome;
+  String docFaixas;
 
   HomeEventosScreen(this.snapshot, this.docHome);
 
   @override
   Widget build(BuildContext context) {
+    String docFaixas = snapshot.documentID;
+
     return Scaffold(
         appBar: AppBar(
           title: Text(snapshot.data["title"]),
@@ -30,7 +33,7 @@ class HomeEventosScreen extends StatelessWidget {
                   .collection("home")
                   .document(docHome)
                   .collection("faixas")
-                  .document(snapshot.documentID)
+                  .document(docFaixas)
                   .collection("eventos")
                   .getDocuments(),
               builder: (context, snapshot) {
@@ -42,6 +45,8 @@ class HomeEventosScreen extends StatelessWidget {
                     itemCount: snapshot.data.documents.length,
                     itemBuilder: (context, index) {
                       return HomeDetailTile(
+                          docHome,
+                          docFaixas,
                           "list",
                           HomeData.fromDocument(
                               snapshot.data.documents[index]));
