@@ -10,29 +10,27 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeTab extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     Future<bool> _onBackPressed() {
       return showDialog(
-        context: context,
-        builder: (context) => new AlertDialog(
-          title: new Text('Tem certeza??'),
-          content: new Text('Deseja sair do aplicativo?'),
-          actions: <Widget>[
-            new GestureDetector(
-              onTap: () => Navigator.of(context).pop(false),
-              child: Text("NÃO"),
+            context: context,
+            builder: (context) => new AlertDialog(
+              title: new Text('Tem certeza??'),
+              content: new Text('Deseja sair do aplicativo?'),
+              actions: <Widget>[
+                new GestureDetector(
+                  onTap: () => Navigator.of(context).pop(false),
+                  child: Text("NÃO"),
+                ),
+                SizedBox(height: 16),
+                new GestureDetector(
+                  onTap: () => Navigator.of(context).pop(true),
+                  child: Text("SIM"),
+                ),
+              ],
             ),
-            SizedBox(height: 16),
-            new GestureDetector(
-              onTap: () => Navigator.of(context).pop(true),
-              child: Text("SIM"),
-            ),
-          ],
-        ),
-      ) ??
+          ) ??
           false;
     }
 
@@ -64,6 +62,11 @@ class HomeTab extends StatelessWidget {
                 }
               },
             ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => launch("tel://192"),
+            child: Icon(Icons.local_hospital),
+            backgroundColor: Colors.red,
           ),
         ));
   }
