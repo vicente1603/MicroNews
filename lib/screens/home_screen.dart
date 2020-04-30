@@ -67,8 +67,8 @@ class HomeScreen extends StatelessWidget {
           drawer: CustomDrawer(_pageController),
         ),
         Scaffold(
-          appBar: AppBar(title: Text("Exercícios"), centerTitle: true),
-          body: Exerciciostab(),
+          appBar: AppBar(title: Text("Exercícios"), centerTitle: true, elevation: 0,),
+          body: ExerciciosTab(),
           drawer: CustomDrawer(_pageController),
         ),
         Scaffold(
