@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_news/models/alimentos_model.dart';
+import 'package:micro_news/models/user_model.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ExerciciosTab extends StatelessWidget {
   @override
@@ -28,39 +30,280 @@ class ExerciciosTab extends StatelessWidget {
               )),
           body: TabBarView(
             children: [
-              //recomendados
+              //1
               Scaffold(
-                body: Column(
-                  children: <Widget>[
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                body: Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                    Colors.blueAccent,
+                    Colors.white,
+                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                  child: SingleChildScrollView(
+                    child: Stack(
                       children: <Widget>[
-                        Text("Shh, bebezinho, não chore",textAlign: TextAlign.center,)
+                        StreamBuilder(
+                          stream: Firestore.instance
+                              .collection("exercicios")
+                              .document("EejGIx7xkkA05prQLHzB")
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Column(children: <Widget>[
+                                    Text(
+                                      snapshot.data["title"],
+                                      style: TextStyle(
+                                          fontSize: 30.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 20.0),
+                                    Text(
+                                      snapshot.data["description"],
+                                      style: TextStyle(
+                                          fontSize: 20.0, color: Colors.black),
+                                      textAlign: TextAlign.center,
+                                    )
+                                  ]));
+                            }
+                          },
+                        )
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
               ),
 
-              //nao_recomendados
+              //2
               Scaffold(
-                body: Column(),
+                body: Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                    Colors.blueAccent,
+                    Colors.white,
+                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                  child: SingleChildScrollView(
+                    child: Stack(
+                      children: <Widget>[
+                        StreamBuilder(
+                          stream: Firestore.instance
+                              .collection("exercicios")
+                              .document("dAnWHjEIDWUlhtnB0UGo")
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Column(children: <Widget>[
+                                    Text(
+                                      snapshot.data["title"],
+                                      style: TextStyle(
+                                          fontSize: 30.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 20.0),
+                                    Text(
+                                      snapshot.data["description"],
+                                      style: TextStyle(
+                                          fontSize: 20.0, color: Colors.black),
+                                      textAlign: TextAlign.center,
+                                    )
+                                  ]));
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              //recomendados
+
+              //3
               Scaffold(
-                body: Column(),
+                body: Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                    Colors.blueAccent,
+                    Colors.white,
+                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                  child: SingleChildScrollView(
+                    child: Stack(
+                      children: <Widget>[
+                        StreamBuilder(
+                          stream: Firestore.instance
+                              .collection("exercicios")
+                              .document("yP2f2Ad4ltZ3tZmvchEv")
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Column(children: <Widget>[
+                                    Text(
+                                      snapshot.data["title"],
+                                      style: TextStyle(
+                                          fontSize: 30.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 20.0),
+                                    Text(
+                                      snapshot.data["description"],
+                                      style: TextStyle(
+                                          fontSize: 20.0, color: Colors.black),
+                                      textAlign: TextAlign.center,
+                                    )
+                                  ]));
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              //recomendados
+
+              //4
               Scaffold(
-                body: Column(),
+                body: Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                    Colors.blueAccent,
+                    Colors.white,
+                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                  child: SingleChildScrollView(
+                    child: Stack(
+                      children: <Widget>[
+                        StreamBuilder(
+                          stream: Firestore.instance
+                              .collection("exercicios")
+                              .document("yP2f2Ad4ltZ3tZmvchEv")
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Column(children: <Widget>[
+                                    Text(
+                                      snapshot.data["title"],
+                                      style: TextStyle(
+                                          fontSize: 30.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 20.0),
+                                    Text(
+                                      snapshot.data["description"],
+                                      style: TextStyle(
+                                          fontSize: 20.0, color: Colors.black),
+                                      textAlign: TextAlign.center,
+                                    )
+                                  ]));
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              //recomendados
+
+              //5
               Scaffold(
-                body: Column(),
+                body: Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                    Colors.blueAccent,
+                    Colors.white,
+                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                  child: SingleChildScrollView(
+                    child: Stack(
+                      children: <Widget>[
+                        StreamBuilder(
+                          stream: Firestore.instance
+                              .collection("exercicios")
+                              .document("4piMAcl8lgYrbeCCGq2O")
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Column(children: <Widget>[
+                                    Text(
+                                      snapshot.data["title"],
+                                      style: TextStyle(
+                                          fontSize: 30.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 20.0),
+                                    Text(
+                                      snapshot.data["description"],
+                                      style: TextStyle(
+                                          fontSize: 20.0, color: Colors.black),
+                                      textAlign: TextAlign.center,
+                                    )
+                                  ]));
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              //recomendados
+
+              //6
               Scaffold(
-                body: Column(),
+                body: Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                    Colors.blueAccent,
+                    Colors.white,
+                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                  child: SingleChildScrollView(
+                    child: Stack(
+                      children: <Widget>[
+                        StreamBuilder(
+                          stream: Firestore.instance
+                              .collection("exercicios")
+                              .document("VsHZnwTuzoYUozwQpfqQ")
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Column(children: <Widget>[
+                                    Text(
+                                      snapshot.data["title"],
+                                      style: TextStyle(
+                                          fontSize: 30.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 20.0),
+                                    Text(
+                                      snapshot.data["description"],
+                                      style: TextStyle(
+                                          fontSize: 20.0, color: Colors.black),
+                                      textAlign: TextAlign.center,
+                                    )
+                                  ]));
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
