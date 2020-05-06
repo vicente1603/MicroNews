@@ -182,7 +182,7 @@ class ExerciciosTab extends StatelessWidget {
                         StreamBuilder(
                           stream: Firestore.instance
                               .collection("exercicios")
-                              .document("yP2f2Ad4ltZ3tZmvchEv")
+                              .document("2oDo7jX97NjzJzlTpdbc")
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {

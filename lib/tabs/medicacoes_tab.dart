@@ -1,3 +1,6 @@
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:micro_news/models/user_model.dart';
 import 'package:micro_news/tabs/chat_tab.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,6 +15,10 @@ class MedicacoesTab extends StatefulWidget {
 class _HomeState extends State<MedicacoesTab> {
   final _medicamento = TextEditingController();
   final _posologia = TextEditingController();
+  final _horario = TextEditingController();
+  final _hourFormat = DateFormat("HH:mm");
+  final _initialDateValue = DateTime.now();
+  String _time;
 
   void inputData() async {
     final FirebaseUser user = await auth.currentUser();
@@ -40,6 +47,7 @@ class _HomeState extends State<MedicacoesTab> {
 
       _medicamento.text = "";
       _posologia.text = "";
+      _horario.text = "";
     });
   }
 
@@ -49,11 +57,11 @@ class _HomeState extends State<MedicacoesTab> {
       String uid = UserModel.of(context).firebaseUser.uid;
 
       return Scaffold(
-        body: Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
-              child: Row(
+        body: Container(
+          padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
+          child: Column(
+            children: <Widget>[
+              Row(
                 children: <Widget>[
                   Expanded(
                     child: TextField(
@@ -66,10 +74,7 @@ class _HomeState extends State<MedicacoesTab> {
                   ),
                 ],
               ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
-              child: Row(
+              Row(
                 children: <Widget>[
                   Expanded(
                     child: TextField(
@@ -81,43 +86,78 @@ class _HomeState extends State<MedicacoesTab> {
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: RaisedButton(
-                color: Colors.blueAccent,
-                child: Text("Adicionar"),
-                textColor: Colors.white,
-                onPressed: inputData,
-              ),
-            ),
-            Expanded(
-              child: StreamBuilder(
-                stream: Firestore.instance
-                    .collection("users")
-                    .document(uid)
-                    .collection("medicacoes")
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                    case ConnectionState.waiting:
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    default:
-                      return ListView.builder(
-                          reverse: false,
-                          itemCount: snapshot.data.documents.length,
-                          itemBuilder: (context, index) {
-                            List r = snapshot.data.documents.reversed.toList();
-                            return MedicacoesList(r[index].data);
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                          labelText: "Horário",
+                          hintText: _horario.text,
+                          labelStyle: TextStyle(color: Colors.blueAccent)),
+                      controller: _horario,
+                      onTap: () {
+                        {
+                          DatePicker.showTimePicker(context,
+                              theme: DatePickerTheme(
+                                containerHeight: 210.0,
+                              ),
+                              showTitleActions: true, onConfirm: (time) {
+                            _time =
+                                '${time.hour} : ${time.minute} : ${time.second}';
+                            setState(() {
+                              _horario.text = _time;
+                              print('confirm $time');
+                            });
+                          },
+                              currentTime: DateTime.now(),
+                              locale: LocaleType.en);
+                          setState(() {
+                            _horario.text = _time;
                           });
-                  }
-                },
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: RaisedButton(
+                  color: Colors.blueAccent,
+                  child: Text("Adicionar"),
+                  textColor: Colors.white,
+                  onPressed: inputData,
+                ),
+              ),
+              Expanded(
+                child: StreamBuilder(
+                  stream: Firestore.instance
+                      .collection("users")
+                      .document(uid)
+                      .collection("medicacoes")
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      default:
+                        return ListView.builder(
+                            reverse: false,
+                            itemCount: snapshot.data.documents.length,
+                            itemBuilder: (context, index) {
+                              List r =
+                                  snapshot.data.documents.reversed.toList();
+                              return MedicacoesList(r[index].data);
+                            });
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -132,7 +172,6 @@ class MedicacoesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (UserModel.of(context).isLoggedIn()) {
-
       String uid = UserModel.of(context).firebaseUser.uid;
 
       return Dismissible(

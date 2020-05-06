@@ -46,6 +46,9 @@ dependencies:
   localstorage: ^3.0.1+4
   splashscreen: ^1.2.0
   random_string: ^2.0.1
+  flutter_local_notifications: ^1.4.3
+  android_alarm_manager: ^0.4.1+6
+  flutter_datetime_picker: 1.2.5
 
 dev_dependencies:
   flutter_test:

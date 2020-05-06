@@ -48,14 +48,14 @@ class AlimentacaoTab extends StatelessWidget {
                                     itemCount: snapshot.data.length,
                                     itemBuilder: (_, index) {
                                       likes =
-                                          snapshot.data[index].data["likes"];
+                                      snapshot.data[index].data["likes"];
                                       id = snapshot.data[index].data["id"];
                                       description = snapshot
                                           .data[index].data["description"];
                                       return Container(
                                         height: 60,
                                         margin:
-                                            EdgeInsets.fromLTRB(20, 0, 20, 15),
+                                        EdgeInsets.fromLTRB(20, 0, 20, 15),
                                         decoration: BoxDecoration(
                                           gradient: LinearGradient(
                                             stops: [0.015, 0.015],
@@ -103,14 +103,14 @@ class AlimentacaoTab extends StatelessWidget {
                                     itemCount: snapshot.data.length,
                                     itemBuilder: (_, index) {
                                       likes =
-                                          snapshot.data[index].data["likes"];
+                                      snapshot.data[index].data["likes"];
                                       id = snapshot.data[index].data["id"];
                                       description = snapshot
                                           .data[index].data["description"];
                                       return Container(
                                         height: 60,
                                         margin:
-                                            EdgeInsets.fromLTRB(20, 0, 20, 15),
+                                        EdgeInsets.fromLTRB(20, 0, 20, 15),
                                         decoration: BoxDecoration(
                                           gradient: LinearGradient(
                                             stops: [0.015, 0.015],
@@ -197,6 +197,7 @@ class _ListTileRecomendadosState extends State<ListTileRecomendados> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Text(description),
+//          Padding(padding: EdgeInsets.only(right: 20.0),),
           IconButton(
             onPressed: () {
               Firestore.instance
@@ -258,6 +259,7 @@ class _ListTileNaoRecomendadosState extends State<ListTileNaoRecomendados> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Text(description),
+//          Padding(padding: EdgeInsets.only(right: 20.0),),
           IconButton(
             onPressed: () {
               Firestore.instance

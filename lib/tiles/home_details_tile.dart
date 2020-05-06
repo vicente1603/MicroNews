@@ -112,7 +112,7 @@ class _CounterState extends State<Counter> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         IconButton(
-          icon: Icon(Icons.outlined_flag, size: 40.0),
+          icon: Icon(Icons.child_care, size: 40.0),
           color: Colors.black38,
           onPressed: () {
                 Firestore.instance
@@ -131,6 +131,7 @@ class _CounterState extends State<Counter> {
                 });
           },
         ),
+        Padding(padding: EdgeInsets.only(right: 10.0),),
         Text(marcacao.toString(),
             style: TextStyle(
                 fontSize: 20.0,
