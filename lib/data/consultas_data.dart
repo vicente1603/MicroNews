@@ -7,6 +7,7 @@ class ConsultasData{
   String descricao;
   String local;
   String data;
+  String horario;
 
   ConsultasData.fromDocument(DocumentSnapshot snapshot){
     id = snapshot.documentID;
@@ -14,6 +15,7 @@ class ConsultasData{
     descricao = snapshot.data["descricao"];
     local = snapshot.data["local"];
     data = snapshot.data["data"];
+    horario = snapshot.data["horario"];
   }
 
 }

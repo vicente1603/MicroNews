@@ -59,6 +59,28 @@ class ConsultasTile extends StatelessWidget {
                         )
                       ],
                     ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text("${consultas.horario}",
+                              style: TextStyle(
+                                  fontSize: 20.0, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center),
+                        )
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

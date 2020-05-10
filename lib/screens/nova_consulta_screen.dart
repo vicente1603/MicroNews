@@ -1,3 +1,4 @@
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:micro_news/tabs/chat_tab.dart';
 import 'package:micro_news/tabs/consultas_tab.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +13,6 @@ class NovaConsultaScreen extends StatefulWidget {
 }
 
 class _ConsultasTabState extends State<NovaConsultaScreen> {
-
   final DocumentSnapshot snapshot = null;
 
   final _formKey = new GlobalKey<FormState>();
@@ -20,6 +20,8 @@ class _ConsultasTabState extends State<NovaConsultaScreen> {
   final _descricao = new TextEditingController();
   final _local = new TextEditingController();
   final _data = new TextEditingController();
+  final _horario = new TextEditingController();
+  String _time = "";
 
   final _dateFormat = DateFormat("dd/MM/yyyy");
   final _initialDateValue = DateTime.now();
@@ -72,12 +74,14 @@ class _ConsultasTabState extends State<NovaConsultaScreen> {
           "descricao": _descricao.text,
           "local": _local.text,
           "data": _data.text,
+          "horario": _horario.text
         });
 
         _titulo.text = "";
         _descricao.text = "";
         _local.text = "";
         _data.text = "";
+        _horario.text = "";
       });
 
       Navigator.of(context).pop();
@@ -96,6 +100,7 @@ class _ConsultasTabState extends State<NovaConsultaScreen> {
             _buildDescriptionTextField(),
             _buildLocalTextField(),
             _buildDateTextField(),
+            _buildTimeTextField(),
           ],
         ),
       ),
@@ -156,6 +161,34 @@ class _ConsultasTabState extends State<NovaConsultaScreen> {
           initialDate: currentValue ?? DateTime.now(),
           lastDate: DateTime(2100),
         );
+      },
+    );
+  }
+
+  Widget _buildTimeTextField() {
+    return TextField(
+      decoration: InputDecoration(
+        prefixIcon: Icon(Icons.access_time),
+        labelText: "Horário",
+        hintText: _horario.text,
+      ),
+      controller: _horario,
+      onTap: () {
+        {
+          DatePicker.showTimePicker(context,
+              theme: DatePickerTheme(
+                containerHeight: 210.0,
+              ),
+              showTitleActions: true, onConfirm: (time) {
+            _time = '${time.hour} : ${time.minute}';
+            setState(() {
+              _horario.text = _time;
+            });
+          }, currentTime: DateTime.now(), locale: LocaleType.en);
+          setState(() {
+            _horario.text = _time;
+          });
+        }
       },
     );
   }

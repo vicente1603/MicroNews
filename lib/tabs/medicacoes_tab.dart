@@ -16,8 +16,6 @@ class _HomeState extends State<MedicacoesTab> {
   final _medicamento = TextEditingController();
   final _posologia = TextEditingController();
   final _horario = TextEditingController();
-  final _hourFormat = DateFormat("HH:mm");
-  final _initialDateValue = DateTime.now();
   String _time;
 
   void inputData() async {
@@ -42,6 +40,7 @@ class _HomeState extends State<MedicacoesTab> {
         "id": id,
         "medicamento": _medicamento.text,
         "posologia": _posologia.text,
+        "horario": _horario.text,
         "checked": false,
       });
 
@@ -67,6 +66,7 @@ class _HomeState extends State<MedicacoesTab> {
                     child: TextField(
                       autofocus: true,
                       decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.healing),
                           labelText: "Medicamento",
                           labelStyle: TextStyle(color: Colors.blueAccent)),
                       controller: _medicamento,
@@ -79,6 +79,7 @@ class _HomeState extends State<MedicacoesTab> {
                   Expanded(
                     child: TextField(
                       decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.filter_1),
                           labelText: "Posologia / Quantidade",
                           labelStyle: TextStyle(color: Colors.blueAccent)),
                       controller: _posologia,
@@ -91,6 +92,7 @@ class _HomeState extends State<MedicacoesTab> {
                   Expanded(
                     child: TextField(
                       decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.access_time),
                           labelText: "Horário",
                           hintText: _horario.text,
                           labelStyle: TextStyle(color: Colors.blueAccent)),
@@ -102,11 +104,9 @@ class _HomeState extends State<MedicacoesTab> {
                                 containerHeight: 210.0,
                               ),
                               showTitleActions: true, onConfirm: (time) {
-                            _time =
-                                '${time.hour} : ${time.minute} : ${time.second}';
+                            _time = '${time.hour} : ${time.minute}';
                             setState(() {
                               _horario.text = _time;
-                              print('confirm $time');
                             });
                           },
                               currentTime: DateTime.now(),
@@ -189,7 +189,7 @@ class MedicacoesList extends StatelessWidget {
           direction: DismissDirection.startToEnd,
           child: CheckboxListTile(
             title: Text("Medicamento: " + data["medicamento"]),
-            subtitle: Text("Posologia: " + data["posologia"]),
+            subtitle: Text("Posologia: " + data["posologia"] + " | Horário: " + data["horario"]),
             value: data["checked"],
             secondary: CircleAvatar(
               child: Icon(data["checked"] == true ? Icons.check : Icons.error),
@@ -198,13 +198,14 @@ class MedicacoesList extends StatelessWidget {
               if (data["checked"] == true) {
                 Firestore.instance
                     .collection("users")
-                    .document("NphGuvRhhrYrRb6SFv9ab0rSbJ42")
+                    .document(uid)
                     .collection("medicacoes")
                     .document(data["id"])
                     .setData({
                   "id": data["id"],
                   "medicamento": data["medicamento"],
                   "posologia": data["posologia"],
+                  "horario": data["horario"],
                   "checked": false,
                 });
               } else {
@@ -217,6 +218,7 @@ class MedicacoesList extends StatelessWidget {
                   "id": data["id"],
                   "medicamento": data["medicamento"],
                   "posologia": data["posologia"],
+                  "horario": data["horario"],
                   "checked": true,
                 });
               }
