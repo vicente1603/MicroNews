@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:micro_news/blocs/app_bloc.dart';
 import 'package:micro_news/models/user_model.dart';
 import 'package:micro_news/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'home_screen.dart';
 

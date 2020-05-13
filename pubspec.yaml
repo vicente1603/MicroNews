@@ -46,9 +46,11 @@ dependencies:
   localstorage: ^3.0.1+4
   splashscreen: ^1.2.0
   random_string: ^2.0.1
-  flutter_local_notifications: ^1.4.3
+  flutter_local_notifications: ^0.7.1+1
   android_alarm_manager: ^0.4.1+6
   flutter_datetime_picker: 1.2.5
+  provider: ^2.0.1+1
+  rxdart: ^0.22.0
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +75,8 @@ flutter:
 
   assets:
     - assets/images/login.png
+    - assets/images/no_notification.png
+    - assets/create_notification.png
 #    - assets/images/114.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

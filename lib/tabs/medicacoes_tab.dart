@@ -1,245 +1,173 @@
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:intl/intl.dart';
-import 'package:micro_news/models/user_model.dart';
-import 'package:micro_news/tabs/chat_tab.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:micro_news/blocs/app_bloc.dart';
+import 'package:micro_news/data/notificacoes_data.dart';
+import 'package:micro_news/plugins/notification_plugin.dart';
+import 'package:micro_news/screens/novo_medicamento.dart';
+import 'package:micro_news/widgets/custom_wide_flatbutton.dart';
+import 'package:provider/provider.dart';
 
-class MedicacoesTab extends StatefulWidget {
+class NotificationPage extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _NotificationPageState createState() => _NotificationPageState();
 }
 
-class _HomeState extends State<MedicacoesTab> {
-  final _medicamento = TextEditingController();
-  final _posologia = TextEditingController();
-  final _horario = TextEditingController();
-  String _time;
+class _NotificationPageState extends State<NotificationPage> with SingleTickerProviderStateMixin {
+  final NotificationPlugin _notificationPlugin = NotificationPlugin();
+  Future<List<PendingNotificationRequest>> notificationFuture;
 
-  void inputData() async {
-    final FirebaseUser user = await auth.currentUser();
-    final uid = user.uid;
+  AnimationController _fadeInController;
 
-    setState(() {
-      var id = Timestamp.now().nanoseconds.toString().trim() +
-          DateTime.now()
-              .toString()
-              .replaceAll(":", "")
-              .replaceAll("-", "")
-              .replaceAll(".", "")
-              .trim();
+  @override
+  void initState() {
+    super.initState();
+    _fadeInController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    notificationFuture = _notificationPlugin.getScheduledNotifications();
+  }
 
-      Firestore.instance
-          .collection("users")
-          .document(uid)
-          .collection("medicacoes")
-          .document(id)
-          .setData({
-        "id": id,
-        "medicamento": _medicamento.text,
-        "posologia": _posologia.text,
-        "horario": _horario.text,
-        "checked": false,
-      });
-
-      _medicamento.text = "";
-      _posologia.text = "";
-      _horario.text = "";
-    });
+  @override
+  void dispose() {
+    super.dispose();
+    _fadeInController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (UserModel.of(context).isLoggedIn()) {
-      String uid = UserModel.of(context).firebaseUser.uid;
-
-      return Scaffold(
-        body: Container(
-          padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      autofocus: true,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.healing),
-                          labelText: "Medicamento",
-                          labelStyle: TextStyle(color: Colors.blueAccent)),
-                      controller: _medicamento,
+    final notificationBloc = Provider.of<AppBloc>(context).notificationBloc;
+    return Center(
+      child: Column(
+        children: <Widget>[
+          StreamBuilder<List<NotificationData>>(
+            stream: notificationBloc.outNotifications,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final notifications = snapshot.data;
+                _fadeInController.forward();
+                if (notifications.isEmpty)
+                  return Expanded(
+                    child: Center(
+                      child: Image.asset(
+                        'assets/images/no_notification.png',
+                        width: 300,
+                        height: 300,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.filter_1),
-                          labelText: "Posologia / Quantidade",
-                          labelStyle: TextStyle(color: Colors.blueAccent)),
-                      controller: _posologia,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.access_time),
-                          labelText: "Horário",
-                          hintText: _horario.text,
-                          labelStyle: TextStyle(color: Colors.blueAccent)),
-                      controller: _horario,
-                      onTap: () {
-                        {
-                          DatePicker.showTimePicker(context,
-                              theme: DatePickerTheme(
-                                containerHeight: 210.0,
-                              ),
-                              showTitleActions: true, onConfirm: (time) {
-                            _time = '${time.hour} : ${time.minute}';
-                            setState(() {
-                              _horario.text = _time;
-                            });
+                  );
+                return Expanded(
+                  child: AnimatedBuilder(
+                    animation: _fadeInController,
+                    builder: (context, child) {
+                      return Opacity(
+                        opacity: _fadeInController.value,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(12),
+                          itemCount: notifications.length,
+                          itemBuilder: (context, index) {
+                            final notification = notifications[index];
+                            return NotificationTile(
+                              notification: notification,
+                            );
                           },
-                              currentTime: DateTime.now(),
-                              locale: LocaleType.en);
-                          setState(() {
-                            _horario.text = _time;
-                          });
-                        }
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.all(16.0),
-                child: RaisedButton(
-                  color: Colors.blueAccent,
-                  child: Text("Adicionar"),
-                  textColor: Colors.white,
-                  onPressed: inputData,
-                ),
-              ),
-              Expanded(
-                child: StreamBuilder(
-                  stream: Firestore.instance
-                      .collection("users")
-                      .document(uid)
-                      .collection("medicacoes")
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                      case ConnectionState.waiting:
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      default:
-                        return ListView.builder(
-                            reverse: false,
-                            itemCount: snapshot.data.documents.length,
-                            itemBuilder: (context, index) {
-                              List r =
-                                  snapshot.data.documents.reversed.toList();
-                              return MedicacoesList(r[index].data);
-                            });
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-  }
-}
-
-class MedicacoesList extends StatelessWidget {
-  final Map<String, dynamic> data;
-
-  MedicacoesList(this.data);
-
-  @override
-  Widget build(BuildContext context) {
-    if (UserModel.of(context).isLoggedIn()) {
-      String uid = UserModel.of(context).firebaseUser.uid;
-
-      return Dismissible(
-          key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
-          background: Container(
-            color: Colors.red,
-            child: Align(
-              alignment: Alignment(-0.9, 0.0),
-              child: Icon(
-                Icons.delete,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          direction: DismissDirection.startToEnd,
-          child: CheckboxListTile(
-            title: Text("Medicamento: " + data["medicamento"]),
-            subtitle: Text("Posologia: " + data["posologia"] + " | Horário: " + data["horario"]),
-            value: data["checked"],
-            secondary: CircleAvatar(
-              child: Icon(data["checked"] == true ? Icons.check : Icons.error),
-            ),
-            onChanged: (c) {
-              if (data["checked"] == true) {
-                Firestore.instance
-                    .collection("users")
-                    .document(uid)
-                    .collection("medicacoes")
-                    .document(data["id"])
-                    .setData({
-                  "id": data["id"],
-                  "medicamento": data["medicamento"],
-                  "posologia": data["posologia"],
-                  "horario": data["horario"],
-                  "checked": false,
-                });
-              } else {
-                Firestore.instance
-                    .collection("users")
-                    .document(uid)
-                    .collection("medicacoes")
-                    .document(data["id"])
-                    .setData({
-                  "id": data["id"],
-                  "medicamento": data["medicamento"],
-                  "posologia": data["posologia"],
-                  "horario": data["horario"],
-                  "checked": true,
-                });
+                );
               }
+              return Expanded(child: SizedBox());
             },
           ),
-          onDismissed: (direction) {
-            Firestore.instance
-                .collection("users")
-                .document(uid)
-                .collection("medicacoes")
-                .document(data["id"])
-                .delete();
-
-            final snack = SnackBar(
-              content: Text("Medicamento removido"),
-              duration: Duration(seconds: 2),
-            );
-
-            Scaffold.of(context).removeCurrentSnackBar();
-            Scaffold.of(context).showSnackBar(snack);
-          });
-    }
+          CustomWideFlatButton(
+            onPressed: navigateToNotificationCreation,
+            backgroundColor: Colors.blue.shade300,
+            foregroundColor: Colors.blue.shade900,
+            isRoundedAtBottom: false,
+          ),
+        ],
+      ),
+    );
   }
+
+  Future<void> navigateToNotificationCreation() async {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CreateNotificationPage(),
+      ),
+    );
+  }
+}
+
+class NotificationTile extends StatelessWidget {
+  const NotificationTile({
+    Key key,
+    @required this.notification,
+  }) : super(key: key);
+
+  final NotificationData notification;
+
+  @override
+  Widget build(BuildContext context) {
+    final notificationBloc = Provider.of<AppBloc>(context).notificationBloc;
+    final textTheme = Theme.of(context).textTheme;
+    return Card(
+      elevation: 6,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    notification.title,
+                    style: textTheme.title.copyWith(
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  smallHeight,
+                  Text(
+                    notification.description,
+                    style: textTheme.subtitle.copyWith(
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  smallHeight,
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.access_time,
+                        size: 28,
+                        color: Theme.of(context).accentColor,
+                      ),
+                      SizedBox(width: 12),
+                      Text(
+                        '${notification.hour.toString().padLeft(2, '0')}:${notification.minute.toString().padLeft(2, '0')}',
+                        style: textTheme.headline.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade300 : Colors.grey.shade800,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              onPressed: () => notificationBloc.removeNotification(notification),
+              icon: Icon(Icons.delete, size: 32),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SizedBox get smallHeight => SizedBox(height: 8);
 }

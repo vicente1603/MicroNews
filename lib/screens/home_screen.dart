@@ -1,3 +1,4 @@
+import 'package:micro_news/blocs/app_bloc.dart';
 import 'package:micro_news/tabs/alimentacao_tab.dart';
 import 'package:micro_news/tabs/chat_tab.dart';
 import 'package:micro_news/tabs/consultas_tab.dart';
@@ -10,6 +11,8 @@ import 'package:micro_news/tabs/medicacoes_tab.dart';
 import 'package:micro_news/widgets/custom_drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:micro_news/widgets/stateful_wrapper.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -18,14 +21,22 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      controller: _pageController,
-      physics: NeverScrollableScrollPhysics(),
-      children: <Widget>[
-        Scaffold(
-          appBar: AppBar(
-            title: Text("MicroNews"),
-            centerTitle: true,
+    return StatefulWrapper(
+      onInit: () {
+        _getThingsOnStartup().then((value) {
+          Future.delayed(Duration.zero, () async {
+            final appBloc = Provider.of<AppBloc>(context);
+            await appBloc.init();
+          });        });
+      },
+      child: PageView(
+        controller: _pageController,
+        physics: NeverScrollableScrollPhysics(),
+        children: <Widget>[
+          Scaffold(
+            appBar: AppBar(
+              title: Text("MicroNews"),
+              centerTitle: true,
 //            actions: <Widget>[
 //              FlatButton(
 //                child: Text("SOS"),
@@ -36,52 +47,65 @@ class HomeScreen extends StatelessWidget {
 //                onPressed: () => launch("tel://192"),
 //              )
 //            ],
+            ),
+            body: HomeTab(),
+            drawer: CustomDrawer(_pageController),
           ),
-          body: HomeTab(),
-          drawer: CustomDrawer(_pageController),
-        ),
-        Scaffold(
-          appBar: AppBar(title: Text("Chat"), centerTitle: true),
-          body: ChatTab(),
-          drawer: CustomDrawer(_pageController),
-        ),
-        Scaffold(
-          appBar: AppBar(title: Text("Dicas"), centerTitle: true),
-          body: DicasTab(),
-          drawer: CustomDrawer(_pageController),
-        ),
-        Scaffold(
-          appBar:
-              AppBar(title: Text("Consultas e Terapias"), centerTitle: true),
-          body: ConsultasTab(snapshot),
-          drawer: CustomDrawer(_pageController),
-        ),
-        Scaffold(
-          appBar: AppBar(title: Text("Medicações"), centerTitle: true),
-          body: MedicacoesTab(),
-          drawer: CustomDrawer(_pageController),
-        ),
-        Scaffold(
-          appBar: AppBar(title: Text("Alimentação"), centerTitle: true, elevation: 0,),
-          body: AlimentacaoTab(),
-          drawer: CustomDrawer(_pageController),
-        ),
-        Scaffold(
-          appBar: AppBar(title: Text("Exercícios"), centerTitle: true, elevation: 0,),
-          body: ExerciciosTab(),
-          drawer: CustomDrawer(_pageController),
-        ),
-        Scaffold(
-          appBar: AppBar(title: Text("Jogos"), centerTitle: true),
-          body: JogosTab(),
-          drawer: CustomDrawer(_pageController),
-        ),
-        Scaffold(
-          appBar: AppBar(title: Text("Créditos"), centerTitle: true),
-          body: CreditosTab(),
-          drawer: CustomDrawer(_pageController),
-        ),
-      ],
+          Scaffold(
+            appBar: AppBar(title: Text("Chat"), centerTitle: true),
+            body: ChatTab(),
+            drawer: CustomDrawer(_pageController),
+          ),
+          Scaffold(
+            appBar: AppBar(title: Text("Dicas"), centerTitle: true),
+            body: DicasTab(),
+            drawer: CustomDrawer(_pageController),
+          ),
+          Scaffold(
+            appBar:
+                AppBar(title: Text("Consultas e Terapias"), centerTitle: true),
+            body: ConsultasTab(snapshot),
+            drawer: CustomDrawer(_pageController),
+          ),
+          Scaffold(
+            appBar: AppBar(title: Text("Medicações"), centerTitle: true),
+            body: NotificationPage(),
+            drawer: CustomDrawer(_pageController),
+          ),
+          Scaffold(
+            appBar: AppBar(
+              title: Text("Alimentação"),
+              centerTitle: true,
+              elevation: 0,
+            ),
+            body: AlimentacaoTab(),
+            drawer: CustomDrawer(_pageController),
+          ),
+          Scaffold(
+            appBar: AppBar(
+              title: Text("Exercícios"),
+              centerTitle: true,
+              elevation: 0,
+            ),
+            body: ExerciciosTab(),
+            drawer: CustomDrawer(_pageController),
+          ),
+          Scaffold(
+            appBar: AppBar(title: Text("Jogos"), centerTitle: true),
+            body: JogosTab(),
+            drawer: CustomDrawer(_pageController),
+          ),
+          Scaffold(
+            appBar: AppBar(title: Text("Créditos"), centerTitle: true),
+            body: CreditosTab(),
+            drawer: CustomDrawer(_pageController),
+          ),
+        ],
+      ),
     );
+  }
+
+  Future _getThingsOnStartup() async {
+    await Future.delayed(Duration(seconds: 2));
   }
 }

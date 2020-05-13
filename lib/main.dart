@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:micro_news/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:random_string/random_string.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'blocs/app_bloc.dart';
 import 'models/user_model.dart';
 
 void main() => runApp(new MyApp());
@@ -13,15 +15,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return ScopedModel<UserModel>(
-        model: UserModel(),
-        child: MaterialApp(
-            title: "MicroNews",
-            theme: ThemeData(
-                primarySwatch: Colors.blue, primaryColor: Colors.blueAccent),
-            debugShowCheckedModeBanner: false,
-            home: _introScreen()));
+    return MultiProvider(
+      providers: [
+        Provider<AppBloc>(
+          builder: (_) => AppBloc(),
+          dispose: (_, appBloc) => appBloc.dispose(),
+        ),
+      ],
+      child: ScopedModel<UserModel>(
+          model: UserModel(),
+          child: MaterialApp(
+              title: "MicroNews",
+              theme: ThemeData(
+                  primarySwatch: Colors.blue, primaryColor: Colors.blueAccent),
+              debugShowCheckedModeBanner: false,
+              home: _introScreen())),
+    );
   }
 }
 
