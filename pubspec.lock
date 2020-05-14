@@ -155,6 +155,24 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.10"
+  flare_dart:
+    dependency: transitive
+    description:
+      path: flare_dart
+      ref: dev
+      resolved-ref: "64510c5723c8fafdd83dde9b88468bc78b2a5b47"
+      url: "git://github.com/2d-inc/Flare-Flutter.git"
+    source: git
+    version: "2.3.3"
+  flare_flutter:
+    dependency: "direct main"
+    description:
+      path: flare_flutter
+      ref: dev
+      resolved-ref: "64510c5723c8fafdd83dde9b88468bc78b2a5b47"
+      url: "git://github.com/2d-inc/Flare-Flutter.git"
+    source: git
+    version: "2.0.1"
   flutter:
     dependency: "direct main"
     description: flutter

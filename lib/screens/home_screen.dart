@@ -21,15 +21,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StatefulWrapper(
-      onInit: () {
-        _getThingsOnStartup().then((value) {
-          Future.delayed(Duration.zero, () async {
-            final appBloc = Provider.of<AppBloc>(context);
-            await appBloc.init();
-          });        });
-      },
-      child: PageView(
+    return PageView(
         controller: _pageController,
         physics: NeverScrollableScrollPhysics(),
         children: <Widget>[
@@ -68,8 +60,8 @@ class HomeScreen extends StatelessWidget {
             drawer: CustomDrawer(_pageController),
           ),
           Scaffold(
-            appBar: AppBar(title: Text("Medicações"), centerTitle: true),
-            body: NotificationPage(),
+            appBar: AppBar(title: Text("Medicações"), centerTitle: true, elevation: 0,),
+            body: MedicamentosTab(),
             drawer: CustomDrawer(_pageController),
           ),
           Scaffold(
@@ -101,8 +93,7 @@ class HomeScreen extends StatelessWidget {
             drawer: CustomDrawer(_pageController),
           ),
         ],
-      ),
-    );
+      );
   }
 
   Future _getThingsOnStartup() async {

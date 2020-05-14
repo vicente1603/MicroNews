@@ -1,28 +1,33 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:micro_news/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:micro_news/blocs/app_bloc.dart';
+import 'package:micro_news/models/user_model.dart';
+import 'package:micro_news/screens/login_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:random_string/random_string.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:splashscreen/splashscreen.dart';
-import 'blocs/app_bloc.dart';
-import 'models/user_model.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  runApp(MedicineReminder());
+}
 
-class MyApp extends StatelessWidget {
-  var doc;
+class MedicineReminder extends StatefulWidget {
+  @override
+  _MedicineReminderState createState() => _MedicineReminderState();
+}
+
+class _MedicineReminderState extends State<MedicineReminder> {
+  GlobalBloc globalBloc;
+
+  void initState() {
+    globalBloc = GlobalBloc();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<AppBloc>(
-          builder: (_) => AppBloc(),
-          dispose: (_, appBloc) => appBloc.dispose(),
-        ),
-      ],
-      child: ScopedModel<UserModel>(
+    return Provider<GlobalBloc>.value(
+      value: globalBloc,
+      child:ScopedModel<UserModel>(
           model: UserModel(),
           child: MaterialApp(
               title: "MicroNews",
@@ -59,3 +64,4 @@ Widget _introScreen() {
     ],
   );
 }
+

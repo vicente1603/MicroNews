@@ -1,173 +1,285 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:micro_news/blocs/app_bloc.dart';
-import 'package:micro_news/data/notificacoes_data.dart';
-import 'package:micro_news/plugins/notification_plugin.dart';
+import 'package:micro_news/models/medicine.dart';
+import 'package:micro_news/screens/detalhes_medicamentos_srceen.dart';
 import 'package:micro_news/screens/novo_medicamento.dart';
-import 'package:micro_news/widgets/custom_wide_flatbutton.dart';
 import 'package:provider/provider.dart';
 
-class NotificationPage extends StatefulWidget {
+class MedicamentosTab extends StatefulWidget {
   @override
-  _NotificationPageState createState() => _NotificationPageState();
+  _MedicamentosTabState createState() => _MedicamentosTabState();
 }
 
-class _NotificationPageState extends State<NotificationPage> with SingleTickerProviderStateMixin {
-  final NotificationPlugin _notificationPlugin = NotificationPlugin();
-  Future<List<PendingNotificationRequest>> notificationFuture;
-
-  AnimationController _fadeInController;
-
-  @override
+class _MedicamentosTabState extends State<MedicamentosTab> {
   void initState() {
     super.initState();
-    _fadeInController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
-    notificationFuture = _notificationPlugin.getScheduledNotifications();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _fadeInController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final notificationBloc = Provider.of<AppBloc>(context).notificationBloc;
-    return Center(
+    final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
+        elevation: 0.0,
+      ),
+      body: Container(
+        color: Color(0xFFF6F8FC),
+        child: Column(
+          children: <Widget>[
+            Flexible(
+              flex: 3,
+              child: TopContainer(),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Flexible(
+              flex: 7,
+              child: Provider<GlobalBloc>.value(
+                child: BottomContainer(),
+                value: _globalBloc,
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        elevation: 4,
+        backgroundColor: Colors.blueAccent,
+        child: Icon(
+          Icons.add,
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NewEntry(),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class TopContainer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
+    return Container(
+      height: 90.0,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.elliptical(50, 27),
+          bottomRight: Radius.elliptical(50, 27),
+        ),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 5,
+            color: Colors.blueAccent,
+            offset: Offset(0, 3.5),
+          )
+        ],
+        color: Colors.blueAccent,
+      ),
+      width: double.infinity,
       child: Column(
         children: <Widget>[
-          StreamBuilder<List<NotificationData>>(
-            stream: notificationBloc.outNotifications,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final notifications = snapshot.data;
-                _fadeInController.forward();
-                if (notifications.isEmpty)
-                  return Expanded(
-                    child: Center(
-                      child: Image.asset(
-                        'assets/images/no_notification.png',
-                        width: 300,
-                        height: 300,
-                      ),
-                    ),
-                  );
-                return Expanded(
-                  child: AnimatedBuilder(
-                    animation: _fadeInController,
-                    builder: (context, child) {
-                      return Opacity(
-                        opacity: _fadeInController.value,
-                        child: ListView.builder(
-                          padding: const EdgeInsets.all(12),
-                          itemCount: notifications.length,
-                          itemBuilder: (context, index) {
-                            final notification = notifications[index];
-                            return NotificationTile(
-                              notification: notification,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                );
-              }
-              return Expanded(child: SizedBox());
-            },
+          Padding(
+            padding: EdgeInsets.only(top: 2.0),
+            child: Center(
+              child: Text(
+                "Number of Mediminders",
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           ),
-          CustomWideFlatButton(
-            onPressed: navigateToNotificationCreation,
-            backgroundColor: Colors.blue.shade300,
-            foregroundColor: Colors.blue.shade900,
-            isRoundedAtBottom: false,
+          StreamBuilder<List<Medicine>>(
+            stream: globalBloc.medicineList$,
+            builder: (context, snapshot) {
+              return Padding(
+                padding: EdgeInsets.only(top: 16.0, bottom: 5 ),
+                child: Center(
+                  child: Text(
+                    !snapshot.hasData ? '0' : snapshot.data.length.toString(),
+                    style: TextStyle(
+                      fontFamily: "Neu",
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),
     );
   }
+}
 
-  Future<void> navigateToNotificationCreation() async {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => CreateNotificationPage(),
-      ),
+class BottomContainer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
+    return StreamBuilder<List<Medicine>>(
+      stream: _globalBloc.medicineList$,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Container();
+        } else if (snapshot.data.length == 0) {
+          return Container(
+            color: Color(0xFFF6F8FC),
+            child: Center(
+              child: Text(
+                "Press + to add a Mediminder",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.blueAccent,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          );
+        } else {
+          return Container(
+            color: Color(0xFFF6F8FC),
+            child: GridView.builder(
+              padding: EdgeInsets.only(top: 12),
+              gridDelegate:
+              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                return MedicineCard(snapshot.data[index]);
+              },
+            ),
+          );
+        }
+      },
     );
   }
 }
 
-class NotificationTile extends StatelessWidget {
-  const NotificationTile({
-    Key key,
-    @required this.notification,
-  }) : super(key: key);
+class MedicineCard extends StatelessWidget {
+  final Medicine medicine;
 
-  final NotificationData notification;
+  MedicineCard(this.medicine);
 
-  @override
-  Widget build(BuildContext context) {
-    final notificationBloc = Provider.of<AppBloc>(context).notificationBloc;
-    final textTheme = Theme.of(context).textTheme;
-    return Card(
-      elevation: 6,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    notification.title,
-                    style: textTheme.title.copyWith(
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  smallHeight,
-                  Text(
-                    notification.description,
-                    style: textTheme.subtitle.copyWith(
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  smallHeight,
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.access_time,
-                        size: 28,
-                        color: Theme.of(context).accentColor,
-                      ),
-                      SizedBox(width: 12),
-                      Text(
-                        '${notification.hour.toString().padLeft(2, '0')}:${notification.minute.toString().padLeft(2, '0')}',
-                        style: textTheme.headline.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade300 : Colors.grey.shade800,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              onPressed: () => notificationBloc.removeNotification(notification),
-              icon: Icon(Icons.delete, size: 32),
-            ),
-          ],
+  Hero makeIcon(double size) {
+    if (medicine.medicineType == "Bottle") {
+      return Hero(
+        tag: medicine.medicineName + medicine.medicineType,
+        child: Icon(
+          IconData(0xe900, fontFamily: "Ic"),
+          color: Colors.blueAccent,
+          size: size,
         ),
+      );
+    } else if (medicine.medicineType == "Pill") {
+      return Hero(
+        tag: medicine.medicineName + medicine.medicineType,
+        child: Icon(
+          IconData(0xe901, fontFamily: "Ic"),
+          color: Colors.blueAccent,
+          size: size,
+        ),
+      );
+    } else if (medicine.medicineType == "Syringe") {
+      return Hero(
+        tag: medicine.medicineName + medicine.medicineType,
+        child: Icon(
+          IconData(0xe902, fontFamily: "Ic"),
+          color: Colors.blueAccent,
+          size: size,
+        ),
+      );
+    } else if (medicine.medicineType == "Tablet") {
+      return Hero(
+        tag: medicine.medicineName + medicine.medicineType,
+        child: Icon(
+          IconData(0xe903, fontFamily: "Ic"),
+          color: Colors.blueAccent,
+          size: size,
+        ),
+      );
+    }
+    return Hero(
+      tag: medicine.medicineName + medicine.medicineType,
+      child: Icon(
+        Icons.error,
+        color: Colors.blueAccent,
+        size: size,
       ),
     );
   }
 
-  SizedBox get smallHeight => SizedBox(height: 8);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: InkWell(
+        highlightColor: Colors.white,
+        splashColor: Colors.grey,
+        onTap: () {
+          Navigator.of(context).push(
+            PageRouteBuilder<Null>(
+              pageBuilder: (BuildContext context, Animation<double> animation,
+                  Animation<double> secondaryAnimation) {
+                return AnimatedBuilder(
+                    animation: animation,
+                    builder: (BuildContext context, Widget child) {
+                      return Opacity(
+                        opacity: animation.value,
+                        child: MedicineDetails(medicine),
+                      );
+                    });
+              },
+              transitionDuration: Duration(milliseconds: 500),
+            ),
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                makeIcon(50.0),
+                Hero(
+                  tag: medicine.medicineName,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      medicine.medicineName,
+                      style: TextStyle(
+                          fontSize: 22,
+                          color:Colors.blueAccent,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ),
+                Text(
+                  medicine.interval == 1
+                      ? "Every " + medicine.interval.toString() + " hour"
+                      : "Every " + medicine.interval.toString() + " hours",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFFC9C9C9),
+                      fontWeight: FontWeight.w400),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
