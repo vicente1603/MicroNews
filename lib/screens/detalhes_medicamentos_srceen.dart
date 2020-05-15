@@ -1,82 +1,91 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:micro_news/blocs/app_bloc.dart';
+import 'package:micro_news/data/medicamentos_data.dart';
 import 'package:micro_news/models/medicine.dart';
+import 'package:micro_news/models/user_model.dart';
+import 'package:micro_news/tabs/medicacoes_tab.dart';
 import 'package:provider/provider.dart';
 
 class MedicineDetails extends StatelessWidget {
-  final Medicine medicine;
+
+  final MedicamentosData medicine;
 
   MedicineDetails(this.medicine);
 
   @override
   Widget build(BuildContext context) {
-    final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+    if (UserModel.of(context).isLoggedIn()) {
+      String uid = UserModel.of(context).firebaseUser.uid;
+
+      final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
+      return Scaffold(
+        resizeToAvoidBottomPadding: false,
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Color(0xFF3EB16F),
-        ),
-        centerTitle: true,
-        title: Text(
-          "Mediminder Details",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(
+            color: Colors.blueAccent,
           ),
+          centerTitle: true,
+          title: Text(
+            "Detalhes do medicamento",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+            ),
+          ),
+          elevation: 0.0,
         ),
-        elevation: 0.0,
-      ),
-      body: Container(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              MainSection(medicine: medicine),
-              SizedBox(
-                height: 15,
-              ),
-              ExtendedSection(medicine: medicine),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.height * 0.06,
-                  right: MediaQuery.of(context).size.height * 0.06,
-                  top: 25,
+        body: Container(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                MainSection(medicine: medicine),
+                SizedBox(
+                  height: 15,
                 ),
-                child: Container(
-                  width: 280,
-                  height: 70,
-                  child: FlatButton(
-                    color: Color(0xFF3EB16F),
-                    shape: StadiumBorder(),
-                    onPressed: () {
-                      openAlertBox(context, _globalBloc);
-                    },
-                    child: Center(
-                      child: Text(
-                        "Delete Mediminder",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700,
+                ExtendedSection(medicine: medicine),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.height * 0.06,
+                    right: MediaQuery.of(context).size.height * 0.06,
+                    top: 25,
+                  ),
+                  child: Container(
+                    width: 280,
+                    height: 70,
+                    child: FlatButton(
+                      color: Colors.blueAccent,
+                      shape: StadiumBorder(),
+                      onPressed: () {
+                        openAlertBox(context, _globalBloc, uid);
+                      },
+                      child: Center(
+                        child: Text(
+                          "Remover Medicamento",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 
-  openAlertBox(BuildContext context, GlobalBloc _globalBloc) {
+  openAlertBox(BuildContext context, GlobalBloc _globalBloc, String uid) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -110,10 +119,22 @@ class MedicineDetails extends StatelessWidget {
                     children: <Widget>[
                       GestureDetector(
                         onTap: () {
-                          _globalBloc.removeMedicine(medicine);
-                          Navigator.popUntil(
+//                          _globalBloc.removeMedicine(medicine);
+
+                          Firestore.instance
+                              .collection("users")
+                              .document(uid)
+                              .collection("medicamentos")
+                              .document(medicine.id)
+                              .delete();
+
+                          Navigator.push(
                             context,
-                            ModalRoute.withName('/'),
+                            MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return MedicamentosTab();
+                              },
+                            ),
                           );
                         },
                         child: InkWell(
@@ -121,13 +142,13 @@ class MedicineDetails extends StatelessWidget {
                             width: MediaQuery.of(context).size.width / 2.743,
                             padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                             decoration: BoxDecoration(
-                              color: Color(0xFF3EB16F),
+                              color: Colors.blueAccent,
                               borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(30.0),
                               ),
                             ),
                             child: Text(
-                              "Yes",
+                              "Sim",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -151,7 +172,7 @@ class MedicineDetails extends StatelessWidget {
                                   bottomRight: Radius.circular(30.0)),
                             ),
                             child: Text(
-                              "No",
+                              "Não",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -174,7 +195,7 @@ class MedicineDetails extends StatelessWidget {
 //                       Navigator.of(context).pop()
 
 class MainSection extends StatelessWidget {
-  final Medicine medicine;
+  final MedicamentosData medicine;
 
   MainSection({
     Key key,
@@ -187,7 +208,7 @@ class MainSection extends StatelessWidget {
         tag: medicine.medicineName + medicine.medicineType,
         child: Icon(
           IconData(0xe900, fontFamily: "Ic"),
-          color: Color(0xFF3EB16F),
+          color: Colors.blueAccent,
           size: size,
         ),
       );
@@ -196,7 +217,7 @@ class MainSection extends StatelessWidget {
         tag: medicine.medicineName + medicine.medicineType,
         child: Icon(
           IconData(0xe901, fontFamily: "Ic"),
-          color: Color(0xFF3EB16F),
+          color: Colors.blueAccent,
           size: size,
         ),
       );
@@ -205,7 +226,7 @@ class MainSection extends StatelessWidget {
         tag: medicine.medicineName + medicine.medicineType,
         child: Icon(
           IconData(0xe902, fontFamily: "Ic"),
-          color: Color(0xFF3EB16F),
+          color: Colors.blueAccent,
           size: size,
         ),
       );
@@ -214,7 +235,7 @@ class MainSection extends StatelessWidget {
         tag: medicine.medicineName + medicine.medicineType,
         child: Icon(
           IconData(0xe903, fontFamily: "Ic"),
-          color: Color(0xFF3EB16F),
+          color: Colors.blueAccent,
           size: size,
         ),
       );
@@ -223,7 +244,7 @@ class MainSection extends StatelessWidget {
       tag: medicine.medicineName + medicine.medicineType,
       child: Icon(
         Icons.local_hospital,
-        color: Color(0xFF3EB16F),
+        color: Colors.blueAccent,
         size: size,
       ),
     );
@@ -245,15 +266,15 @@ class MainSection extends StatelessWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: MainInfoTab(
-                    fieldTitle: "Medicine Name",
+                    fieldTitle: "Nome do medicamento",
                     fieldInfo: medicine.medicineName,
                   ),
                 ),
               ),
               MainInfoTab(
-                fieldTitle: "Dosage",
+                fieldTitle: "Dosagem",
                 fieldInfo: medicine.dosage == 0
-                    ? "Not Specified"
+                    ? "Não especificado"
                     : medicine.dosage.toString() + " mg",
               )
             ],
@@ -291,7 +312,7 @@ class MainInfoTab extends StatelessWidget {
             fieldInfo,
             style: TextStyle(
                 fontSize: 24,
-                color: Color(0xFF3EB16F),
+                color: Colors.blueAccent,
                 fontWeight: FontWeight.bold),
           ),
         ],
@@ -301,7 +322,7 @@ class MainInfoTab extends StatelessWidget {
 }
 
 class ExtendedSection extends StatelessWidget {
-  final Medicine medicine;
+  final MedicamentosData medicine;
 
   ExtendedSection({Key key, @required this.medicine}) : super(key: key);
 
@@ -312,20 +333,20 @@ class ExtendedSection extends StatelessWidget {
         shrinkWrap: true,
         children: <Widget>[
           ExtendedInfoTab(
-            fieldTitle: "Medicine Type",
-            fieldInfo: medicine.medicineType == "None"
-                ? "Not Specified"
+            fieldTitle: "Tipo do medicamento",
+            fieldInfo: medicine.medicineType == "Nenhum"
+                ? "Não especificado"
                 : medicine.medicineType,
           ),
           ExtendedInfoTab(
-            fieldTitle: "Dose Interval",
-            fieldInfo: "Every " +
+            fieldTitle: "Intervalo da dose",
+            fieldInfo: "A cada " +
                 medicine.interval.toString() +
-                " hours  | " +
-                " ${medicine.interval == 24 ? "One time a day" : (24 / medicine.interval).floor().toString() + " times a day"}",
+                " horas  | " +
+                " ${medicine.interval == 24 ? "Uma vez ao dia" : (24 / medicine.interval).floor().toString() + " vezes ao dia"}",
           ),
           ExtendedInfoTab(
-              fieldTitle: "Start Time",
+              fieldTitle: "Horário de ínicio",
               fieldInfo: medicine.startTime[0] +
                   medicine.startTime[1] +
                   ":" +
@@ -344,6 +365,7 @@ class ExtendedInfoTab extends StatelessWidget {
   ExtendedInfoTab(
       {Key key, @required this.fieldTitle, @required this.fieldInfo})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(

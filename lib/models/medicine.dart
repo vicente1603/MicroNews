@@ -1,12 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Medicine {
-  final List<dynamic> notificationIDs;
-  final String medicineName;
-  final int dosage;
+  String id;
+  List<dynamic> notificationIDs;
+  String medicineName;
+  int dosage;
   final String medicineType;
-  final int interval;
-  final String startTime;
+  int interval;
+  String startTime;
 
   Medicine({
+    this.id,
     this.notificationIDs,
     this.medicineName,
     this.dosage,
@@ -15,15 +19,23 @@ class Medicine {
     this.interval,
   });
 
+  String get getId => id;
+
   String get getName => medicineName;
+
   int get getDosage => dosage;
+
   String get getType => medicineType;
+
   int get getInterval => interval;
+
   String get getStartTime => startTime;
+
   List<dynamic> get getIDs => notificationIDs;
 
   Map<String, dynamic> toJson() {
     return {
+      "id": this.id,
       "ids": this.notificationIDs,
       "name": this.medicineName,
       "dosage": this.dosage,
@@ -35,6 +47,7 @@ class Medicine {
 
   factory Medicine.fromJson(Map<String, dynamic> parsedJson) {
     return Medicine(
+      id: parsedJson['id'],
       notificationIDs: parsedJson['ids'],
       medicineName: parsedJson['name'],
       dosage: parsedJson['dosage'],

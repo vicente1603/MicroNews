@@ -1,7 +1,7 @@
-class AlimentosModel {
-  String description;
-
-  AlimentosModel({
-    this.description,
-  });
-}
+//class AlimentosModel {
+//  String description;
+//
+//  AlimentosModel({
+//    this.description,
+//  });
+//}
