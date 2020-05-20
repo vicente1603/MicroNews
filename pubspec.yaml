@@ -50,6 +50,7 @@ dependencies:
   flutter_datetime_picker: 1.2.5
   provider: ^2.0.1+1
   rxdart: ^0.22.0
+  table_calendar: ^2.0.1
   flutter_local_notifications:
   flare_flutter:
     git:
