@@ -1,5 +1,5 @@
 import 'package:micro_news/models/errors.dart';
-import 'package:micro_news/models/medicine_type.dart';
+import 'package:micro_news/models/tipo_medicamento.dart';
 import 'package:rxdart/rxdart.dart';
 
 class NewEntryBloc {
@@ -21,9 +21,9 @@ class NewEntryBloc {
 
   NewEntryBloc() {
     _selectedMedicineType$ =
-    BehaviorSubject<MedicineType>.seeded(MedicineType.None);
+    BehaviorSubject<MedicineType>.seeded(MedicineType.Nenhum);
     // _checkedDays$ = BehaviorSubject<List<Day>>.seeded([]);
-    _selectedTimeOfDay$ = BehaviorSubject<String>.seeded("None");
+    _selectedTimeOfDay$ = BehaviorSubject<String>.seeded("Nenhum");
     _selectedInterval$ = BehaviorSubject<int>.seeded(0);
     _errorState$ = BehaviorSubject<EntryError>();
   }
@@ -60,7 +60,7 @@ class NewEntryBloc {
   void updateSelectedMedicine(MedicineType type) {
     MedicineType _tempType = _selectedMedicineType$.value;
     if (type == _tempType) {
-      _selectedMedicineType$.add(MedicineType.None);
+      _selectedMedicineType$.add(MedicineType.Nenhum);
     } else {
       _selectedMedicineType$.add(type);
     }

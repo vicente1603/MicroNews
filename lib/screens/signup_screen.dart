@@ -1,4 +1,4 @@
-import 'package:micro_news/models/user_model.dart';
+import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/home_screen.dart';
 import 'package:micro_news/tabs/home_tab.dart';
 import 'package:flutter/material.dart';

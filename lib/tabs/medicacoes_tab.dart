@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_news/blocs/app_bloc.dart';
 import 'package:micro_news/data/medicamentos_data.dart';
-import 'package:micro_news/models/user_model.dart';
+import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/detalhes_medicamentos_srceen.dart';
 import 'package:micro_news/screens/novo_medicamento.dart';
 import 'package:provider/provider.dart';
@@ -193,7 +193,7 @@ class MedicineCard extends StatelessWidget {
   MedicineCard(this.type, this.medicamentos);
 
   Hero makeIcon(double size) {
-    if (medicamentos.medicineType == "Bottle") {
+    if (medicamentos.medicineType == "Frasco") {
       return Hero(
         tag: medicamentos.medicineName + medicamentos.medicineType,
         child: Icon(
@@ -202,7 +202,7 @@ class MedicineCard extends StatelessWidget {
           size: size,
         ),
       );
-    } else if (medicamentos.medicineType == "Pill") {
+    } else if (medicamentos.medicineType == "Pilula") {
       return Hero(
         tag: medicamentos.medicineName + medicamentos.medicineType,
         child: Icon(
@@ -211,7 +211,7 @@ class MedicineCard extends StatelessWidget {
           size: size,
         ),
       );
-    } else if (medicamentos.medicineType == "Syringe") {
+    } else if (medicamentos.medicineType == "Seringa") {
       return Hero(
         tag: medicamentos.medicineName + medicamentos.medicineType,
         child: Icon(
@@ -220,7 +220,7 @@ class MedicineCard extends StatelessWidget {
           size: size,
         ),
       );
-    } else if (medicamentos.medicineType == "Tablet") {
+    } else if (medicamentos.medicineType == "Comprimido") {
       return Hero(
         tag: medicamentos.medicineName + medicamentos.medicineType,
         child: Icon(

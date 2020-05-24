@@ -57,7 +57,7 @@ class HomeScreen extends StatelessWidget {
         ),
         Scaffold(
           appBar: AppBar(
-            title: Text("Medicações"),
+            title: Text("Medicamentos"),
             centerTitle: true,
             elevation: 0,
           ),

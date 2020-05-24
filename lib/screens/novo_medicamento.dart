@@ -5,9 +5,9 @@ import 'package:micro_news/blocs/app_bloc.dart';
 import 'package:micro_news/blocs/medicamentos_bloc.dart';
 import 'package:micro_news/common/convert_time.dart';
 import 'package:micro_news/models/errors.dart';
-import 'package:micro_news/models/medicine.dart';
-import 'package:micro_news/models/medicine_type.dart';
-import 'package:micro_news/models/user_model.dart';
+import 'package:micro_news/models/medicamento.dart';
+import 'package:micro_news/models/tipo_medicamento.dart';
+import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/tabs/medicacoes_tab.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -124,31 +124,31 @@ class _NewEntryState extends State<NewEntry> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           MedicineTypeColumn(
-                              type: MedicineType.Bottle,
+                              type: MedicineType.Frasco,
                               name: "Frasco",
                               iconValue: 0xe900,
-                              isSelected: snapshot.data == MedicineType.Bottle
+                              isSelected: snapshot.data == MedicineType.Frasco
                                   ? true
                                   : false),
                           MedicineTypeColumn(
-                              type: MedicineType.Pill,
+                              type: MedicineType.Pilula,
                               name: "Pílula",
                               iconValue: 0xe901,
-                              isSelected: snapshot.data == MedicineType.Pill
+                              isSelected: snapshot.data == MedicineType.Pilula
                                   ? true
                                   : false),
                           MedicineTypeColumn(
-                              type: MedicineType.Syringe,
+                              type: MedicineType.Seringa,
                               name: "Seringa",
                               iconValue: 0xe902,
-                              isSelected: snapshot.data == MedicineType.Syringe
+                              isSelected: snapshot.data == MedicineType.Seringa
                                   ? true
                                   : false),
                           MedicineTypeColumn(
-                              type: MedicineType.Tablet,
+                              type: MedicineType.Comprimido,
                               name: "Comprimido",
                               iconValue: 0xe903,
-                              isSelected: snapshot.data == MedicineType.Tablet
+                              isSelected: snapshot.data == MedicineType.Comprimido
                                   ? true
                                   : false),
                         ],
@@ -379,7 +379,7 @@ class _NewEntryState extends State<NewEntry> {
       await flutterLocalNotificationsPlugin.showDailyAtTime(
           int.parse(medicine.notificationIDs[i]),
           '${medicine.medicineName}',
-          medicine.medicineType.toString() != MedicineType.None.toString()
+          medicine.medicineType.toString() != MedicineType.Nenhum.toString()
               ? 'Está na hora do medicamento ${medicine.medicineName.toLowerCase()}!'
               : 'Está na hora do medicamento!',
           Time(hour, minute, 0),

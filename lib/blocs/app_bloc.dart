@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:micro_news/models/medicine.dart';
+import 'package:micro_news/models/medicamento.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';

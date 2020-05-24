@@ -1,8 +1,10 @@
-import 'package:micro_news/models/user_model.dart';
+import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/login_screen.dart';
 import 'package:micro_news/tiles/drawer_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+
+import '../services/firestore.dart';
 
 class CustomDrawer extends StatelessWidget {
   final PageController pageController;
@@ -84,7 +86,7 @@ class CustomDrawer extends StatelessWidget {
               DrawerTile(Icons.chat, "Chat", pageController, 1),
               DrawerTile(Icons.help, "Dicas", pageController, 2),
               DrawerTile(Icons.calendar_today, "Consultas e Terapias", pageController, 3),
-              DrawerTile(Icons.alarm_add, "Medicações", pageController, 4),
+              DrawerTile(Icons.alarm_add, "Medicamentos", pageController, 4),
               DrawerTile(Icons.restaurant, "Alimentação", pageController, 5),
               DrawerTile(Icons.accessibility, "Exercícios", pageController, 6),
               DrawerTile(Icons.videogame_asset, "Jogos Infatis", pageController, 7),

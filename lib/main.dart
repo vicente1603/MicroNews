@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:micro_news/blocs/app_bloc.dart';
-import 'package:micro_news/models/user_model.dart';
+import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:scoped_model/scoped_model.dart';

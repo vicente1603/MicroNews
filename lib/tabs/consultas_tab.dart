@@ -1,14 +1,14 @@
 import 'dart:convert';
+import 'package:firebase_helpers/firebase_helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:micro_news/add_event.dart';
-import 'package:micro_news/event_model.dart';
-import 'package:micro_news/firestore.dart';
-import 'package:micro_news/models/user_model.dart';
+import 'package:micro_news/screens/add_evento_calendario_screen.dart';
+import 'package:micro_news/models/evento_calendario_model.dart';
+import 'package:micro_news/services/firestore.dart';
+import 'package:micro_news/models/usuario_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
-
-import '../view_event.dart';
+import '../screens/detalhes_evento_calendario_screen.dart';
 
 class ConsultasTab extends StatefulWidget {
   @override
@@ -30,14 +30,13 @@ class _ConsultasTabState extends State<ConsultasTab> {
     _eventController = TextEditingController();
     _eventos = {};
     _eventosSelecionados = [];
-    uid = "";
   }
 
   Map<DateTime, List<dynamic>> _groupEvents(List<EventModel> events) {
     Map<DateTime, List<dynamic>> data = {};
     events.forEach((event) {
       DateTime date = DateTime(
-          event.eventDate.year, event.eventDate.month, event.eventDate.day, 12);
+          event.data.year, event.data.month, event.data.day, 12);
       if (data[date] == null) data[date] = [];
       data[date].add(event);
     });
@@ -50,9 +49,14 @@ class _ConsultasTabState extends State<ConsultasTab> {
     if (UserModel.of(context).isLoggedIn()) {
       uid = UserModel.of(context).firebaseUser.uid;
 
+      DatabaseService<EventModel> eventosCalendario =
+          DatabaseService<EventModel>("$cUsers/$uid/eventos_calendario",
+              fromDS: (id, data) => EventModel.fromDS(id, data),
+              toMap: (event) => event.toMap());
+
       return Scaffold(
           body: StreamBuilder<List<EventModel>>(
-            stream: eventDBS.streamList(),
+            stream: eventosCalendario.streamList(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 List<EventModel> allEvents = snapshot.data;
@@ -113,7 +117,7 @@ class _ConsultasTabState extends State<ConsultasTab> {
                               ))),
                     ),
                     ..._eventosSelecionados.map((event) => ListTile(
-                          title: Text(event.title),
+                          title: Text(event.titulo),
                           onTap: () {
                             Navigator.push(
                                 context,

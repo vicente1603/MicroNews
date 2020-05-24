@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'event_model.dart';
+import '../models/evento_calendario_model.dart';
 
 class EventDetailsPage extends StatelessWidget {
   final EventModel event;
@@ -10,16 +10,16 @@ class EventDetailsPage extends StatelessWidget {
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text('Note details'),
+        title: Text('Detalhes do evento'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(event.title, style: Theme.of(context).textTheme.display1,),
+            Text(event.titulo, style: Theme.of(context).textTheme.display1,),
             SizedBox(height: 20.0),
-            Text(event.description)
+            Text(event.descricao)
           ],
         ),
       ),
