@@ -125,8 +125,8 @@ class _AddEventPageState extends State<AddEventPage> {
               ),
               const SizedBox(height: 10.0),
               ListTile(
-                title: Text("Data: (DD-MM-YYYY)"),
-                subtitle: Text("${_data.year} - ${_data.month} - ${_data.day}"),
+                title: Text("Data: (DD/MM/YYYY)"),
+                subtitle: Text("${_data.day} / ${_data.month} / ${_data.year}"),
                 onTap: () async {
                   DateTime picked = await showDatePicker(
                       context: context,
@@ -178,7 +178,7 @@ class _AddEventPageState extends State<AddEventPage> {
                             }
                           },
                           child: Text(
-                            "Save",
+                            "Salvar",
                             style: style.copyWith(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),

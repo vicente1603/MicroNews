@@ -9,7 +9,6 @@ import 'package:micro_news/tabs/medicacoes_tab.dart';
 import 'package:provider/provider.dart';
 
 class MedicineDetails extends StatelessWidget {
-
   final MedicamentosData medicine;
 
   MedicineDetails(this.medicine);
@@ -56,8 +55,7 @@ class MedicineDetails extends StatelessWidget {
                     top: 25,
                   ),
                   child: Container(
-                    width: 280,
-                    height: 70,
+                    height: 50,
                     child: FlatButton(
                       color: Colors.blueAccent,
                       shape: StadiumBorder(),
@@ -107,7 +105,7 @@ class MedicineDetails extends StatelessWidget {
                     padding: EdgeInsets.all(18),
                     child: Center(
                       child: Text(
-                        "Delete this Mediminder?",
+                        "Remover esse medicamento?",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),

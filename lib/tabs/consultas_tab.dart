@@ -35,8 +35,8 @@ class _ConsultasTabState extends State<ConsultasTab> {
   Map<DateTime, List<dynamic>> _groupEvents(List<EventModel> events) {
     Map<DateTime, List<dynamic>> data = {};
     events.forEach((event) {
-      DateTime date = DateTime(
-          event.data.year, event.data.month, event.data.day, 12);
+      DateTime date =
+          DateTime(event.data.year, event.data.month, event.data.day, 12);
       if (data[date] == null) data[date] = [];
       data[date].add(event);
     });
@@ -116,17 +116,25 @@ class _ConsultasTabState extends State<ConsultasTab> {
                                 style: TextStyle(color: Colors.white),
                               ))),
                     ),
-                    ..._eventosSelecionados.map((event) => ListTile(
+                    ..._eventosSelecionados.map((event) => Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Card(
+                        child: ListTile(
+                          leading: Icon(Icons.calendar_today),
                           title: Text(event.titulo),
+                          trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) => EventDetailsPage(
-                                          event: event,
-                                        )));
+                                      event: event,
+                                    )));
                           },
-                        ))
+                        ),
+                      ),
+                    ),
+                        )
                   ],
                 ),
               );
