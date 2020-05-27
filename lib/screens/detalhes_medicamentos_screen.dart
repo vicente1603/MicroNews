@@ -64,7 +64,7 @@ class MedicineDetails extends StatelessWidget {
                       },
                       child: Center(
                         child: Text(
-                          "Remover Medicamento",
+                          "Remover",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 22,
@@ -117,8 +117,30 @@ class MedicineDetails extends StatelessWidget {
                     children: <Widget>[
                       GestureDetector(
                         onTap: () {
-//                          _globalBloc.removeMedicine(medicine);
-
+                          Navigator.of(context).pop();
+                        },
+                        child: InkWell(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 2.743,
+                            padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                            decoration: BoxDecoration(
+                              color: Colors.red[700],
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(30.0)),
+                            ),
+                            child: Text(
+                              "Não",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
                           Firestore.instance
                               .collection("users")
                               .document(uid)
@@ -126,7 +148,7 @@ class MedicineDetails extends StatelessWidget {
                               .document(medicine.id)
                               .delete();
 
-                          Navigator.push(
+                          Navigator.pop(
                             context,
                             MaterialPageRoute(
                               builder: (BuildContext context) {
@@ -142,35 +164,11 @@ class MedicineDetails extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: Colors.blueAccent,
                               borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(30.0),
+                                bottomRight: Radius.circular(30.0),
                               ),
                             ),
                             child: Text(
                               "Sim",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: InkWell(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 2.743,
-                            padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                            decoration: BoxDecoration(
-                              color: Colors.red[700],
-                              borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(30.0)),
-                            ),
-                            child: Text(
-                              "Não",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

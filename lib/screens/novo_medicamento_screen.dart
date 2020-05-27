@@ -176,18 +176,16 @@ class _NewEntryState extends State<NewEntry> {
                     right: MediaQuery.of(context).size.height * 0.08,
                   ),
                   child: Container(
-                    width: 220,
-                    height: 70,
+                    height: 50,
                     child: FlatButton(
                       color: Colors.blueAccent,
                       shape: StadiumBorder(),
                       child: Center(
                         child: Text(
-                          "Confirmar",
+                          "Salvar",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 28,
-                            fontWeight: FontWeight.w700,
+                            fontSize: 25,
                           ),
                         ),
                       ),
@@ -291,19 +289,19 @@ class _NewEntryState extends State<NewEntry> {
       (EntryError error) {
         switch (error) {
           case EntryError.NameNull:
-            displayError("Please enter the medicine's name");
+            displayError("Por favor, insira o nome do medicamento");
             break;
           case EntryError.NameDuplicate:
-            displayError("Medicine name already exists");
+            displayError("Esse medicamento já está cadastrado");
             break;
           case EntryError.Dosage:
-            displayError("Please enter the dosage required");
+            displayError("Por favor, insira a dosagem do mecicamento");
             break;
           case EntryError.Interval:
-            displayError("Please select the reminder's interval");
+            displayError("Por favor, selecione o intervalo do medicamento");
             break;
           case EntryError.StartTime:
-            displayError("Please select the reminder's starting time");
+            displayError("Por favor, insira o de ínicio do medicamento");
             break;
           default:
         }
@@ -502,8 +500,7 @@ class _SelectTimeState extends State<SelectTime> {
       child: Padding(
         padding: EdgeInsets.only(top: 10.0, bottom: 4),
         child: FlatButton(
-          color: Colors.blueAccent,
-          shape: StadiumBorder(),
+          color: Colors.white,
           onPressed: () {
             _selectTime(context);
           },
@@ -513,7 +510,7 @@ class _SelectTimeState extends State<SelectTime> {
                   ? "Selecione o horário"
                   : "${convertTime(_time.hour.toString())}:${convertTime(_time.minute.toString())}",
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.blueAccent,
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),

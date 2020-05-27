@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:micro_news/services/firestore.dart';
+import 'package:micro_news/tabs/consultas_tab.dart';
 import '../models/evento_calendario_model.dart';
-import 'detalhes_medicamentos_srceen.dart';
+import 'detalhes_medicamentos_screen.dart';
 
 class EventDetailsPage extends StatelessWidget {
   final EventModel event;
@@ -9,7 +12,10 @@ class EventDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -50,11 +56,20 @@ class EventDetailsPage extends StatelessWidget {
                     color: Colors.blueAccent,
                     shape: StadiumBorder(),
                     onPressed: () {
-//                      openAlertBox(context, _globalBloc, uid);
+                      eventDBS.removeItem(event.id);
+                      _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        content: Text("Evento removido!"),
+                        backgroundColor: Colors.blueAccent,
+                        duration: Duration(seconds: 2),
+                      ));
+                      Future.delayed(Duration(seconds: 2)).then((_) {
+                        Navigator.of(context).pop(
+                            MaterialPageRoute(builder: (context) => ConsultasTab()));
+                      });
                     },
                     child: Center(
                       child: Text(
-                        "Remover Evento",
+                        "Remover",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 22,
@@ -94,6 +109,7 @@ class MainSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String dataFormatada = DateFormat("dd/MM/yyyy").format(event.data);
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -116,7 +132,7 @@ class MainSection extends StatelessWidget {
               ),
               MainInfoTab(
                 fieldTitle: "Data",
-                fieldInfo: event.data.toString(),
+                fieldInfo: dataFormatada,
               )
             ],
           )

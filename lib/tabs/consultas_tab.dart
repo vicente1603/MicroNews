@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:firebase_helpers/firebase_helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:micro_news/screens/add_evento_calendario_screen.dart';
+import 'package:micro_news/screens/novo_evento_calendario_screen.dart';
 import 'package:micro_news/models/evento_calendario_model.dart';
 import 'package:micro_news/services/firestore.dart';
 import 'package:micro_news/models/usuario_model.dart';
