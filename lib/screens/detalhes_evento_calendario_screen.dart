@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:micro_news/blocs/app_bloc.dart';
 import 'package:micro_news/services/firestore.dart';
 import 'package:micro_news/tabs/consultas_tab.dart';
+import 'package:provider/provider.dart';
 import '../models/evento_calendario_model.dart';
 import 'detalhes_medicamentos_screen.dart';
 
@@ -13,6 +15,7 @@ class EventDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _scaffoldKey = GlobalKey<ScaffoldState>();
+    final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -56,16 +59,7 @@ class EventDetailsPage extends StatelessWidget {
                     color: Colors.blueAccent,
                     shape: StadiumBorder(),
                     onPressed: () {
-                      eventDBS.removeItem(event.id);
-                      _scaffoldKey.currentState.showSnackBar(SnackBar(
-                        content: Text("Evento removido!"),
-                        backgroundColor: Colors.blueAccent,
-                        duration: Duration(seconds: 2),
-                      ));
-                      Future.delayed(Duration(seconds: 2)).then((_) {
-                        Navigator.of(context).pop(
-                            MaterialPageRoute(builder: (context) => ConsultasTab()));
-                      });
+                      openAlertBox(context, _globalBloc, uid);
                     },
                     child: Center(
                       child: Text(
@@ -85,6 +79,35 @@ class EventDetailsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  openAlertBox(BuildContext context, GlobalBloc _globalBloc, String uid) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text('Remover evento'),
+            content:
+                new Text('Deseja remover o evento ' + event.titulo + "?"),
+            actions: <Widget>[
+              new GestureDetector(
+                onTap: () => Navigator.of(context).pop(false),
+                child: Text("NÃO"),
+              ),
+              SizedBox(height: 16),
+              new GestureDetector(
+                onTap: () {
+                  eventDBS.removeItem(event.id);
+                  Future.delayed(Duration(seconds: 2)).then((_) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ConsultasTab()));
+                  });
+                },
+                child: Text("SIM"),
+              ),
+            ],
+          );
+        });
   }
 }
 

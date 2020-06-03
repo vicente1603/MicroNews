@@ -88,101 +88,35 @@ class MedicineDetails extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(30.0),
+            title: new Text('Remover medicamento'),
+            content: new Text('Deseja remover o medicamento ' + medicine.medicineName.toString() + "?"),
+            actions: <Widget>[
+              new GestureDetector(
+                onTap: () => Navigator.of(context).pop(false),
+                child: Text("NÃO"),
               ),
-            ),
-            contentPadding: EdgeInsets.only(top: 10.0),
-            content: Container(
-              width: 300.0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(18),
-                    child: Center(
-                      child: Text(
-                        "Remover esse medicamento?",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: InkWell(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 2.743,
-                            padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                            decoration: BoxDecoration(
-                              color: Colors.red[700],
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(30.0)),
-                            ),
-                            child: Text(
-                              "Não",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Firestore.instance
-                              .collection("users")
-                              .document(uid)
-                              .collection("medicamentos")
-                              .document(medicine.id)
-                              .delete();
+              SizedBox(height: 16),
+              new GestureDetector(
+                onTap: () {
+                  Firestore.instance
+                      .collection("users")
+                      .document(uid)
+                      .collection("medicamentos")
+                      .document(medicine.id)
+                      .delete();
 
-                          Navigator.pop(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) {
-                                return MedicamentosTab();
-                              },
-                            ),
-                          );
-                        },
-                        child: InkWell(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 2.743,
-                            padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                            decoration: BoxDecoration(
-                              color: Colors.blueAccent,
-                              borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(30.0),
-                              ),
-                            ),
-                            child: Text(
-                              "Sim",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return MedicamentosTab();
+                      },
+                    ),
+                  );
+                },
+                child: Text("SIM"),
               ),
-            ),
+            ],
           );
         });
   }

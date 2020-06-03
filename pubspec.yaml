@@ -14,7 +14,7 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.5.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -52,6 +52,7 @@ dependencies:
   provider: ^2.0.1+1
   rxdart: ^0.22.0
   table_calendar: ^2.0.1
+  mask_text_input_formatter: ^1.0.6
   flutter_local_notifications:
   flare_flutter:
     git:
