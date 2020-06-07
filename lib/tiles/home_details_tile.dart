@@ -1,21 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:micro_news/data/home_data.dart';
 import 'package:flutter/material.dart';
+import 'package:micro_news/models/usuario_model.dart';
 
 class HomeDetailTile extends StatelessWidget {
-
   final String docHome;
   final String docFaixas;
   final String type;
   final HomeData eventos;
-
   DocumentSnapshot snapshot;
 
-  HomeDetailTile(this.docHome, this. docFaixas, this.type, this.eventos);
+  HomeDetailTile(this.docHome, this.docFaixas, this.type, this.eventos);
 
   @override
   Widget build(BuildContext context) {
-
     return new Container(
         margin: const EdgeInsets.symmetric(
           vertical: 16.0,
@@ -61,7 +59,12 @@ class HomeDetailTile extends StatelessWidget {
                               ),
                               Padding(
                                 padding: EdgeInsets.all(12.0),
-                                child: Counter(docHome, docFaixas, eventos.marcacao, eventos.id),
+                                child: Counter(
+                                    docHome,
+                                    docFaixas,
+                                    eventos.marcacao,
+                                    eventos.id,
+                                    eventos.usuarios_like),
                               ),
                             ],
                           ),
@@ -80,8 +83,10 @@ class Counter extends StatefulWidget {
   String docHome;
   String docFaixas;
   String id;
+  List<dynamic> usuarios_like;
 
-  Counter(this.docHome, this.docFaixas, this.marcacao, this.id);
+  Counter(
+      this.docHome, this.docFaixas, this.marcacao, this.id, this.usuarios_like);
 
   static _CounterState of(BuildContext context) =>
       context.ancestorStateOfType(const TypeMatcher<_CounterState>());
@@ -95,6 +100,7 @@ class _CounterState extends State<Counter> {
   String docHome;
   String docFaixas;
   String id;
+  List<dynamic> usuarios_like;
 
   @override
   void initState() {
@@ -102,6 +108,7 @@ class _CounterState extends State<Counter> {
     docHome = widget.docHome;
     docFaixas = widget.docFaixas;
     id = widget.id;
+    usuarios_like = widget.usuarios_like;
     super.initState();
   }
 
@@ -112,26 +119,54 @@ class _CounterState extends State<Counter> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         IconButton(
-          icon: Icon(Icons.child_care, size: 40.0),
+          icon: usuarios_like.contains(UserModel.of(context).firebaseUser.uid)
+              ? Icon(Icons.child_care, size: 40.0, color: Colors.blueAccent,)
+              : Icon(Icons.child_care, size: 40.0),
           color: Colors.black38,
           onPressed: () {
-                Firestore.instance
-                    .collection("home")
-                    .document(docHome)
-                    .collection("faixas")
-                    .document(docFaixas)
-                    .collection("eventos")
-                    .document(id)
-                    .updateData({
-                  "marcacoes": marcacao + 1,
-                });
+            if (!usuarios_like
+                .contains(UserModel.of(context).firebaseUser.uid)) {
+              usuarios_like.add(UserModel.of(context).firebaseUser.uid);
 
-                setState(() {
-                  marcacao++;
-                });
+              Firestore.instance
+                  .collection("home")
+                  .document(docHome)
+                  .collection("faixas")
+                  .document(docFaixas)
+                  .collection("eventos")
+                  .document(id)
+                  .updateData({
+                "usuarios_like": usuarios_like,
+                "marcacoes": marcacao + 1,
+              });
+
+              setState(() {
+                marcacao++;
+              });
+            } else {
+              usuarios_like.remove(UserModel.of(context).firebaseUser.uid);
+
+              Firestore.instance
+                  .collection("home")
+                  .document(docHome)
+                  .collection("faixas")
+                  .document(docFaixas)
+                  .collection("eventos")
+                  .document(id)
+                  .updateData({
+                "usuarios_like": usuarios_like,
+                "marcacoes": marcacao - 1,
+              });
+
+              setState(() {
+                marcacao--;
+              });
+            }
           },
         ),
-        Padding(padding: EdgeInsets.only(right: 10.0),),
+        Padding(
+          padding: EdgeInsets.only(right: 10.0),
+        ),
         Text(marcacao.toString(),
             style: TextStyle(
                 fontSize: 20.0,
