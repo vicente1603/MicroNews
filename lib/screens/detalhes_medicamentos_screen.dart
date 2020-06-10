@@ -105,6 +105,18 @@ class MedicineDetails extends StatelessWidget {
                       .document(medicine.id)
                       .delete();
 
+                  Medicine tobeRemoved = Medicine(
+                    id: medicine.id,
+                    notificationIDs: medicine.notificationIDs,
+                    medicineName: medicine.medicineName,
+                    dosage: medicine.dosage,
+                    medicineType: medicine.medicineType,
+                    interval: medicine.interval,
+                    startTime: medicine.startTime,
+                  );
+
+                  _globalBloc.updateMedicineList(tobeRemoved);
+
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -121,9 +133,6 @@ class MedicineDetails extends StatelessWidget {
         });
   }
 }
-// _globalBloc.removeMedicine(medicine);
-//                       Navigator.of(context).pop()
-
 class MainSection extends StatelessWidget {
   final MedicamentosData medicine;
 

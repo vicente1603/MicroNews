@@ -48,11 +48,11 @@ dependencies:
   localstorage: ^3.0.1+4
   splashscreen: ^1.2.0
   random_string: ^2.0.1
-  android_alarm_manager: ^0.4.1+6
   provider: ^2.0.1+1
   rxdart: ^0.22.0
   table_calendar: ^2.0.1
   mask_text_input_formatter: ^1.0.6
+  android_alarm_manager: ^0.4.1+6
   flutter_local_notifications:
   flare_flutter:
     git:
