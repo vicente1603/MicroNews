@@ -2,22 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_news/blocs/app_bloc.dart';
 import 'package:micro_news/models/usuario_model.dart';
-import 'package:micro_news/screens/login_screen.dart';
+import 'package:micro_news/screens/credenciais/login_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:random_string/random_string.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 void main() {
-  runApp(MedicineReminder());
+  runApp(MicroNews());
 }
 
-class MedicineReminder extends StatefulWidget {
+class MicroNews extends StatefulWidget {
   @override
-  _MedicineReminderState createState() => _MedicineReminderState();
+  _MicroNewsState createState() => _MicroNewsState();
 }
 
-class _MedicineReminderState extends State<MedicineReminder> {
+class _MicroNewsState extends State<MicroNews> {
   GlobalBloc globalBloc;
 
   void initState() {

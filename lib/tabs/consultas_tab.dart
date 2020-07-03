@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'package:firebase_helpers/firebase_helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:micro_news/screens/novo_evento_calendario_screen.dart';
+import 'package:micro_news/screens/consultas/novo_evento_calendario_screen.dart';
 import 'package:micro_news/models/evento_calendario_model.dart';
 import 'package:micro_news/services/firestore.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../screens/detalhes_evento_calendario_screen.dart';
+import '../screens/consultas/detalhes_evento_calendario_screen.dart';
 
 class ConsultasTab extends StatefulWidget {
   @override

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:micro_news/blocs/app_bloc.dart';
 import 'package:micro_news/data/medicamentos_data.dart';
 import 'package:micro_news/models/usuario_model.dart';
-import 'package:micro_news/screens/detalhes_medicamentos_screen.dart';
-import 'package:micro_news/screens/novo_medicamento_screen.dart';
+import 'package:micro_news/screens/medicamentos/detalhes_medicamentos_screen.dart';
+import 'package:micro_news/screens/medicamentos/novo_medicamento_screen.dart';
 import 'package:provider/provider.dart';
 
 class MedicamentosTab extends StatefulWidget {

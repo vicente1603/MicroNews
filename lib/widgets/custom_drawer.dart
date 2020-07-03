@@ -1,5 +1,5 @@
 import 'package:micro_news/models/usuario_model.dart';
-import 'package:micro_news/screens/login_screen.dart';
+import 'package:micro_news/screens/credenciais/login_screen.dart';
 import 'package:micro_news/tiles/drawer_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -87,11 +87,12 @@ class CustomDrawer extends StatelessWidget {
               DrawerTile(Icons.help, "Dicas", pageController, 2),
               DrawerTile(Icons.calendar_today, "Consultas e Terapias", pageController, 3),
               DrawerTile(Icons.alarm_add, "Medicamentos", pageController, 4),
-              DrawerTile(Icons.restaurant, "Alimentação", pageController, 5),
-              DrawerTile(Icons.accessibility, "Exercícios", pageController, 6),
-              DrawerTile(Icons.videogame_asset, "Jogos Infatis", pageController, 7),
+              DrawerTile(Icons.alarm_add, "Desenvolvimento infantil", pageController, 5),
+              DrawerTile(Icons.restaurant, "Alimentação", pageController, 6),
+              DrawerTile(Icons.accessibility, "Exercícios", pageController, 7),
+              DrawerTile(Icons.videogame_asset, "Jogos Infatis", pageController, 8),
               Divider(color: Colors.blueGrey),
-              DrawerTile(Icons.star, "Créditos", pageController, 8),
+              DrawerTile(Icons.star, "Créditos", pageController, 9),
             ],
           )
         ],

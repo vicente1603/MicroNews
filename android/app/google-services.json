@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "279804269772-8eaofuqkh6nmeh0c35vc3fc1ev2jm2hf.apps.googleusercontent.com",
+          "client_id": "279804269772-hji4o9dpc7d51h9fj28eiedfqk1tbba7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "chat.santiago.com.br.chat_online",
-            "certificate_hash": "3e456890e18d0627df21f6f12594f09442c25005"
+            "certificate_hash": "1588d9251115453280e1a0168a492204db1b459d"
           }
         },
         {

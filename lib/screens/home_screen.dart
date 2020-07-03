@@ -3,6 +3,7 @@ import 'package:micro_news/tabs/alimentacao_tab.dart';
 import 'package:micro_news/tabs/chat_tab.dart';
 import 'package:micro_news/tabs/consultas_tab.dart';
 import 'package:micro_news/tabs/creditos_tab.dart';
+import 'package:micro_news/tabs/desenvolvimento_infantil_tab.dart';
 import 'package:micro_news/tabs/dicas_tab.dart';
 import 'package:micro_news/tabs/exercicios_tab.dart';
 import 'package:micro_news/tabs/home_tab.dart';
@@ -62,6 +63,15 @@ class HomeScreen extends StatelessWidget {
             elevation: 0,
           ),
           body: MedicamentosTab(),
+          drawer: CustomDrawer(_pageController),
+        ),
+        Scaffold(
+          appBar: AppBar(
+            title: Text("Desenvolvimento infantil"),
+            centerTitle: true,
+            elevation: 0,
+          ),
+          body: DesenvolvimentoInfantilTab(),
           drawer: CustomDrawer(_pageController),
         ),
         Scaffold(

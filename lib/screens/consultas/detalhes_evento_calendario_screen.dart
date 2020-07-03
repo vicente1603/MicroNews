@@ -4,8 +4,8 @@ import 'package:micro_news/blocs/app_bloc.dart';
 import 'package:micro_news/services/firestore.dart';
 import 'package:micro_news/tabs/consultas_tab.dart';
 import 'package:provider/provider.dart';
-import '../models/evento_calendario_model.dart';
-import 'detalhes_medicamentos_screen.dart';
+import '../../models/evento_calendario_model.dart';
+import '../medicamentos/detalhes_medicamentos_screen.dart';
 
 class EventDetailsPage extends StatelessWidget {
   final EventModel event;
