@@ -5,13 +5,13 @@ import 'package:micro_news/blocs/app_bloc.dart';
 import 'package:micro_news/data/medicamentos_data.dart';
 import 'package:micro_news/models/medicamento.dart';
 import 'package:micro_news/models/usuario_model.dart';
-import 'package:micro_news/tabs/medicacoes_tab.dart';
+import 'package:micro_news/tabs/medicamentos_tab.dart';
 import 'package:provider/provider.dart';
 
-class MedicineDetails extends StatelessWidget {
-  final MedicamentosData medicine;
+class DetalhesMedicamentoScreen extends StatelessWidget {
+  final MedicamentosData medicamento;
 
-  MedicineDetails(this.medicine);
+  DetalhesMedicamentoScreen(this.medicamento);
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +43,11 @@ class MedicineDetails extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                MainSection(medicine: medicine),
+                MainSection(medicamento: medicamento),
                 SizedBox(
                   height: 15,
                 ),
-                ExtendedSection(medicine: medicine),
+                ExtendedSection(medicamento: medicamento),
                 Padding(
                   padding: EdgeInsets.only(
                     left: MediaQuery.of(context).size.height * 0.06,
@@ -89,7 +89,7 @@ class MedicineDetails extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: new Text('Remover medicamento'),
-            content: new Text('Deseja remover o medicamento ' + medicine.medicineName.toString() + "?"),
+            content: new Text('Deseja remover o medicamento ' + medicamento.nomeMedicamento.toString() + "?"),
             actions: <Widget>[
               new GestureDetector(
                 onTap: () => Navigator.of(context).pop(false),
@@ -102,17 +102,17 @@ class MedicineDetails extends StatelessWidget {
                       .collection("users")
                       .document(uid)
                       .collection("medicamentos")
-                      .document(medicine.id)
+                      .document(medicamento.id)
                       .delete();
 
                   Medicine tobeRemoved = Medicine(
-                    id: medicine.id,
-                    notificationIDs: medicine.notificationIDs,
-                    medicineName: medicine.medicineName,
-                    dosage: medicine.dosage,
-                    medicineType: medicine.medicineType,
-                    interval: medicine.interval,
-                    startTime: medicine.startTime,
+                    id: medicamento.id,
+                    notificationIDs: medicamento.idsNoticacoes,
+                    medicineName: medicamento.nomeMedicamento,
+                    dosage: medicamento.dosagem,
+                    medicineType: medicamento.tipoMedicamento,
+                    interval: medicamento.intervalo,
+                    startTime: medicamento.horaInicio,
                   );
 
                   _globalBloc.updateMedicineList(tobeRemoved);
@@ -134,44 +134,44 @@ class MedicineDetails extends StatelessWidget {
   }
 }
 class MainSection extends StatelessWidget {
-  final MedicamentosData medicine;
+  final MedicamentosData medicamento;
 
   MainSection({
     Key key,
-    @required this.medicine,
+    @required this.medicamento,
   }) : super(key: key);
 
   Hero makeIcon(double size) {
-    if (medicine.medicineType == "Frasco") {
+    if (medicamento.tipoMedicamento == "Frasco") {
       return Hero(
-        tag: medicine.medicineName + medicine.medicineType,
+        tag: medicamento.nomeMedicamento + medicamento.tipoMedicamento,
         child: Icon(
           IconData(0xe900, fontFamily: "Ic"),
           color: Colors.blueAccent,
           size: size,
         ),
       );
-    } else if (medicine.medicineType == "Pilula") {
+    } else if (medicamento.tipoMedicamento == "Pilula") {
       return Hero(
-        tag: medicine.medicineName + medicine.medicineType,
+        tag: medicamento.nomeMedicamento + medicamento.tipoMedicamento,
         child: Icon(
           IconData(0xe901, fontFamily: "Ic"),
           color: Colors.blueAccent,
           size: size,
         ),
       );
-    } else if (medicine.medicineType == "Seringa") {
+    } else if (medicamento.tipoMedicamento == "Seringa") {
       return Hero(
-        tag: medicine.medicineName + medicine.medicineType,
+        tag: medicamento.nomeMedicamento + medicamento.tipoMedicamento,
         child: Icon(
           IconData(0xe902, fontFamily: "Ic"),
           color: Colors.blueAccent,
           size: size,
         ),
       );
-    } else if (medicine.medicineType == "Comprimido") {
+    } else if (medicamento.tipoMedicamento == "Comprimido") {
       return Hero(
-        tag: medicine.medicineName + medicine.medicineType,
+        tag: medicamento.nomeMedicamento + medicamento.tipoMedicamento,
         child: Icon(
           IconData(0xe903, fontFamily: "Ic"),
           color: Colors.blueAccent,
@@ -180,7 +180,7 @@ class MainSection extends StatelessWidget {
       );
     }
     return Hero(
-      tag: medicine.medicineName + medicine.medicineType,
+      tag: medicamento.nomeMedicamento + medicamento.tipoMedicamento,
       child: Icon(
         Icons.local_hospital,
         color: Colors.blueAccent,
@@ -201,20 +201,20 @@ class MainSection extends StatelessWidget {
           Column(
             children: <Widget>[
               Hero(
-                tag: medicine.medicineName,
+                tag: medicamento.nomeMedicamento,
                 child: Material(
                   color: Colors.transparent,
                   child: MainInfoTab(
                     fieldTitle: "Nome do medicamento",
-                    fieldInfo: medicine.medicineName,
+                    fieldInfo: medicamento.nomeMedicamento,
                   ),
                 ),
               ),
               MainInfoTab(
                 fieldTitle: "Dosagem",
-                fieldInfo: medicine.dosage == 0
+                fieldInfo: medicamento.dosagem == 0
                     ? "Não especificado"
-                    : medicine.dosage.toString() + " mg",
+                    : medicamento.dosagem.toString() + " mg",
               )
             ],
           )
@@ -261,9 +261,9 @@ class MainInfoTab extends StatelessWidget {
 }
 
 class ExtendedSection extends StatelessWidget {
-  final MedicamentosData medicine;
+  final MedicamentosData medicamento;
 
-  ExtendedSection({Key key, @required this.medicine}) : super(key: key);
+  ExtendedSection({Key key, @required this.medicamento}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -273,24 +273,24 @@ class ExtendedSection extends StatelessWidget {
         children: <Widget>[
           ExtendedInfoTab(
             fieldTitle: "Tipo do medicamento",
-            fieldInfo: medicine.medicineType == "Nenhum"
+            fieldInfo: medicamento.tipoMedicamento == "Nenhum"
                 ? "Não especificado"
-                : medicine.medicineType,
+                : medicamento.tipoMedicamento,
           ),
           ExtendedInfoTab(
             fieldTitle: "Intervalo da dose",
             fieldInfo: "A cada " +
-                medicine.interval.toString() +
+                medicamento.intervalo.toString() +
                 " horas  | " +
-                " ${medicine.interval == 24 ? "Uma vez ao dia" : (24 / medicine.interval).floor().toString() + " vezes ao dia"}",
+                " ${medicamento.intervalo == 24 ? "Uma vez ao dia" : (24 / medicamento.intervalo).floor().toString() + " vezes ao dia"}",
           ),
           ExtendedInfoTab(
               fieldTitle: "Horário de ínicio",
-              fieldInfo: medicine.startTime[0] +
-                  medicine.startTime[1] +
+              fieldInfo: medicamento.horaInicio[0] +
+                  medicamento.horaInicio[1] +
                   ":" +
-                  medicine.startTime[2] +
-                  medicine.startTime[3]),
+                  medicamento.horaInicio[2] +
+                  medicamento.horaInicio[3]),
         ],
       ),
     );

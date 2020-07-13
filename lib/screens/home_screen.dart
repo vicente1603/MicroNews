@@ -8,7 +8,7 @@ import 'package:micro_news/tabs/dicas_tab.dart';
 import 'package:micro_news/tabs/exercicios_tab.dart';
 import 'package:micro_news/tabs/home_tab.dart';
 import 'package:micro_news/tabs/jogos_tab.dart';
-import 'package:micro_news/tabs/medicacoes_tab.dart';
+import 'package:micro_news/tabs/medicamentos_tab.dart';
 import 'package:micro_news/widgets/custom_drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

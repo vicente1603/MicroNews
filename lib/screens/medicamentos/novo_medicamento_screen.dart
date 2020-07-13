@@ -8,17 +8,17 @@ import 'package:micro_news/models/errors.dart';
 import 'package:micro_news/models/medicamento.dart';
 import 'package:micro_news/models/tipo_medicamento.dart';
 import 'package:micro_news/models/usuario_model.dart';
-import 'package:micro_news/tabs/medicacoes_tab.dart';
+import 'package:micro_news/tabs/medicamentos_tab.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:random_string/random_string.dart';
 
-class NewEntry extends StatefulWidget {
+class NovoMedicamentoScreen extends StatefulWidget {
   @override
-  _NewEntryState createState() => _NewEntryState();
+  _NovoMedicamentoScreenState createState() => _NovoMedicamentoScreenState();
 }
 
-class _NewEntryState extends State<NewEntry> {
+class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
   TextEditingController nameController;
   TextEditingController dosageController;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -243,12 +243,12 @@ class _NewEntryState extends State<NewEntry> {
                             .document(id)
                             .setData({
                           "id": id,
-                          "notificationIDs": notificationIDs,
-                          "medicineName": medicineName,
-                          "dosage": dosage,
-                          "medicineType": medicineType,
-                          "interval": interval,
-                          "startTime": startTime
+                          "idsNotificacoes": notificationIDs,
+                          "nomeMedicamento": medicineName,
+                          "dosagem": dosage,
+                          "tipoMedicamento": medicineType,
+                          "intervalo": interval,
+                          "horaInicio": startTime
                         });
 
                         Medicine newEntryMedicine = Medicine(

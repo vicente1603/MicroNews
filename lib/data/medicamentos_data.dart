@@ -3,21 +3,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class MedicamentosData{
 
   String id;
-  List<dynamic> notificationIDs;
-  String medicineName;
-  int dosage;
-  String medicineType;
-  int interval;
-  String startTime;
+  List<dynamic> idsNoticacoes;
+  String nomeMedicamento;
+  int dosagem;
+  String tipoMedicamento;
+  int intervalo;
+  String horaInicio;
 
   MedicamentosData.fromDocument(DocumentSnapshot snapshot){
     id = snapshot.documentID;
-    notificationIDs = snapshot.data["notificationIDs"];
-    medicineName = snapshot.data["medicineName"];
-    dosage = snapshot.data["dosage"];
-    medicineType = snapshot.data["medicineType"];
-    interval = snapshot.data["interval"];
-    startTime = snapshot.data["startTime"];
+    idsNoticacoes = snapshot.data["idsNoticacoes"];
+    nomeMedicamento = snapshot.data["nomeMedicamento"];
+    dosagem = snapshot.data["dosagem"];
+    tipoMedicamento = snapshot.data["tipoMedicamento"];
+    intervalo = snapshot.data["intervalo"];
+    horaInicio = snapshot.data["horaInicio"];
   }
 
 }

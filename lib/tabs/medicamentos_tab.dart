@@ -56,7 +56,7 @@ class _MedicamentosTabState extends State<MedicamentosTab> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => NewEntry(),
+              builder: (context) => NovoMedicamentoScreen(),
             ),
           );
         },
@@ -172,7 +172,7 @@ class BottomContainer extends StatelessWidget {
                     crossAxisCount: 2),
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (context, index) {
-                  return MedicineCard(
+                  return MedicamentoCard(
                       "list",
                       MedicamentosData.fromDocument(
                           snapshot.data.documents[index]));
@@ -186,43 +186,43 @@ class BottomContainer extends StatelessWidget {
   }
 }
 
-class MedicineCard extends StatelessWidget {
+class MedicamentoCard extends StatelessWidget {
   final String type;
-  final MedicamentosData medicamentos;
+  final MedicamentosData medicamento;
 
-  MedicineCard(this.type, this.medicamentos);
+  MedicamentoCard(this.type, this.medicamento);
 
   Hero makeIcon(double size) {
-    if (medicamentos.medicineType == "Frasco") {
+    if (medicamento.tipoMedicamento == "Frasco") {
       return Hero(
-        tag: medicamentos.medicineName + medicamentos.medicineType,
+        tag: medicamento.nomeMedicamento + medicamento.tipoMedicamento,
         child: Icon(
           IconData(0xe900, fontFamily: "Ic"),
           color: Colors.blueAccent,
           size: size,
         ),
       );
-    } else if (medicamentos.medicineType == "Pilula") {
+    } else if (medicamento.tipoMedicamento == "Pilula") {
       return Hero(
-        tag: medicamentos.medicineName + medicamentos.medicineType,
+        tag: medicamento.nomeMedicamento + medicamento.tipoMedicamento,
         child: Icon(
           IconData(0xe901, fontFamily: "Ic"),
           color: Colors.blueAccent,
           size: size,
         ),
       );
-    } else if (medicamentos.medicineType == "Seringa") {
+    } else if (medicamento.tipoMedicamento == "Seringa") {
       return Hero(
-        tag: medicamentos.medicineName + medicamentos.medicineType,
+        tag: medicamento.nomeMedicamento + medicamento.tipoMedicamento,
         child: Icon(
           IconData(0xe902, fontFamily: "Ic"),
           color: Colors.blueAccent,
           size: size,
         ),
       );
-    } else if (medicamentos.medicineType == "Comprimido") {
+    } else if (medicamento.tipoMedicamento == "Comprimido") {
       return Hero(
-        tag: medicamentos.medicineName + medicamentos.medicineType,
+        tag: medicamento.nomeMedicamento + medicamento.tipoMedicamento,
         child: Icon(
           IconData(0xe903, fontFamily: "Ic"),
           color: Colors.blueAccent,
@@ -231,7 +231,7 @@ class MedicineCard extends StatelessWidget {
       );
     }
     return Hero(
-      tag: medicamentos.medicineName + medicamentos.medicineType,
+      tag: medicamento.nomeMedicamento + medicamento.tipoMedicamento,
       child: Icon(
         Icons.error,
         color: Colors.blueAccent,
@@ -257,7 +257,7 @@ class MedicineCard extends StatelessWidget {
                     builder: (BuildContext context, Widget child) {
                       return Opacity(
                         opacity: animation.value,
-                        child: MedicineDetails(medicamentos),
+                        child: DetalhesMedicamentoScreen(medicamento),
                       );
                     });
               },
@@ -276,11 +276,11 @@ class MedicineCard extends StatelessWidget {
               children: <Widget>[
                 makeIcon(50.0),
                 Hero(
-                  tag: medicamentos.medicineName,
+                  tag: medicamento.nomeMedicamento,
                   child: Material(
                     color: Colors.transparent,
                     child: Text(
-                      medicamentos.medicineName,
+                      medicamento.nomeMedicamento,
                       style: TextStyle(
                           fontSize: 22,
                           color: Colors.blueAccent,
@@ -289,9 +289,9 @@ class MedicineCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  medicamentos.interval == 1
-                      ? "A cada " + medicamentos.interval.toString() + " hora"
-                      : "A cada " + medicamentos.interval.toString() + " horas",
+                  medicamento.intervalo == 1
+                      ? "A cada " + medicamento.intervalo.toString() + " hora"
+                      : "A cada " + medicamento.intervalo.toString() + " horas",
                   style: TextStyle(
                       fontSize: 16,
                       color: Color(0xFFC9C9C9),
