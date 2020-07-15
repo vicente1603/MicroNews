@@ -1,5 +1,4 @@
-import 'package:micro_news/data/consultas_data.dart';
-import 'package:micro_news/data/home_data.dart';
+import 'package:micro_news/models/consultas_data.dart';
 import 'package:micro_news/tiles/consultas_tile.dart';
 import 'package:micro_news/tiles/home_tile.dart';
 import 'package:micro_news/widgets/custom_drawer.dart';

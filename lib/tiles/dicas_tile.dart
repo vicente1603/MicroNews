@@ -1,4 +1,4 @@
-import 'package:micro_news/data/dicas_data.dart';
+import 'package:micro_news/models/dicas_data.dart';
 import 'package:flutter/material.dart';
 
 class DicasTile extends StatelessWidget {

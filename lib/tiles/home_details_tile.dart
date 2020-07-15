@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:micro_news/data/home_data.dart';
 import 'package:flutter/material.dart';
+import 'package:micro_news/models/home_data.dart';
 import 'package:micro_news/models/usuario_model.dart';
 
 class HomeDetailTile extends StatelessWidget {

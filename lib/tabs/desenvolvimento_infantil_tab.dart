@@ -1,63 +1,183 @@
 import 'package:bezier_chart/bezier_chart.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/registro_imc_screen.dart';
 
 class DesenvolvimentoInfantilTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blueAccent,
-          elevation: 0,
-          title: TabBar(
-            indicatorColor: Colors.white,
-            tabs: <Widget>[
-              Tab(text: "Gráfico"),
-              Tab(text: "Lista"),
+    String id;
+    double altura;
+    double peso;
+    double imc;
+    String info;
+
+    if (UserModel.of(context).isLoggedIn()) {
+      var uid = UserModel.of(context).firebaseUser.uid;
+      return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.blueAccent,
+            elevation: 0,
+            title: TabBar(
+              indicatorColor: Colors.white,
+              indicatorWeight: 2,
+              tabs: <Widget>[
+                Tab(text: "Gráfico"),
+                Tab(text: "Lista"),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: <Widget>[
+
+              //Gráficos
+              Scaffold(
+                body: SingleChildScrollView(
+                  child: grafico(context),
+                ),
+                floatingActionButton: FloatingActionButton(
+                  child: Icon(Icons.add),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => RegistroImcScreen()));
+                  },
+                ),
+              ),
+
+              //Lista
+              Scaffold(
+                body: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Expanded(
+                        child: FutureBuilder(
+                            future: getImcs(uid),
+                            builder: (_, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return new Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else {
+                                return ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data.length,
+                                    itemBuilder: (_, index) {
+                                      id = snapshot.data[index].data["id"];
+                                      peso = snapshot.data[index].data["peso"];
+                                      altura =
+                                          snapshot.data[index].data["altura"];
+                                      imc = snapshot.data[index].data["imc"];
+                                      info = snapshot.data[index].data["info"];
+                                      return Container(
+                                        height: 80,
+                                        margin:
+                                            EdgeInsets.fromLTRB(20, 0, 20, 15),
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            stops: [0.015, 0.015],
+                                            colors: [
+                                              Colors.blueAccent,
+                                              Colors.blueAccent
+                                            ],
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(5.0),
+                                          ),
+                                        ),
+                                        child: Card(
+                                          child: ListTileImc(
+                                              id, peso, altura, imc, info),
+                                        ),
+                                      );
+                                    });
+                              }
+                            }),
+                      ),
+                    ]),
+                floatingActionButton: FloatingActionButton(
+                  child: Icon(Icons.add),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => RegistroImcScreen()));
+                  },
+                ),
+              )
+
             ],
           ),
         ),
-        body: TabBarView(
-          children: <Widget>[
-            Scaffold(
-              body: SingleChildScrollView(
-                child: sample6(context),
-              ),
-              floatingActionButton: FloatingActionButton(
-                child: Icon(Icons.add),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => RegistroImcScreen()));
-                },
-              ),
-            ),
-            Scaffold(
-              body: SingleChildScrollView(
-                child: Container(
-                  child: Center(
-                    child: Text("Lista"),
-                  ),
-                ),
-              ),
-              floatingActionButton: FloatingActionButton(
-                child: Icon(Icons.add),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => RegistroImcScreen()));
-                },
-              ),
-            )
-          ],
-        ),
+      );
+    }
+  }
+}
+
+Future getImcs(uid) async {
+  var firestore = Firestore.instance;
+
+  QuerySnapshot qn = await firestore
+      .collection("users")
+      .document(uid)
+      .collection("desenvolvimento_infantil")
+      .document("imc")
+      .collection("imcs")
+      .getDocuments();
+
+  return qn.documents;
+}
+
+class ListTileImc extends StatefulWidget {
+  String id;
+  double altura;
+  double peso;
+  double imc;
+  String info;
+
+  ListTileImc(this.id, this.altura, this.peso, this.imc, this.info);
+
+  @override
+  _ListTileImcState createState() => _ListTileImcState();
+}
+
+class _ListTileImcState extends State<ListTileImc> {
+  String id;
+  double altura;
+  double peso;
+  double imc;
+  String info;
+
+  @override
+  void initState() {
+    id = widget.id;
+    altura = widget.altura;
+    peso = widget.peso;
+    imc = widget.imc;
+    info = widget.info;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.only(top: 5, left: 10),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(altura.toString()),
+        ],
       ),
     );
   }
 }
 
-//MAIN SAMPLE
-Widget sample6(BuildContext context) {
+Widget grafico(BuildContext context) {
   return Container(
     decoration: BoxDecoration(
       gradient: LinearGradient(
@@ -73,10 +193,10 @@ Widget sample6(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Bezier Chart",
+          "IMC",
           style: TextStyle(
             color: Colors.white,
-            fontSize: 30,
+            fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -85,14 +205,22 @@ Widget sample6(BuildContext context) {
           context,
           LinearGradient(
             colors: [
-              Colors.red[300],
-              Colors.red[400],
-              Colors.red[400],
-              Colors.red[500],
-              Colors.red,
+              Colors.lightBlue,
+              Colors.lightBlue[600],
+              Colors.lightBlue[700],
+              Colors.lightBlue[700],
+              Colors.lightBlue[800],
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
+          ),
+        ),
+        Text(
+          "Circunferência",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
           ),
         ),
         _buildChart(
@@ -100,11 +228,11 @@ Widget sample6(BuildContext context) {
             context,
             LinearGradient(
               colors: [
-                Colors.purple[300],
-                Colors.purple[400],
-                Colors.purple[400],
-                Colors.purple[500],
-                Colors.purple,
+                Colors.lightBlue,
+                Colors.lightBlue[600],
+                Colors.lightBlue[700],
+                Colors.lightBlue[700],
+                Colors.lightBlue[800],
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,

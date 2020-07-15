@@ -1,4 +1,4 @@
-import 'package:micro_news/data/dicas_data.dart';
+import 'package:micro_news/models/dicas_data.dart';
 import 'package:micro_news/tiles/dicas_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:micro_news/blocs/app_bloc.dart';
-import 'package:micro_news/data/medicamentos_data.dart';
+import 'package:micro_news/models/medicamentos_data.dart';
 import 'package:micro_news/models/medicamento.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/tabs/medicamentos_tab.dart';
