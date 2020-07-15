@@ -2,6 +2,7 @@ import 'package:bezier_chart/bezier_chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/registro_imc_screen.dart';
 
@@ -13,6 +14,7 @@ class DesenvolvimentoInfantilTab extends StatelessWidget {
     double peso;
     double imc;
     String info;
+    Timestamp data;
 
     if (UserModel.of(context).isLoggedIn()) {
       var uid = UserModel.of(context).firebaseUser.uid;
@@ -33,7 +35,6 @@ class DesenvolvimentoInfantilTab extends StatelessWidget {
           ),
           body: TabBarView(
             children: <Widget>[
-
               //Gráficos
               Scaffold(
                 body: SingleChildScrollView(
@@ -65,6 +66,20 @@ class DesenvolvimentoInfantilTab extends StatelessWidget {
                                 return new Center(
                                   child: CircularProgressIndicator(),
                                 );
+                              } else if (snapshot.data.length == 0) {
+                                return Container(
+                                  color: Color(0xFFF6F8FC),
+                                  child: Center(
+                                    child: Text(
+                                      "Toque no + para adicionar um medicamento",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          color: Colors.blueAccent,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                );
                               } else {
                                 return ListView.builder(
                                     shrinkWrap: true,
@@ -76,8 +91,9 @@ class DesenvolvimentoInfantilTab extends StatelessWidget {
                                           snapshot.data[index].data["altura"];
                                       imc = snapshot.data[index].data["imc"];
                                       info = snapshot.data[index].data["info"];
+                                      data = snapshot.data[index].data["data"];
                                       return Container(
-                                        height: 80,
+                                        height: 150,
                                         margin:
                                             EdgeInsets.fromLTRB(20, 0, 20, 15),
                                         decoration: BoxDecoration(
@@ -93,8 +109,8 @@ class DesenvolvimentoInfantilTab extends StatelessWidget {
                                           ),
                                         ),
                                         child: Card(
-                                          child: ListTileImc(
-                                              id, peso, altura, imc, info),
+                                          child: ListTileImc(id, peso, altura,
+                                              imc, info, data),
                                         ),
                                       );
                                     });
@@ -110,13 +126,41 @@ class DesenvolvimentoInfantilTab extends StatelessWidget {
                   },
                 ),
               )
-
             ],
           ),
         ),
       );
     }
   }
+}
+
+String readTimestamp(int timestamp) {
+  var now = new DateTime.now();
+  var format = new DateFormat('HH:mm a');
+  var date = new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+  var diff = now.difference(date);
+  var time = '';
+
+  if (diff.inSeconds <= 0 ||
+      diff.inSeconds > 0 && diff.inMinutes == 0 ||
+      diff.inMinutes > 0 && diff.inHours == 0 ||
+      diff.inHours > 0 && diff.inDays == 0) {
+    time = format.format(date);
+  } else if (diff.inDays > 0 && diff.inDays < 7) {
+    if (diff.inDays == 1) {
+      time = diff.inDays.toString() + ' DAY AGO';
+    } else {
+      time = diff.inDays.toString() + ' DAYS AGO';
+    }
+  } else {
+    if (diff.inDays == 7) {
+      time = (diff.inDays / 7).floor().toString() + ' WEEK AGO';
+    } else {
+      time = (diff.inDays / 7).floor().toString() + ' WEEKS AGO';
+    }
+  }
+
+  return time;
 }
 
 Future getImcs(uid) async {
@@ -139,8 +183,9 @@ class ListTileImc extends StatefulWidget {
   double peso;
   double imc;
   String info;
+  Timestamp data;
 
-  ListTileImc(this.id, this.altura, this.peso, this.imc, this.info);
+  ListTileImc(this.id, this.altura, this.peso, this.imc, this.info, this.data);
 
   @override
   _ListTileImcState createState() => _ListTileImcState();
@@ -152,6 +197,7 @@ class _ListTileImcState extends State<ListTileImc> {
   double peso;
   double imc;
   String info;
+  Timestamp data;
 
   @override
   void initState() {
@@ -160,20 +206,55 @@ class _ListTileImcState extends State<ListTileImc> {
     peso = widget.peso;
     imc = widget.imc;
     info = widget.info;
+    data = widget.data;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.only(top: 5, left: 10),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(altura.toString()),
-        ],
-      ),
-    );
+        contentPadding: EdgeInsets.only(top: 5, left: 10),
+        title: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Peso: $peso"),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Altura: $altura"),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Imc: $imc"),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    "Info: $info",
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: Text("Data: $data"),
+                ),
+              ],
+            ),
+          ],
+        ));
   }
 }
 

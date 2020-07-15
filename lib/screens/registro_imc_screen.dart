@@ -18,6 +18,7 @@ class _RegistroImcScreenState extends State<RegistroImcScreen> {
   double peso;
   double altura;
   double imc;
+  DateTime data;
 
   void _resetFields() {
     pesoController.text = "";
@@ -67,6 +68,7 @@ class _RegistroImcScreenState extends State<RegistroImcScreen> {
       "altura": altura,
       "imc": imc,
       "info": _info,
+      "data": DateTime.now()
     });
   }
 
