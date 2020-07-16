@@ -68,7 +68,7 @@ class _RegistroImcScreenState extends State<RegistroImcScreen> {
       "altura": altura,
       "imc": imc,
       "info": _info,
-      "data": DateTime.now()
+      "data": DateTime.now().toUtc().millisecondsSinceEpoch
     });
   }
 
