@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart' as intl;
 import 'dart:async';
@@ -15,8 +17,6 @@ class DesenvolvimentoInfantilTab extends StatefulWidget {
 
 class _DesenvolvimentoInfantilTabState
     extends State<DesenvolvimentoInfantilTab> {
-  DateTime fromDate;
-  DateTime toDate;
   String id;
   double altura;
   double peso;
@@ -24,11 +24,33 @@ class _DesenvolvimentoInfantilTabState
   String info;
   int data;
 
+  List<DataPoint> _items;
+  List<double> _xAxis;
+
+  void _loadData() async {
+    await Future.delayed(Duration(seconds: 3));
+    final String data =
+        '[{"Day":1,"Value":"5"},{"Day":2,"Value":"2"},{"Day":3,"Value":"6"},{"Day":4,"Value":"8"}]';
+
+
+    final List list = json.decode(data);
+
+    setState(() {
+      _items = list
+          .map((item) =>
+          DataPoint(
+              value: double.parse(item["Value"].toString()),
+              xAxis: double.parse(item["Day"].toString())))
+          .toList();
+      _xAxis =
+          list.map((item) => double.parse(item["Day"].toString())).toList();
+    });
+  }
+
   @override
   void initState() {
+    _loadData();
     super.initState();
-    fromDate = DateTime(2020, 09, 1);
-    toDate = DateTime(2020, 09, 30);
   }
 
   @override
@@ -38,10 +60,11 @@ class _DesenvolvimentoInfantilTabState
 
   @override
   Widget build(BuildContext context) {
-    final date1 = toDate.subtract(Duration(days: 2));
-    final date2 = toDate.subtract(Duration(days: 3));
     if (UserModel.of(context).isLoggedIn()) {
-      var uid = UserModel.of(context).firebaseUser.uid;
+      var uid = UserModel
+          .of(context)
+          .firebaseUser
+          .uid;
       return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -63,7 +86,8 @@ class _DesenvolvimentoInfantilTabState
 
               Scaffold(
                 body: SingleChildScrollView(
-                  child: Container(
+                  child: _items != null
+                      ? Container(
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
                             begin: Alignment.topCenter,
@@ -87,71 +111,40 @@ class _DesenvolvimentoInfantilTabState
                             margin: EdgeInsets.all(25.0),
                             child: Container(
                               color: Colors.lightBlue[900],
-                              height: MediaQuery.of(context).size.height / 2,
-                              width: MediaQuery.of(context).size.width,
+                              height:
+                              MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height / 2,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width,
                               child: BezierChart(
-                                fromDate: fromDate,
-                                bezierChartScale: BezierChartScale.WEEKLY,
-                                toDate: toDate,
-                                onIndicatorVisible: (val) {
-                                  print("Indicator Visible :$val");
-                                },
-                                onDateTimeSelected: (datetime) {
-                                  print("selected datetime: $datetime");
-                                },
-                                selectedDate: toDate,
-                                //this is optional
-                                footerDateTimeBuilder: (DateTime value,
-                                    BezierChartScale scaleType) {
-                                  final newFormat = intl.DateFormat('dd/MMM');
-                                  return newFormat.format(value);
-                                },
-                                bubbleLabelDateTimeBuilder: (DateTime value,
-                                    BezierChartScale scaleType) {
-                                  final newFormat = intl.DateFormat('EEE d');
-                                  return "${newFormat.format(value)}\n";
+                                bezierChartScale: BezierChartScale.CUSTOM,
+                                xAxisCustomValues: _xAxis,
+                                footerValueBuilder: (double value) {
+                                  return "${formatAsIntOrDouble(value)}\ndays";
                                 },
                                 series: [
                                   BezierLine(
                                     label: "Peso",
                                     lineColor: Colors.green,
-                                    data: [
-                                      DataPoint<DateTime>(
-                                          value: 44.5, xAxis: date1),
-                                      DataPoint<DateTime>(
-                                          value: 45.5, xAxis: date2),
-                                    ],
-                                  ),
-                                  BezierLine(
-                                    label: "Altura",
-                                    lineColor: Colors.red,
-                                    data: [
-                                      DataPoint<DateTime>(
-                                          value: 180, xAxis: date1),
-                                      DataPoint<DateTime>(
-                                          value: 182, xAxis: date2),
-                                    ],
-                                  ),
-                                  BezierLine(
-                                    label: "IMC",
-                                    lineColor: Colors.pink,
-                                    data: [
-                                      DataPoint<DateTime>(
-                                          value: 22.5, xAxis: date1),
-                                      DataPoint<DateTime>(
-                                          value: 23.5, xAxis: date2),
-                                    ],
+                                    data: _items,
                                   ),
                                 ],
                                 config: BezierChartConfig(
-                                  updatePositionOnTap: true,
-//                                  bubbleIndicatorValueFormat: intl.NumberFormat("###,##0.00", "en_US"),
-                                  verticalIndicatorStrokeWidth: 1.0,
-                                  verticalIndicatorColor: Colors.white30,
+                                  startYAxisFromNonZeroValue: false,
+                                  bubbleIndicatorColor:
+                                  Colors.white.withOpacity(0.9),
+                                  footerHeight: 40,
+                                  verticalIndicatorStrokeWidth: 3.0,
+                                  verticalIndicatorColor: Colors.black26,
                                   showVerticalIndicator: true,
                                   verticalIndicatorFixedPosition: false,
-                                  backgroundColor: Colors.transparent,
-                                  footerHeight: 40.0,
+                                  displayYAxis: true,
+                                  stepsYAxis: 1,
+                                  snap: false,
                                 ),
                               ),
                             ),
@@ -166,65 +159,46 @@ class _DesenvolvimentoInfantilTabState
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        Center(
-                          child: Card(
-                            elevation: 10,
-                            margin: EdgeInsets.all(25.0),
-                            child: Container(
-                              color: Colors.lightBlue[900],
-                              height: MediaQuery.of(context).size.height / 2,
-                              width: MediaQuery.of(context).size.width,
-                              child: BezierChart(
-                                fromDate: fromDate,
-                                bezierChartScale: BezierChartScale.WEEKLY,
-                                toDate: toDate,
-                                onIndicatorVisible: (val) {
-                                  print("Indicator Visible :$val");
-                                },
-                                onDateTimeSelected: (datetime) {
-                                  print("selected datetime: $datetime");
-                                },
-                                selectedDate: toDate,
-                                //this is optional
-                                footerDateTimeBuilder: (DateTime value,
-                                    BezierChartScale scaleType) {
-                                  final newFormat = intl.DateFormat('dd/MMM');
-                                  return newFormat.format(value);
-                                },
-                                bubbleLabelDateTimeBuilder: (DateTime value,
-                                    BezierChartScale scaleType) {
-                                  final newFormat = intl.DateFormat('EEE d');
-                                  return "${newFormat.format(value)}\n";
-                                },
-                                series: [
-                                  BezierLine(
-                                    label: "Diâmetro",
-                                    lineColor: Colors.green,
-                                    data: [
-                                      DataPoint<DateTime>(
-                                          value: 10.5, xAxis: date1),
-                                      DataPoint<DateTime>(
-                                          value: 12.3, xAxis: date2),
-                                    ],
-                                  ),
-                                ],
-                                config: BezierChartConfig(
-                                  updatePositionOnTap: true,
+//                              Center(
+//                                child: Card(
+//                                  elevation: 10,
+//                                  margin: EdgeInsets.all(25.0),
+//                                  child: Container(
+//                                    color: Colors.lightBlue[900],
+//                                    height:
+//                                        MediaQuery.of(context).size.height / 2,
+//                                    width: MediaQuery.of(context).size.width,
+//                                    child: BezierChart(
+//                                      bezierChartScale: BezierChartScale.CUSTOM,
+//                                      xAxisCustomValues: _xAxis,
+//                                      footerValueBuilder: (double value) {
+//                                        return "${formatAsIntOrDouble(value)}\ndays";
+//                                      },
+//                                      series: [
+//                                        BezierLine(
+//                                          label: "Peso",
+//                                          lineColor: Colors.green,
+//                                          data: _items,
+//                                        ),
+//                                      ],
+//                                      config: BezierChartConfig(
+//                                        updatePositionOnTap: true,
 //                                  bubbleIndicatorValueFormat: intl.NumberFormat("###,##0.00", "en_US"),
-                                  verticalIndicatorStrokeWidth: 1.0,
-                                  verticalIndicatorColor: Colors.white30,
-                                  showVerticalIndicator: true,
-                                  verticalIndicatorFixedPosition: false,
-                                  backgroundColor: Colors.transparent,
-                                  footerHeight: 40.0,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
+//                                        verticalIndicatorStrokeWidth: 1.0,
+//                                        verticalIndicatorColor: Colors.white30,
+//                                        showVerticalIndicator: true,
+//                                        verticalIndicatorFixedPosition: false,
+//                                        backgroundColor: Colors.transparent,
+//                                        footerHeight: 40.0,
+//                                      ),
+//                                    ),
+//                                  ),
+//                                ),
+//                              ),
                       ],
                     ),
-                  ),
+                  )
+                      : Center(child: CircularProgressIndicator()),
                 ),
                 floatingActionButton: FloatingActionButton(
                   child: Icon(Icons.add),
@@ -275,14 +249,14 @@ class _DesenvolvimentoInfantilTabState
                                       id = snapshot.data[index].data["id"];
                                       peso = snapshot.data[index].data["peso"];
                                       altura =
-                                          snapshot.data[index].data["altura"];
+                                      snapshot.data[index].data["altura"];
                                       imc = snapshot.data[index].data["imc"];
                                       info = snapshot.data[index].data["info"];
                                       data = snapshot.data[index].data["data"];
                                       return Container(
                                         height: 120,
                                         margin:
-                                            EdgeInsets.fromLTRB(20, 0, 20, 15),
+                                        EdgeInsets.fromLTRB(20, 0, 20, 15),
                                         decoration: BoxDecoration(
                                           gradient: LinearGradient(
                                             stops: [0.015, 0.015],
