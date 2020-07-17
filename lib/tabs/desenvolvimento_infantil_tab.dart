@@ -1,8 +1,8 @@
-import 'package:bezier_chart/bezier_chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
+import 'dart:async';
+import 'package:bezier_chart/bezier_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/registro_imc_screen.dart';
 import 'package:micro_news/tiles/imc_tile.dart';
@@ -15,15 +15,31 @@ class DesenvolvimentoInfantilTab extends StatefulWidget {
 
 class _DesenvolvimentoInfantilTabState
     extends State<DesenvolvimentoInfantilTab> {
+  DateTime fromDate;
+  DateTime toDate;
+  String id;
+  double altura;
+  double peso;
+  double imc;
+  String info;
+  int data;
+
+  @override
+  void initState() {
+    super.initState();
+    fromDate = DateTime(2020, 09, 1);
+    toDate = DateTime(2020, 09, 30);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    String id;
-    double altura;
-    double peso;
-    double imc;
-    String info;
-    int data;
-
+    final date1 = toDate.subtract(Duration(days: 2));
+    final date2 = toDate.subtract(Duration(days: 3));
     if (UserModel.of(context).isLoggedIn()) {
       var uid = UserModel.of(context).firebaseUser.uid;
       return DefaultTabController(
@@ -44,9 +60,171 @@ class _DesenvolvimentoInfantilTabState
           body: TabBarView(
             children: <Widget>[
               //Gráficos
+
               Scaffold(
                 body: SingleChildScrollView(
-                  child: grafico(context),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Colors.blueAccent, Colors.white])),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(height: 10),
+                        Text(
+                          "IMC",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Center(
+                          child: Card(
+                            elevation: 10,
+                            margin: EdgeInsets.all(25.0),
+                            child: Container(
+                              color: Colors.lightBlue[900],
+                              height: MediaQuery.of(context).size.height / 2,
+                              width: MediaQuery.of(context).size.width,
+                              child: BezierChart(
+                                fromDate: fromDate,
+                                bezierChartScale: BezierChartScale.WEEKLY,
+                                toDate: toDate,
+                                onIndicatorVisible: (val) {
+                                  print("Indicator Visible :$val");
+                                },
+                                onDateTimeSelected: (datetime) {
+                                  print("selected datetime: $datetime");
+                                },
+                                selectedDate: toDate,
+                                //this is optional
+                                footerDateTimeBuilder: (DateTime value,
+                                    BezierChartScale scaleType) {
+                                  final newFormat = intl.DateFormat('dd/MMM');
+                                  return newFormat.format(value);
+                                },
+                                bubbleLabelDateTimeBuilder: (DateTime value,
+                                    BezierChartScale scaleType) {
+                                  final newFormat = intl.DateFormat('EEE d');
+                                  return "${newFormat.format(value)}\n";
+                                },
+                                series: [
+                                  BezierLine(
+                                    label: "Peso",
+                                    lineColor: Colors.green,
+                                    data: [
+                                      DataPoint<DateTime>(
+                                          value: 44.5, xAxis: date1),
+                                      DataPoint<DateTime>(
+                                          value: 45.5, xAxis: date2),
+                                    ],
+                                  ),
+                                  BezierLine(
+                                    label: "Altura",
+                                    lineColor: Colors.red,
+                                    data: [
+                                      DataPoint<DateTime>(
+                                          value: 180, xAxis: date1),
+                                      DataPoint<DateTime>(
+                                          value: 182, xAxis: date2),
+                                    ],
+                                  ),
+                                  BezierLine(
+                                    label: "IMC",
+                                    lineColor: Colors.pink,
+                                    data: [
+                                      DataPoint<DateTime>(
+                                          value: 22.5, xAxis: date1),
+                                      DataPoint<DateTime>(
+                                          value: 23.5, xAxis: date2),
+                                    ],
+                                  ),
+                                ],
+                                config: BezierChartConfig(
+                                  updatePositionOnTap: true,
+//                                  bubbleIndicatorValueFormat: intl.NumberFormat("###,##0.00", "en_US"),
+                                  verticalIndicatorStrokeWidth: 1.0,
+                                  verticalIndicatorColor: Colors.white30,
+                                  showVerticalIndicator: true,
+                                  verticalIndicatorFixedPosition: false,
+                                  backgroundColor: Colors.transparent,
+                                  footerHeight: 40.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "Circunferência",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Center(
+                          child: Card(
+                            elevation: 10,
+                            margin: EdgeInsets.all(25.0),
+                            child: Container(
+                              color: Colors.lightBlue[900],
+                              height: MediaQuery.of(context).size.height / 2,
+                              width: MediaQuery.of(context).size.width,
+                              child: BezierChart(
+                                fromDate: fromDate,
+                                bezierChartScale: BezierChartScale.WEEKLY,
+                                toDate: toDate,
+                                onIndicatorVisible: (val) {
+                                  print("Indicator Visible :$val");
+                                },
+                                onDateTimeSelected: (datetime) {
+                                  print("selected datetime: $datetime");
+                                },
+                                selectedDate: toDate,
+                                //this is optional
+                                footerDateTimeBuilder: (DateTime value,
+                                    BezierChartScale scaleType) {
+                                  final newFormat = intl.DateFormat('dd/MMM');
+                                  return newFormat.format(value);
+                                },
+                                bubbleLabelDateTimeBuilder: (DateTime value,
+                                    BezierChartScale scaleType) {
+                                  final newFormat = intl.DateFormat('EEE d');
+                                  return "${newFormat.format(value)}\n";
+                                },
+                                series: [
+                                  BezierLine(
+                                    label: "Diâmetro",
+                                    lineColor: Colors.green,
+                                    data: [
+                                      DataPoint<DateTime>(
+                                          value: 10.5, xAxis: date1),
+                                      DataPoint<DateTime>(
+                                          value: 12.3, xAxis: date2),
+                                    ],
+                                  ),
+                                ],
+                                config: BezierChartConfig(
+                                  updatePositionOnTap: true,
+//                                  bubbleIndicatorValueFormat: intl.NumberFormat("###,##0.00", "en_US"),
+                                  verticalIndicatorStrokeWidth: 1.0,
+                                  verticalIndicatorColor: Colors.white30,
+                                  showVerticalIndicator: true,
+                                  verticalIndicatorFixedPosition: false,
+                                  backgroundColor: Colors.transparent,
+                                  footerHeight: 40.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
                 floatingActionButton: FloatingActionButton(
                   child: Icon(Icons.add),
@@ -58,6 +236,7 @@ class _DesenvolvimentoInfantilTabState
               ),
 
               //Lista
+
               Scaffold(
                 body: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -140,135 +319,18 @@ class _DesenvolvimentoInfantilTabState
       );
     }
   }
-}
 
-Future getImcs(uid) async {
-  var firestore = Firestore.instance;
+  Future getImcs(uid) async {
+    var firestore = Firestore.instance;
 
-  QuerySnapshot qn = await firestore
-      .collection("users")
-      .document(uid)
-      .collection("desenvolvimento_infantil")
-      .document("imc")
-      .collection("imcs")
-      .getDocuments();
+    QuerySnapshot qn = await firestore
+        .collection("users")
+        .document(uid)
+        .collection("desenvolvimento_infantil")
+        .document("imc")
+        .collection("imcs")
+        .getDocuments();
 
-  return qn.documents;
-}
-
-Widget grafico(BuildContext context) {
-  return Container(
-    decoration: BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [
-          Colors.blueAccent,
-          Colors.white,
-        ],
-      ),
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          "IMC",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        _buildChart(
-          BezierChartScale.MONTHLY,
-          context,
-          LinearGradient(
-            colors: [
-              Colors.lightBlue,
-              Colors.lightBlue[600],
-              Colors.lightBlue[700],
-              Colors.lightBlue[700],
-              Colors.lightBlue[800],
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-_buildChart(
-    BezierChartScale scale, BuildContext context, LinearGradient gradient) {
-  final fromDate = DateTime(2020, 07, 15);
-  final toDate = DateTime.now();
-
-  return Center(
-    child: Card(
-      elevation: 10,
-      margin: EdgeInsets.all(25.0),
-      child: Container(
-        color: Colors.lightBlue[900],
-        height: MediaQuery.of(context).size.height / 2,
-        width: MediaQuery.of(context).size.width,
-        child: BezierChart(
-          fromDate: fromDate,
-          bezierChartScale: BezierChartScale.WEEKLY,
-          toDate: toDate,
-          onIndicatorVisible: (val) {
-            print("Indicator Visible :$val");
-          },
-          onDateTimeSelected: (datetime) {
-            print("selected datetime: $datetime");
-          },
-          selectedDate: toDate,
-          //this is optional
-          footerDateTimeBuilder: (DateTime value, BezierChartScale scaleType) {
-            final newFormat = intl.DateFormat('dd/MMM');
-            return newFormat.format(value);
-          },
-          bubbleLabelDateTimeBuilder:
-              (DateTime value, BezierChartScale scaleType) {
-            final newFormat = intl.DateFormat('EEE d');
-            return "${newFormat.format(value)}\n";
-          },
-          series: [
-            BezierLine(
-              label: "Peso",
-              lineColor: Colors.green,
-              data: [
-                DataPoint<DateTime>(value: 44.5, xAxis: DateTime(2020, 07, 15)),
-                DataPoint<DateTime>(value: 45.5, xAxis: DateTime(2020, 07, 16)),
-              ],
-            ),
-            BezierLine(
-              label: "Altura",
-              lineColor: Colors.red,
-              data: [
-                DataPoint<DateTime>(value: 180, xAxis: DateTime(2020, 07, 15)),
-                DataPoint<DateTime>(value: 182, xAxis: DateTime(2020, 07, 16)),
-              ],
-            ),
-            BezierLine(
-              label: "IMC",
-              lineColor: Colors.pink,
-              data: [
-                DataPoint<DateTime>(value: 22.5, xAxis: DateTime(2020, 07, 15)),
-                DataPoint<DateTime>(value: 23.5, xAxis: DateTime(2020, 07, 16)),
-              ],
-            ),
-          ],
-          config: BezierChartConfig(
-              updatePositionOnTap: true,
-              verticalIndicatorStrokeWidth: 2.0,
-              verticalIndicatorColor: Colors.white,
-              showVerticalIndicator: true,
-              verticalIndicatorFixedPosition: false,
-              footerHeight: 40.0,
-              pinchZoom: true),
-        ),
-      ),
-    ),
-  );
+    return qn.documents;
+  }
 }
