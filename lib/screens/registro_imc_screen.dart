@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_news/models/usuario_model.dart';
+import 'package:micro_news/tabs/desenvolvimento_infantil_tab.dart';
+import 'dart:math' as math;
 import 'package:random_string/random_string.dart';
 
 class RegistroImcScreen extends StatefulWidget {
@@ -19,6 +21,7 @@ class _RegistroImcScreenState extends State<RegistroImcScreen> {
   double altura;
   double imc;
   DateTime data;
+  int cor;
 
   void _resetFields() {
     pesoController.text = "";
@@ -50,6 +53,9 @@ class _RegistroImcScreenState extends State<RegistroImcScreen> {
     });
 
     _salvar(_info, peso, altura, imc, uid);
+
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => DesenvolvimentoInfantilTab()));
   }
 
   void _salvar(_info, peso, altura, imc, uid) {
@@ -68,7 +74,8 @@ class _RegistroImcScreenState extends State<RegistroImcScreen> {
       "altura": altura,
       "imc": imc,
       "info": _info,
-      "data": DateTime.now().toUtc().millisecondsSinceEpoch
+      "data": DateTime.now().toUtc().millisecondsSinceEpoch,
+//      "cor": Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0)
     });
   }
 

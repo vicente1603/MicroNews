@@ -4,6 +4,7 @@ import 'package:micro_news/tabs/chat_tab.dart';
 import 'package:micro_news/tabs/consultas_tab.dart';
 import 'package:micro_news/tabs/creditos_tab.dart';
 import 'package:micro_news/tabs/desenvolvimento_infantil_tab.dart';
+import 'package:micro_news/tabs/desenvolvimento_infantil_tab.dart';
 import 'package:micro_news/tabs/dicas_tab.dart';
 import 'package:micro_news/tabs/exercicios_tab.dart';
 import 'package:micro_news/tabs/home_tab.dart';
