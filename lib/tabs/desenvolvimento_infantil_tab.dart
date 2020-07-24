@@ -16,36 +16,58 @@ class DesenvolvimentoInfantilTab extends StatefulWidget {
 
 class _DesenvolvimentoInfantilTabState
     extends State<DesenvolvimentoInfantilTab> {
-  List<charts.Series<Imc, String>> _seriesBarData;
+  Function(DateTime) onItemClicked;
+  List<charts.Series<Imc, DateTime>> _seriesLineIMCData;
+//  List<charts.Series<Imc, DateTime>> _seriesLineData1;
+  List<charts.Series> seriesList;
   List<Imc> mydata;
 
   _generateData(mydata) {
-    _seriesBarData = List<charts.Series<Imc, String>>();
-
-    _seriesBarData.add(
-      charts.Series(
-        domainFn: (Imc sales, _) => converterTimestamp(sales.data),
+    _seriesLineIMCData = List<charts.Series<Imc, DateTime>>();
+    _seriesLineIMCData.add(
+      charts.Series<Imc, DateTime>(
+        id: 'Imc',
+        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
+        domainFn: (Imc sales, _) =>
+            DateTime.parse(converterTimestamp(sales.data)),
         measureFn: (Imc sales, _) => sales.imc,
-        colorFn: (Imc sales, _) => sales.imc < 18.6
-            ? charts.ColorUtil.fromDartColor(Colors.red[400])
-            : sales.imc >= 18.6 && sales.imc < 24.9
-                ? charts.ColorUtil.fromDartColor(Colors.green[600])
-                : sales.imc >= 24.9 && sales.imc < 29.9
-                    ? charts.ColorUtil.fromDartColor(Colors.yellow[600])
-                    : sales.imc >= 29.9 && sales.imc < 34.9
-                        ? charts.ColorUtil.fromDartColor(Colors.red[600])
-                        : sales.imc >= 34.9 && sales.imc < 39.9
-                            ? charts.ColorUtil.fromDartColor(Colors.red[700])
-                            : sales.imc > 40
-                                ? charts.ColorUtil.fromDartColor(
-                                    Colors.red[800])
-                                : charts.ColorUtil.fromDartColor(
-                                    Colors.blueAccent),
-        id: 'Imcs',
         data: mydata,
-        labelAccessorFn: (Imc row, _) => "${row.info}",
       ),
     );
+
+//    _seriesLineData.add(
+//      charts.Series<Imc, DateTime>(
+//        id: 'Altura',
+//        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+//        domainFn: (Imc sales, _) =>
+//            DateTime.parse(converterTimestamp(sales.data)),
+//        measureFn: (Imc sales, _) => sales.altura,
+//        data: mydata,
+//      ),
+//    );
+//
+//    _seriesLineData.add(
+//      charts.Series<Imc, DateTime>(
+//        id: 'Peso',
+//        colorFn: (_, __) => charts.MaterialPalette.deepOrange.shadeDefault,
+//        domainFn: (Imc sales, _) =>
+//            DateTime.parse(converterTimestamp(sales.data)),
+//        measureFn: (Imc sales, _) => sales.peso,
+//        data: mydata,
+//      ),
+//    );
+
+//    _seriesLineData1 = List<charts.Series<Imc, DateTime>>();
+//    _seriesLineData1.add(
+//      charts.Series<Imc, DateTime>(
+//        id: 'Imc',
+//        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
+//        domainFn: (Imc sales, _) =>
+//            DateTime.parse(converterTimestamp(sales.data)),
+//        measureFn: (Imc sales, _) => sales.altura,
+//        data: mydata,
+//      ),
+//    );
   }
 
   Widget _buildBody(BuildContext context, uid) {
@@ -56,56 +78,78 @@ class _DesenvolvimentoInfantilTabState
           .collection("desenvolvimento_infantil")
           .document("imc")
           .collection("imcs")
+          .orderBy("data")
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return LinearProgressIndicator();
         } else {
-          List<Imc> sales = snapshot.data.documents
+          List<Imc> imcs = snapshot.data.documents
               .map((documentSnapshot) => Imc.fromMap(documentSnapshot.data))
               .toList();
-          return _buildChart(context, sales);
+          return _buildChart(context, imcs);
         }
       },
     );
   }
 
-  Widget _buildChart(BuildContext context, List<Imc> saledata) {
-    mydata = saledata;
+  _onSelectionChanged(charts.SelectionModel<DateTime> model) {
+    onItemClicked(model.selectedDatum.first.datum.time);
+  }
+
+  Widget _buildChart(BuildContext context, List<Imc> data) {
+    mydata = data;
     _generateData(mydata);
     return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Container(
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              Text(
-                'IMC',
-                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Expanded(
-                child: charts.BarChart(
-                  _seriesBarData,
-                  animate: true,
-                  animationDuration: Duration(seconds: 5),
-                  behaviors: [
-                    new charts.DatumLegend(
-                      entryTextStyle: charts.TextStyleSpec(
-                          color: charts.MaterialPalette.purple.shadeDefault,
-                          fontFamily: 'Georgia',
-                          fontSize: 18),
-                    )
-                  ],
+        padding: EdgeInsets.all(8.0),
+        child: Container(
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                Text(
+                  'IMC',
+                  style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 10.0,
+                ),
+                Expanded(
+                  child: charts.TimeSeriesChart(
+                    _seriesLineIMCData,
+                    animationDuration: Duration(seconds: 2),
+                    dateTimeFactory: charts.LocalDateTimeFactory(),
+                    animate: true,
+                  selectionModels: [
+                    charts.SelectionModelConfig(
+                        type: charts.SelectionModelType.info,
+                        changedListener: _onSelectionChanged)
+                  ],
+                  ),
+                ),
+//                Text(
+//                  'Circunferência',
+//                  style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+//                ),
+//                SizedBox(
+//                  height: 10.0,
+//                ),
+//                Expanded(
+//                  child: charts.TimeSeriesChart(
+//                    _seriesLineData1,
+//                    animationDuration: Duration(seconds: 2),
+//                    dateTimeFactory: charts.LocalDateTimeFactory(),
+//                    animate: true,
+////                  selectionModels: [
+////                    charts.SelectionModelConfig(
+////                        type: charts.SelectionModelType.info,
+////                        changedListener: _onSelectionChanged)
+////                  ],
+//                  ),
+//                ),
+              ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   @override
@@ -232,12 +276,8 @@ class _DesenvolvimentoInfantilTabState
 }
 
 String converterTimestamp(int timestamp) {
-  var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-  var formattedDate = DateFormat("dd/MM/yyyy").format(date); // 16/07/2020
-  var time = '';
-
-  time = formattedDate;
-  return time;
+  var date = DateTime.fromMillisecondsSinceEpoch(timestamp).toString();
+  return date;
 }
 
 Future getImcs(uid) async {
@@ -249,6 +289,7 @@ Future getImcs(uid) async {
       .collection("desenvolvimento_infantil")
       .document("imc")
       .collection("imcs")
+      .orderBy("data")
       .getDocuments();
 
   return qn.documents;
