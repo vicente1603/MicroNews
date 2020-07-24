@@ -18,6 +18,7 @@ class _DesenvolvimentoInfantilTabState
     extends State<DesenvolvimentoInfantilTab> {
   Function(DateTime) onItemClicked;
   List<charts.Series<Imc, DateTime>> _seriesLineIMCData;
+
 //  List<charts.Series<Imc, DateTime>> _seriesLineData1;
   List<charts.Series> seriesList;
   List<Imc> mydata;
@@ -29,7 +30,7 @@ class _DesenvolvimentoInfantilTabState
         id: 'Imc',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
         domainFn: (Imc sales, _) =>
-            DateTime.parse(converterTimestamp(sales.data)),
+            DateTime.parse(converterTimestampChart(sales.data)),
         measureFn: (Imc sales, _) => sales.imc,
         data: mydata,
       ),
@@ -93,8 +94,59 @@ class _DesenvolvimentoInfantilTabState
     );
   }
 
+  showAlertDialog(BuildContext context, data, peso, altura, imc, info) {
+    // configura o button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    AlertDialog alerta = AlertDialog(
+      scrollable: true,
+      title: Text("Dados"),
+      content: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[Text("Data: $data")],
+          ),
+          Row(
+            children: <Widget>[Text("Peso: $peso")],
+          ),
+          Row(
+            children: <Widget>[Text(" Altura: $altura")],
+          ),
+          Row(
+            children: <Widget>[Text("Imc: " + imc.toStringAsPrecision(3))],
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(child: Text("Classificação de risco: $info"))
+            ],
+          ),
+        ],
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+    // exibe o dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alerta;
+      },
+    );
+  }
+
   _onSelectionChanged(charts.SelectionModel<DateTime> model) {
-    onItemClicked(model.selectedDatum.first.datum.time);
+    var data = converterTimestamp(model.selectedDatum.first.datum.data);
+    var peso = model.selectedDatum.first.datum.peso;
+    var altura = model.selectedDatum.first.datum.altura;
+    var imc = model.selectedDatum.first.datum.imc;
+    var info = model.selectedDatum.first.datum.info;
+
+    showAlertDialog(context, data, peso, altura, imc, info);
   }
 
   Widget _buildChart(BuildContext context, List<Imc> data) {
@@ -116,14 +168,26 @@ class _DesenvolvimentoInfantilTabState
                 Expanded(
                   child: charts.TimeSeriesChart(
                     _seriesLineIMCData,
+                    defaultRenderer: new charts.LineRendererConfig(
+                        includeArea: true, stacked: true),
                     animationDuration: Duration(seconds: 2),
                     dateTimeFactory: charts.LocalDateTimeFactory(),
                     animate: true,
-                  selectionModels: [
-                    charts.SelectionModelConfig(
-                        type: charts.SelectionModelType.info,
-                        changedListener: _onSelectionChanged)
-                  ],
+                    behaviors: [
+                      new charts.ChartTitle("Data",
+                          behaviorPosition: charts.BehaviorPosition.bottom,
+                          titleOutsideJustification:
+                              charts.OutsideJustification.middleDrawArea),
+                      new charts.ChartTitle("IMC",
+                          behaviorPosition: charts.BehaviorPosition.start,
+                          titleOutsideJustification:
+                              charts.OutsideJustification.middleDrawArea),
+                    ],
+                    selectionModels: [
+                      charts.SelectionModelConfig(
+                          type: charts.SelectionModelType.info,
+                          changedListener: _onSelectionChanged)
+                    ],
                   ),
                 ),
 //                Text(
@@ -275,9 +339,17 @@ class _DesenvolvimentoInfantilTabState
   }
 }
 
-String converterTimestamp(int timestamp) {
+String converterTimestampChart(int timestamp) {
   var date = DateTime.fromMillisecondsSinceEpoch(timestamp).toString();
   return date;
+}
+
+String converterTimestamp(int timestamp) {
+  var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+  var formattedDate = DateFormat("dd/MM/yyyy").format(date); // 16/07/2020
+  var time = formattedDate;
+
+  return time;
 }
 
 Future getImcs(uid) async {
