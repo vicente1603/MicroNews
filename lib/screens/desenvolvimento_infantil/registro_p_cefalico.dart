@@ -45,7 +45,7 @@ class _RegistroPCefalicoScreenState extends State<RegistroPCefalicoScreen> {
 //      "cor": Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0)
     });
 
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => DesenvolvimentoInfantilTab()));
   }
 

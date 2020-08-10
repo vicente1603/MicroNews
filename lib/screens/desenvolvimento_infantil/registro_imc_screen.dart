@@ -54,7 +54,7 @@ class _RegistroImcScreenState extends State<RegistroImcScreen> {
 
     _salvar(_info, peso, altura, imc, uid);
 
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => DesenvolvimentoInfantilTab()));
   }
 
