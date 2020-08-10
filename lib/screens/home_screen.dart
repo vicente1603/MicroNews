@@ -99,7 +99,7 @@ class HomeScreen extends StatelessWidget {
           drawer: CustomDrawer(_pageController),
         ),
         Scaffold(
-          appBar: AppBar(title: Text("Créditos"), centerTitle: true),
+          appBar: AppBar(title: Text("Créditos"), centerTitle: true, elevation: 0,),
           body: CreditosTab(),
           drawer: CustomDrawer(_pageController),
         ),

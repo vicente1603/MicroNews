@@ -277,7 +277,7 @@ class _DesenvolvimentoInfantilTabState
                           behaviorPosition: charts.BehaviorPosition.bottom,
                           titleOutsideJustification:
                               charts.OutsideJustification.middleDrawArea),
-                      new charts.ChartTitle("Diametro",
+                      new charts.ChartTitle("Diâmetro",
                           behaviorPosition: charts.BehaviorPosition.start,
                           titleOutsideJustification:
                               charts.OutsideJustification.middleDrawArea),
