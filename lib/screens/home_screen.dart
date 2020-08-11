@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
           drawer: CustomDrawer(_pageController),
         ),
         Scaffold(
-          appBar: AppBar(title: Text("Dicas"), centerTitle: true),
+          appBar: AppBar(title: Text("Dicas"), centerTitle: true, elevation: 0,),
           body: DicasTab(),
           drawer: CustomDrawer(_pageController),
         ),

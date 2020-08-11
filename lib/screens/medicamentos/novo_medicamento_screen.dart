@@ -342,7 +342,7 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
     if (payload != null) {
       debugPrint('notification payload: ' + payload);
     }
-    await Navigator.push(
+    await Navigator.pushReplacement(
       context,
       new MaterialPageRoute(builder: (context) => MedicamentosTab()),
     );

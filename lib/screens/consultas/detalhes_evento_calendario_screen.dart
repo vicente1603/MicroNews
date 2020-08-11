@@ -99,7 +99,7 @@ class EventDetailsPage extends StatelessWidget {
                 onTap: () {
                   eventDBS.removeItem(event.id);
                   Future.delayed(Duration(seconds: 2)).then((_) {
-                    Navigator.of(context).push(MaterialPageRoute(
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => ConsultasTab()));
                   });
                 },
