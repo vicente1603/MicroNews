@@ -90,7 +90,7 @@ class CustomDrawer extends StatelessWidget {
               DrawerTile(Icons.child_care, "Desenvolvimento infantil", pageController, 5),
               DrawerTile(Icons.restaurant, "Alimentação", pageController, 6),
               DrawerTile(Icons.accessibility, "Exercícios", pageController, 7),
-              DrawerTile(Icons.videogame_asset, "Jogos Infatis", pageController, 8),
+              DrawerTile(Icons.videogame_asset, "Jogos Infantis", pageController, 8),
               Divider(color: Colors.blueGrey),
               DrawerTile(Icons.star, "Créditos", pageController, 9),
             ],
