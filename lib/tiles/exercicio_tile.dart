@@ -1,13 +1,15 @@
 import 'package:micro_news/models/dicas_data.dart';
 import 'package:flutter/material.dart';
+import 'package:micro_news/models/exercicios_data.dart';
+import 'package:micro_news/screens/detalhe_exercicio_screen.dart';
 import 'package:micro_news/widgets/page_transformer.dart';
 
-class DicasTile extends StatelessWidget {
+class ExercicioTile extends StatelessWidget {
   final String type;
-  final DicasData dicas;
+  final ExerciciosData exercicio;
   final PageVisibility pageVisibility;
 
-  DicasTile(this.type, this.dicas, this.pageVisibility);
+  ExercicioTile(this.type, this.exercicio, this.pageVisibility);
 
   Widget _applyTextEffects({
     @required double translationFactor,
@@ -34,12 +36,12 @@ class DicasTile extends StatelessWidget {
     var categoryText = _applyTextEffects(
       translationFactor: 300.0,
       child: Text(
-        dicas.title,
+        exercicio.title,
         style: textTheme.caption.copyWith(
           color: Colors.white,
           fontWeight: FontWeight.bold,
           letterSpacing: 2.0,
-          fontSize: 25.0,
+          fontSize: 42.0,
         ),
         textAlign: TextAlign.center,
       ),
@@ -48,14 +50,25 @@ class DicasTile extends StatelessWidget {
     var titleText = _applyTextEffects(
       translationFactor: 200.0,
       child: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
+        padding: const EdgeInsets.only(top: 20.0),
         child: Column(
           children: <Widget>[
-            Text(
-              dicas.description,
-              style: textTheme.title
-                  .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
+            FlatButton(
+              color: Colors.blueAccent,
+              textColor: Colors.white,
+              disabledColor: Colors.grey,
+              disabledTextColor: Colors.black,
+              padding: EdgeInsets.all(8.0),
+              splashColor: Colors.blueAccent,
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => DetalheExercicioScreen(
+                        exercicio.title, exercicio.description)));
+              },
+              child: Text(
+                "Saiba mais",
+                style: TextStyle(fontSize: 20.0),
+              ),
             ),
 //            IconButton(
 //              icon: Icon(Icons.star_border, color: Colors.white, size: 40,
@@ -82,9 +95,8 @@ class DicasTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    var image = Image.asset(
-      'assets/images/mae_bebe2.png',
+    var image = Image.network(
+      exercicio.image,
       fit: BoxFit.cover,
       alignment: FractionalOffset(
         0.5 + (pageVisibility.pagePosition / 3),
@@ -93,23 +105,20 @@ class DicasTile extends StatelessWidget {
     );
 
     var imageOverlayGradient = DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            colors: [
-              Colors.black,
-              Colors.black45,
-            ],
-          ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          colors: [
+            Colors.black,
+            Colors.black45,
+          ],
         ),
+      ),
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 16.0,
-        horizontal: 8.0
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
       child: Material(
         elevation: 4.0,
         borderRadius: BorderRadius.circular(8.0),
