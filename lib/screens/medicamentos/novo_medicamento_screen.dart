@@ -61,7 +61,7 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
           ),
           centerTitle: true,
           title: Text(
-            "Adicionar um novo medicamento",
+            "Novo medicamento",
             style: TextStyle(
               color: Colors.black,
               fontSize: 18,
@@ -120,38 +120,53 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                   child: StreamBuilder<MedicineType>(
                     stream: _newEntryBloc.selectedMedicineType,
                     builder: (context, snapshot) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          MedicineTypeColumn(
-                              type: MedicineType.Frasco,
-                              name: "Frasco",
-                              iconValue: 0xe900,
-                              isSelected: snapshot.data == MedicineType.Frasco
-                                  ? true
-                                  : false),
-                          MedicineTypeColumn(
-                              type: MedicineType.Pilula,
-                              name: "Pílula",
-                              iconValue: 0xe901,
-                              isSelected: snapshot.data == MedicineType.Pilula
-                                  ? true
-                                  : false),
-                          MedicineTypeColumn(
-                              type: MedicineType.Seringa,
-                              name: "Seringa",
-                              iconValue: 0xe902,
-                              isSelected: snapshot.data == MedicineType.Seringa
-                                  ? true
-                                  : false),
-                          MedicineTypeColumn(
-                              type: MedicineType.Comprimido,
-                              name: "Comprimido",
-                              iconValue: 0xe903,
-                              isSelected: snapshot.data == MedicineType.Comprimido
-                                  ? true
-                                  : false),
-                        ],
+                      return Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                MedicineTypeColumn(
+                                    type: MedicineType.Frasco,
+                                    name: "Frasco",
+                                    iconValue: 0xe900,
+                                    isSelected:
+                                        snapshot.data == MedicineType.Frasco
+                                            ? true
+                                            : false),
+                                MedicineTypeColumn(
+                                    type: MedicineType.Pilula,
+                                    name: "Pílula",
+                                    iconValue: 0xe901,
+                                    isSelected:
+                                        snapshot.data == MedicineType.Pilula
+                                            ? true
+                                            : false),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                MedicineTypeColumn(
+                                    type: MedicineType.Seringa,
+                                    name: "Seringa",
+                                    iconValue: 0xe902,
+                                    isSelected:
+                                        snapshot.data == MedicineType.Seringa
+                                            ? true
+                                            : false),
+                                MedicineTypeColumn(
+                                    type: MedicineType.Comprimido,
+                                    name: "Comprimido",
+                                    iconValue: 0xe903,
+                                    isSelected:
+                                        snapshot.data == MedicineType.Comprimido
+                                            ? true
+                                            : false),
+                              ],
+                            )
+                          ],
+                        ),
                       );
                     },
                   ),
@@ -168,7 +183,7 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                 ),
                 SelectTime(),
                 SizedBox(
-                  height: 35,
+                  height: 5,
                 ),
                 Padding(
                   padding: EdgeInsets.only(
@@ -176,7 +191,6 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                     right: MediaQuery.of(context).size.height * 0.08,
                   ),
                   child: Container(
-                    height: 50,
                     child: FlatButton(
                       color: Colors.blueAccent,
                       shape: StadiumBorder(),
@@ -411,14 +425,14 @@ class _IntervalSelectionState extends State<IntervalSelection> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "Lembrar-me a cada  ",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+             Text(
+                "Lembrar a cada ",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
             DropdownButton<int>(
               iconEnabledColor: Colors.blueAccent,
               hint: _selected == 0
@@ -452,14 +466,14 @@ class _IntervalSelectionState extends State<IntervalSelection> {
                 });
               },
             ),
-            Text(
+            Expanded(child: Text(
               _selected == 1 ? " hora" : " horas",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
-            ),
+            ),),
           ],
         ),
       ),
@@ -575,7 +589,7 @@ class MedicineTypeColumn extends StatelessWidget {
                 child: Text(
                   name,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 12,
                     color: isSelected ? Colors.white : Colors.blueAccent,
                     fontWeight: FontWeight.w500,
                   ),

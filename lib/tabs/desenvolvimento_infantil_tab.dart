@@ -337,11 +337,15 @@ class _DesenvolvimentoInfantilTabState
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text(
-                                  "IMCs Cadastrados",
-                                  style: TextStyle(
+                                Expanded(
+                                  child: Text(
+                                    "IMCs Cadastrados",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
                                       fontSize: 20,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 )
                               ],
                             ),
@@ -502,11 +506,14 @@ class _DesenvolvimentoInfantilTabState
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text(
-                                  "Perímetros Cefálico Cadastrados",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
+                                Expanded(
+                                  child: Text(
+                                    "Perímetros Cefálico Cadastrados",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 )
                               ],
                             ),
@@ -542,7 +549,7 @@ class _DesenvolvimentoInfantilTabState
                                           itemCount: snapshot.data.length,
                                           itemBuilder: (_, index) {
                                             idPCefalico =
-                                            snapshot.data[index].data["id"];
+                                                snapshot.data[index].data["id"];
                                             diametro = snapshot
                                                 .data[index].data["diametro"];
                                             data = snapshot
@@ -564,7 +571,9 @@ class _DesenvolvimentoInfantilTabState
                                               ),
                                               child: Card(
                                                 child: ListTilePCefalico(
-                                                    idPCefalico, diametro, data),
+                                                    idPCefalico,
+                                                    diametro,
+                                                    data),
                                               ),
                                             );
                                           });

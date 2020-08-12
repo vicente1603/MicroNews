@@ -56,7 +56,6 @@ class AlimentacaoTab extends StatelessWidget {
                                       usuarios_like = snapshot
                                           .data[index].data["usuarios_like"];
                                       return Container(
-                                        height: 80,
                                         margin:
                                             EdgeInsets.fromLTRB(20, 0, 20, 15),
                                         decoration: BoxDecoration(
@@ -113,7 +112,6 @@ class AlimentacaoTab extends StatelessWidget {
                                       usuarios_like = snapshot
                                           .data[index].data["usuarios_like"];
                                       return Container(
-                                        height: 80,
                                         margin:
                                             EdgeInsets.fromLTRB(20, 0, 20, 15),
                                         decoration: BoxDecoration(
@@ -203,9 +201,10 @@ class _ListTileRecomendadosState extends State<ListTileRecomendados> {
     return ListTile(
       contentPadding: EdgeInsets.only(top: 5, left: 10),
       title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(description),
+          Expanded(
+            child: Text(description, textAlign: TextAlign.center,),
+          ),
         ],
       ),
       subtitle: Row(
@@ -294,9 +293,10 @@ class _ListTileNaoRecomendadosState extends State<ListTileNaoRecomendados> {
     return ListTile(
       contentPadding: EdgeInsets.only(top: 5, left: 10),
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(description),
+            Expanded(
+              child: Text(description, textAlign: TextAlign.center,),
+            ),
           ],
         ),
         subtitle: Row(

@@ -37,45 +37,48 @@ class DetalhesMedicamentoScreen extends StatelessWidget {
           ),
           elevation: 0.0,
         ),
-        body: Container(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                MainSection(medicamento: medicamento),
-                SizedBox(
-                  height: 15,
-                ),
-                ExtendedSection(medicamento: medicamento),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.height * 0.06,
-                    right: MediaQuery.of(context).size.height * 0.06,
-                    top: 25,
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Container(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  MainSection(medicamento: medicamento),
+                  SizedBox(
+                    height: 15,
                   ),
-                  child: Container(
-                    height: 50,
-                    child: FlatButton(
-                      color: Colors.blueAccent,
-                      shape: StadiumBorder(),
-                      onPressed: () {
-                        openAlertBox(context, _globalBloc, uid);
-                      },
-                      child: Center(
-                        child: Text(
-                          "Remover",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700,
+                  ExtendedSection(medicamento: medicamento),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.height * 0.06,
+                      right: MediaQuery.of(context).size.height * 0.06,
+                      top: 25,
+                    ),
+                    child: Container(
+                      height: 50,
+                      child: FlatButton(
+                        color: Colors.blueAccent,
+                        shape: StadiumBorder(),
+                        onPressed: () {
+                          openAlertBox(context, _globalBloc, uid);
+                        },
+                        child: Center(
+                          child: Text(
+                            "Remover",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -198,25 +201,27 @@ class MainSection extends StatelessWidget {
           SizedBox(
             width: 15,
           ),
-          Column(
-            children: <Widget>[
-              Hero(
-                tag: medicamento.nomeMedicamento,
-                child: Material(
-                  color: Colors.transparent,
-                  child: MainInfoTab(
-                    fieldTitle: "Nome do medicamento",
-                    fieldInfo: medicamento.nomeMedicamento,
+          Expanded(
+            child: Column(
+              children: <Widget>[
+                Hero(
+                  tag: medicamento.nomeMedicamento,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: MainInfoTab(
+                      fieldTitle: "Nome do medicamento",
+                      fieldInfo: medicamento.nomeMedicamento,
+                    ),
                   ),
                 ),
-              ),
-              MainInfoTab(
-                fieldTitle: "Dosagem",
-                fieldInfo: medicamento.dosagem == 0
-                    ? "Não especificado"
-                    : medicamento.dosagem.toString() + " mg",
-              )
-            ],
+                MainInfoTab(
+                  fieldTitle: "Dosagem",
+                  fieldInfo: medicamento.dosagem == 0
+                      ? "Não especificado"
+                      : medicamento.dosagem.toString() + " mg",
+                )
+              ],
+            ),
           )
         ],
       ),

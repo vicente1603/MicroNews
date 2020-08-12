@@ -14,23 +14,29 @@ class JogosTile extends StatelessWidget {
     String title = snapshot.data["title"];
     String icon = snapshot.data["icon"];
 
-    return Card(
-        elevation: 1.0,
-        margin: new EdgeInsets.all(8.0),
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 2.0),
-          decoration: BoxDecoration(color: Colors.blueAccent),
+    return Container(
+      margin: new EdgeInsets.all(10.0),
+      padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Colors.blueAccent,
+          ),
           child: new InkWell(
             onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => JogosScreen(link, title)));
-            },            child: Column(
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => JogosScreen(link, title)));
+            },
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               verticalDirection: VerticalDirection.down,
               children: <Widget>[
                 SizedBox(height: 20.0),
-                Center(child: Image.network(icon,height: 100.0,)),
+                Center(
+                    child: Image.network(
+                  icon,
+                  height: 100.0,
+                )),
                 SizedBox(height: 10.0),
                 new Center(
                   child: new Text(title,
@@ -40,6 +46,6 @@ class JogosTile extends StatelessWidget {
               ],
             ),
           ),
-        ));
+        );
   }
 }
