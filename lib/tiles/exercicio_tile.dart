@@ -41,7 +41,7 @@ class ExercicioTile extends StatelessWidget {
           color: Colors.white,
           fontWeight: FontWeight.bold,
           letterSpacing: 2.0,
-          fontSize: 42.0,
+          fontSize: 30.0,
         ),
         textAlign: TextAlign.center,
       ),
@@ -95,17 +95,26 @@ class ExercicioTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var image = Image.network(
-      exercicio.image,
-      fit: BoxFit.cover,
-      alignment: FractionalOffset(
-        0.5 + (pageVisibility.pagePosition / 3),
-        0.5,
+
+    var image = Container(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10.0),
+        child: Image.network(
+          exercicio.image,
+          height: 150.0,
+          width: 100.0,
+          fit: BoxFit.cover,
+          alignment: FractionalOffset(
+            0.5 + (pageVisibility.pagePosition / 3),
+            0.5,
+          ),
+        ),
       ),
     );
 
     var imageOverlayGradient = DecoratedBox(
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
         gradient: LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
@@ -121,7 +130,7 @@ class ExercicioTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
       child: Material(
         elevation: 4.0,
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(10.0),
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[

@@ -31,7 +31,7 @@ class DicasTile extends StatelessWidget {
 
   _buildTextContainer(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    var categoryText = _applyTextEffects(
+    var titleText = _applyTextEffects(
       translationFactor: 300.0,
       child: Text(
         dicas.title,
@@ -45,7 +45,7 @@ class DicasTile extends StatelessWidget {
       ),
     );
 
-    var titleText = _applyTextEffects(
+    var contentText = _applyTextEffects(
       translationFactor: 200.0,
       child: Padding(
         padding: const EdgeInsets.only(top: 16.0),
@@ -73,8 +73,8 @@ class DicasTile extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          categoryText,
           titleText,
+          contentText,
         ],
       ),
     );
@@ -82,37 +82,48 @@ class DicasTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+//    var image = Image.asset(
+//      'assets/images/mae_bebe2.png',
+//      fit: BoxFit.cover,
+//      alignment: FractionalOffset(
+//        0.5 + (pageVisibility.pagePosition / 3),
+//        0.5,
+//      ),
+//    );
 
-    var image = Image.asset(
-      'assets/images/mae_bebe2.png',
-      fit: BoxFit.cover,
-      alignment: FractionalOffset(
-        0.5 + (pageVisibility.pagePosition / 3),
-        0.5,
+    var image = ClipRRect(
+      borderRadius: BorderRadius.circular(10.0),
+      child: Image.asset(
+        'assets/images/mae_bebe2.png',
+        height: 150.0,
+        width: 100.0,
+        fit: BoxFit.cover,
+        alignment: FractionalOffset(
+          0.5 + (pageVisibility.pagePosition / 3),
+          0.5,
+        ),
       ),
     );
 
     var imageOverlayGradient = DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            colors: [
-              Colors.black,
-              Colors.black45,
-            ],
-          ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          colors: [
+            Colors.black,
+            Colors.black45,
+          ],
         ),
+      ),
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 16.0,
-        horizontal: 8.0
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
       child: Material(
         elevation: 4.0,
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(10.0),
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[
