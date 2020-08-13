@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 
 final googleSignIn = GoogleSignIn();
 final auth = FirebaseAuth.instance;
+String nomeUsuario = "";
 
 Future<Null> _ensureLoggedIn() async {
   GoogleSignInAccount user = googleSignIn.currentUser;
@@ -16,7 +17,7 @@ Future<Null> _ensureLoggedIn() async {
   if (user == null) user = await googleSignIn.signIn();
   if (await auth.currentUser() == null) {
     GoogleSignInAuthentication credentials =
-    await googleSignIn.currentUser.authentication;
+        await googleSignIn.currentUser.authentication;
     await auth.signInWithCredential(GoogleAuthProvider.getCredential(
         idToken: credentials.idToken, accessToken: credentials.accessToken));
   }
@@ -35,6 +36,7 @@ void _sendMessage({String text, String imgUrl}) {
     "senderPhotoUrl": googleSignIn.currentUser.photoUrl,
     "sendTime": Timestamp.now()
   });
+  nomeUsuario = googleSignIn.currentUser.displayName;
 }
 
 class ChatTab extends StatefulWidget {
@@ -70,7 +72,13 @@ class _ChatTabState extends State<ChatTab> {
                           itemCount: snapshot.data.documents.length,
                           itemBuilder: (context, index) {
                             List r = snapshot.data.documents.reversed.toList();
-                            return MensagemTile(r[index].data);
+                            bool senderByMe = false;
+                            if (nomeUsuario ==
+                                snapshot
+                                    .data.documents[index].data["senderName"]) {
+                              senderByMe = true;
+                            }
+                            return MensagemTile(r[index].data, senderByMe);
                           });
                   }
                 },
@@ -114,7 +122,7 @@ class _CampoTextoState extends State<CampoTexto> {
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
         decoration: Theme.of(context).platform == TargetPlatform.iOS
             ? BoxDecoration(
-            border: Border(top: BorderSide(color: Colors.grey[200])))
+                border: Border(top: BorderSide(color: Colors.grey[200])))
             : null,
         child: Row(
           children: <Widget>[
@@ -124,12 +132,12 @@ class _CampoTextoState extends State<CampoTexto> {
                   onPressed: () async {
                     await _ensureLoggedIn();
                     File imgFile =
-                    await ImagePicker.pickImage(source: ImageSource.camera);
+                        await ImagePicker.pickImage(source: ImageSource.camera);
                     if (imgFile == null) return;
                     StorageUploadTask task = FirebaseStorage.instance
                         .ref()
                         .child(googleSignIn.currentUser.id.toString() +
-                        DateTime.now().millisecondsSinceEpoch.toString())
+                            DateTime.now().millisecondsSinceEpoch.toString())
                         .putFile(imgFile);
 
                     StorageTaskSnapshot taskSnapshot = await task.onComplete;
@@ -141,7 +149,7 @@ class _CampoTextoState extends State<CampoTexto> {
               child: TextField(
                 controller: _textController,
                 decoration:
-                InputDecoration.collapsed(hintText: "Enviar uma mensagem"),
+                    InputDecoration.collapsed(hintText: "Enviar uma mensagem"),
                 onChanged: (text) {
                   setState(() {
                     _isComposing = text.length > 0;
@@ -157,23 +165,23 @@ class _CampoTextoState extends State<CampoTexto> {
                 margin: const EdgeInsets.symmetric(horizontal: 4.0),
                 child: Theme.of(context).platform == TargetPlatform.iOS
                     ? CupertinoButton(
-                  child: Text("Enviar"),
-                  onPressed: _isComposing
-                      ? () {
-                    _handleSubmitted(_textController.text);
-                    _reset();
-                  }
-                      : null,
-                )
+                        child: Text("Enviar"),
+                        onPressed: _isComposing
+                            ? () {
+                                _handleSubmitted(_textController.text);
+                                _reset();
+                              }
+                            : null,
+                      )
                     : IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: _isComposing
-                      ? () {
-                    _handleSubmitted(_textController.text);
-                    _reset();
-                  }
-                      : null,
-                ))
+                        icon: Icon(Icons.send),
+                        onPressed: _isComposing
+                            ? () {
+                                _handleSubmitted(_textController.text);
+                                _reset();
+                              }
+                            : null,
+                      ))
           ],
         ),
       ),
@@ -183,46 +191,66 @@ class _CampoTextoState extends State<CampoTexto> {
 
 class MensagemTile extends StatelessWidget {
   final Map<String, dynamic> data;
+  final bool sendByMe;
 
-  MensagemTile(this.data);
+  MensagemTile(this.data, this.sendByMe);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            margin: const EdgeInsets.only(right: 16.0),
-            child: CircleAvatar(
-              backgroundImage: NetworkImage(data["senderPhotoUrl"]),
+      padding: EdgeInsets.only(
+          top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
+      alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin:
+            sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
+        padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
+        decoration: BoxDecoration(
+            borderRadius: sendByMe
+                ? BorderRadius.only(
+                    topLeft: Radius.circular(23),
+                    topRight: Radius.circular(23),
+                    bottomLeft: Radius.circular(23))
+                : BorderRadius.only(
+                    topLeft: Radius.circular(23),
+                    topRight: Radius.circular(23),
+                    bottomRight: Radius.circular(23)),
+            gradient: LinearGradient(
+              colors: sendByMe
+                  ? [const Color(0xFF448AFF), const Color(0xFF448AFF)]
+                  : [const Color(0xFFB0BEC5), const Color(0xFFB0BEC5)],
+            )),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.only(right: 16.0),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(data["senderPhotoUrl"]),
+              ),
             ),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  data["senderName"],
-                  style: Theme.of(context).textTheme.subhead,
-                ),
-                Container(
-                    margin: const EdgeInsets.only(top: 5.0),
-                    child: data["imgUrl"] != null
-                        ? Image.network(
-                      data["imgUrl"],
-                      width: 250.0,
-                    )
-                        : Text(data["text"]))
-              ],
-            ),
-          )
-        ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    data["senderName"],
+                    style: Theme.of(context).textTheme.subhead,
+                  ),
+                  Container(
+                      margin: const EdgeInsets.only(top: 5.0),
+                      child: data["imgUrl"] != null
+                          ? Image.network(
+                              data["imgUrl"],
+                              width: 250.0,
+                            )
+                          : Text(data["text"]))
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 }
-
-
-

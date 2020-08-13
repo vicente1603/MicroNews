@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_news/blocs/app_bloc.dart';
 import 'package:micro_news/blocs/medicamentos_bloc.dart';
-import 'package:micro_news/common/convert_time.dart';
+import 'package:micro_news/helper/convert_time.dart';
 import 'package:micro_news/models/errors.dart';
 import 'package:micro_news/models/medicamento.dart';
 import 'package:micro_news/models/tipo_medicamento.dart';
