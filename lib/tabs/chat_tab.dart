@@ -7,18 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 
-void main() async {
-  runApp(ChatTab());
-}
-
-final ThemeData kIOSTheme = ThemeData(
-    primarySwatch: Colors.orange,
-    primaryColor: Colors.grey[100],
-    primaryColorBrightness: Brightness.light);
-
-final ThemeData kDefaultTheme =
-ThemeData(primarySwatch: Colors.blue, accentColor: Colors.blueAccent[400]);
-
 final googleSignIn = GoogleSignIn();
 final auth = FirebaseAuth.instance;
 
@@ -40,7 +28,7 @@ _handleSubmitted(String text) async {
 }
 
 void _sendMessage({String text, String imgUrl}) {
-  Firestore.instance.collection("messages").add({
+  Firestore.instance.collection("mensagens_chat").add({
     "text": text,
     "imgUrl": imgUrl,
     "senderName": googleSignIn.currentUser.displayName,
@@ -49,26 +37,12 @@ void _sendMessage({String text, String imgUrl}) {
   });
 }
 
-class ChatTab extends StatelessWidget {
+class ChatTab extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Chat_online",
-      debugShowCheckedModeBanner: false,
-      theme: Theme.of(context).platform == TargetPlatform.iOS
-          ? kIOSTheme
-          : kDefaultTheme,
-      home: ChatScreen(),
-    );
-  }
+  _ChatTabState createState() => _ChatTabState();
 }
 
-class ChatScreen extends StatefulWidget {
-  @override
-  _ChatScreenState createState() => _ChatScreenState();
-}
-
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatTabState extends State<ChatTab> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -80,7 +54,7 @@ class _ChatScreenState extends State<ChatScreen> {
             Expanded(
               child: StreamBuilder(
                 stream: Firestore.instance
-                    .collection("messages")
+                    .collection("mensagens_chat")
                     .orderBy('sendTime')
                     .snapshots(),
                 builder: (context, snapshot) {
@@ -96,7 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           itemCount: snapshot.data.documents.length,
                           itemBuilder: (context, index) {
                             List r = snapshot.data.documents.reversed.toList();
-                            return ChatMessage(r[index].data);
+                            return MensagemTile(r[index].data);
                           });
                   }
                 },
@@ -107,7 +81,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             Container(
               decoration: BoxDecoration(color: Theme.of(context).cardColor),
-              child: TextComposer(),
+              child: CampoTexto(),
             )
           ],
         ),
@@ -116,12 +90,12 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
-class TextComposer extends StatefulWidget {
+class CampoTexto extends StatefulWidget {
   @override
-  _TextComposerState createState() => _TextComposerState();
+  _CampoTextoState createState() => _CampoTextoState();
 }
 
-class _TextComposerState extends State<TextComposer> {
+class _CampoTextoState extends State<CampoTexto> {
   final _textController = TextEditingController();
   bool _isComposing = false;
 
@@ -207,10 +181,10 @@ class _TextComposerState extends State<TextComposer> {
   }
 }
 
-class ChatMessage extends StatelessWidget {
+class MensagemTile extends StatelessWidget {
   final Map<String, dynamic> data;
 
-  ChatMessage(this.data);
+  MensagemTile(this.data);
 
   @override
   Widget build(BuildContext context) {
