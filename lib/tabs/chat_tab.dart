@@ -1,43 +1,15 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:micro_news/helper/convert_time.dart';
+import 'package:micro_news/models/usuario_model.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-final googleSignIn = GoogleSignIn();
-final auth = FirebaseAuth.instance;
-String nomeUsuario = "";
-
-Future<Null> _ensureLoggedIn() async {
-  GoogleSignInAccount user = googleSignIn.currentUser;
-  if (user == null) user = await googleSignIn.signInSilently();
-  if (user == null) user = await googleSignIn.signIn();
-  if (await auth.currentUser() == null) {
-    GoogleSignInAuthentication credentials =
-        await googleSignIn.currentUser.authentication;
-    await auth.signInWithCredential(GoogleAuthProvider.getCredential(
-        idToken: credentials.idToken, accessToken: credentials.accessToken));
-  }
-}
-
-_handleSubmitted(String text) async {
-  await _ensureLoggedIn();
-  _sendMessage(text: text);
-}
-
-void _sendMessage({String text, String imgUrl}) {
-  Firestore.instance.collection("mensagens_chat").add({
-    "text": text,
-    "imgUrl": imgUrl,
-    "senderName": googleSignIn.currentUser.displayName,
-    "senderPhotoUrl": googleSignIn.currentUser.photoUrl,
-    "sendTime": Timestamp.now()
-  });
-  nomeUsuario = googleSignIn.currentUser.displayName;
-}
+String uid;
 
 class ChatTab extends StatefulWidget {
   @override
@@ -57,7 +29,7 @@ class _ChatTabState extends State<ChatTab> {
               child: StreamBuilder(
                 stream: Firestore.instance
                     .collection("mensagens_chat")
-                    .orderBy('sendTime')
+                    .orderBy('horaDataEnvio')
                     .snapshots(),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
@@ -72,13 +44,8 @@ class _ChatTabState extends State<ChatTab> {
                           itemCount: snapshot.data.documents.length,
                           itemBuilder: (context, index) {
                             List r = snapshot.data.documents.reversed.toList();
-                            bool senderByMe = false;
-                            if (nomeUsuario ==
-                                snapshot
-                                    .data.documents[index].data["senderName"]) {
-                              senderByMe = true;
-                            }
-                            return MensagemTile(r[index].data, senderByMe);
+                            return MensagemTile(
+                                r[index].data, r[index].data["uid"] == uid);
                           });
                   }
                 },
@@ -114,84 +81,108 @@ class _CampoTextoState extends State<CampoTexto> {
     });
   }
 
+  void _sendMessage({String text, String imgUrl, String nomeUsuario}) async {
+    Firestore.instance.collection("mensagens_chat").add({
+      "texto": text,
+      "imgUrl": imgUrl,
+      "remetente": nomeUsuario,
+      "uid": uid,
+//    "senderPhotoUrl": googleSignIn.currentUser.photoUrl,
+      "horaDataEnvio": DateTime.now().millisecondsSinceEpoch
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return IconTheme(
-      data: IconThemeData(color: Theme.of(context).accentColor),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8.0),
-        decoration: Theme.of(context).platform == TargetPlatform.iOS
-            ? BoxDecoration(
-                border: Border(top: BorderSide(color: Colors.grey[200])))
-            : null,
-        child: Row(
-          children: <Widget>[
-            Container(
-              child: IconButton(
-                  icon: Icon(Icons.photo_camera),
-                  onPressed: () async {
-                    await _ensureLoggedIn();
-                    File imgFile =
-                        await ImagePicker.pickImage(source: ImageSource.camera);
-                    if (imgFile == null) return;
-                    StorageUploadTask task = FirebaseStorage.instance
-                        .ref()
-                        .child(googleSignIn.currentUser.id.toString() +
-                            DateTime.now().millisecondsSinceEpoch.toString())
-                        .putFile(imgFile);
+    return ScopedModelDescendant<UserModel>(
+      builder: (context, child, model) {
+        uid = model.firebaseUser.uid;
+        return IconTheme(
+          data: IconThemeData(color: Theme.of(context).accentColor),
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+            decoration: Theme.of(context).platform == TargetPlatform.iOS
+                ? BoxDecoration(
+                    border: Border(top: BorderSide(color: Colors.grey[200])))
+                : null,
+            child: Row(
+              children: <Widget>[
+                Container(
+                  child: IconButton(
+                      icon: Icon(Icons.photo_camera),
+                      onPressed: () async {
+                        File imgFile = await ImagePicker.pickImage(
+                            source: ImageSource.camera);
+                        if (imgFile == null) return;
+                        StorageUploadTask task = FirebaseStorage.instance
+                            .ref()
+                            .child(model.firebaseUser.uid.toString() +
+                                DateTime.now()
+                                    .millisecondsSinceEpoch
+                                    .toString())
+                            .putFile(imgFile);
 
-                    StorageTaskSnapshot taskSnapshot = await task.onComplete;
-                    String url = await taskSnapshot.ref.getDownloadURL();
-                    _sendMessage(imgUrl: url);
-                  }),
+                        StorageTaskSnapshot taskSnapshot =
+                            await task.onComplete;
+                        String url = await taskSnapshot.ref.getDownloadURL();
+                        _sendMessage(
+                            imgUrl: url, nomeUsuario: model.userData["nome"]);
+                      }),
+                ),
+                Expanded(
+                  child: TextField(
+                    controller: _textController,
+                    decoration: InputDecoration.collapsed(
+                        hintText: "Enviar uma mensagem"),
+                    onChanged: (text) {
+                      setState(() {
+                        _isComposing = text.length > 0;
+                      });
+                    },
+                    onSubmitted: (text) {
+                      _sendMessage(
+                          text: text, nomeUsuario: model.userData["nome"]);
+                      _reset();
+                    },
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Theme.of(context).platform == TargetPlatform.iOS
+                        ? CupertinoButton(
+                            child: Text("Enviar"),
+                            onPressed: _isComposing
+                                ? () {
+                                    _sendMessage(
+                                        text: _textController.text,
+                                        nomeUsuario: model.userData["nome"]);
+                                    _reset();
+                                  }
+                                : null,
+                          )
+                        : IconButton(
+                            icon: Icon(Icons.send),
+                            onPressed: _isComposing
+                                ? () {
+                                    _sendMessage(
+                                        text: _textController.text,
+                                        nomeUsuario: model.userData["nome"]);
+                                    _reset();
+                                  }
+                                : null,
+                          ))
+              ],
             ),
-            Expanded(
-              child: TextField(
-                controller: _textController,
-                decoration:
-                    InputDecoration.collapsed(hintText: "Enviar uma mensagem"),
-                onChanged: (text) {
-                  setState(() {
-                    _isComposing = text.length > 0;
-                  });
-                },
-                onSubmitted: (text) {
-                  _handleSubmitted(text);
-                  _reset();
-                },
-              ),
-            ),
-            Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: Theme.of(context).platform == TargetPlatform.iOS
-                    ? CupertinoButton(
-                        child: Text("Enviar"),
-                        onPressed: _isComposing
-                            ? () {
-                                _handleSubmitted(_textController.text);
-                                _reset();
-                              }
-                            : null,
-                      )
-                    : IconButton(
-                        icon: Icon(Icons.send),
-                        onPressed: _isComposing
-                            ? () {
-                                _handleSubmitted(_textController.text);
-                                _reset();
-                              }
-                            : null,
-                      ))
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
 
 class MensagemTile extends StatelessWidget {
   final Map<String, dynamic> data;
-  final bool sendByMe;
+  bool sendByMe;
 
   MensagemTile(this.data, this.sendByMe);
 
@@ -217,7 +208,7 @@ class MensagemTile extends StatelessWidget {
                     bottomRight: Radius.circular(23)),
             gradient: LinearGradient(
               colors: sendByMe
-                  ? [const Color(0xFF448AFF), const Color(0xFF448AFF)]
+                  ? [const Color(0xFF81D4FA), const Color(0xFF81D4FA)]
                   : [const Color(0xFFB0BEC5), const Color(0xFFB0BEC5)],
             )),
         child: Row(
@@ -226,7 +217,8 @@ class MensagemTile extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(right: 16.0),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(data["senderPhotoUrl"]),
+                backgroundImage: NetworkImage(
+                    "https://ipc.digital/wp-content/uploads/2016/07/icon-user-default.png"),
               ),
             ),
             Expanded(
@@ -234,8 +226,8 @@ class MensagemTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    data["senderName"],
-                    style: Theme.of(context).textTheme.subhead,
+                    data["remetente"] + " :",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   Container(
                       margin: const EdgeInsets.only(top: 5.0),
@@ -244,7 +236,14 @@ class MensagemTile extends StatelessWidget {
                               data["imgUrl"],
                               width: 250.0,
                             )
-                          : Text(data["text"]))
+                          : Text(data["texto"])),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text(readTimestamp(data["horaDataEnvio"]), style: TextStyle(fontSize: 13),)
+                    ],
+                  )
                 ],
               ),
             )
@@ -252,5 +251,14 @@ class MensagemTile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String readTimestamp(int timestamp) {
+    var format = new DateFormat('dd/MM/yyyy HH:mm a');
+    var date = new DateTime.fromMicrosecondsSinceEpoch(timestamp * 1000);
+
+    var time = format.format(date);
+
+    return time;
   }
 }

@@ -21,6 +21,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  String nomeEstado = "";
+  var _estados = [
+    'Acre',
+    'Alagoas',
+    'Amapá',
+    'Amazonas',
+    'Bahia',
+    'Ceará',
+    'Distrito Federal',
+    'Espirito Santo',
+    'Goiás',
+    'Maranhão',
+    'Mato Grosso do Sul',
+    'Mato Grosso',
+    'Minas Gerais',
+    'Pará',
+    'Paraíba',
+    'Paraná',
+    'Pernambuco',
+    'Piauí',
+    'Rio de Janeiro',
+    'Rio Grande do Norte',
+    'Rio Grande do Sul',
+    'Rondônia',
+    'Roraima',
+    'Santa Catarina',
+    'São Paulo',
+    'Sergipe',
+    'Tocantins',
+  ];
+  var _itemSelecionado = 'Acre';
+
   var maskTelefone = MaskTextInputFormatter(
       mask: "(##) #####-####", filter: {"#": RegExp(r'[0-9]')});
 
@@ -75,14 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             return "Confirmação de e-mail inválida";
                         }),
                     SizedBox(height: 16.0),
-                    TextFormField(
-                      controller: _estadoController,
-                      decoration: InputDecoration(hintText: "Estado"),
-                      validator: (text) {
-                        if (text.isEmpty) return "Estado inválido";
-                      },
-                    ),
-                    SizedBox(height: 16.0),
+                    criaDropDownButton(),
                     TextFormField(
                       inputFormatters: [maskTelefone],
                       controller: _telefoneController,
@@ -120,12 +145,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         textColor: Colors.white,
                         color: Colors.blueAccent,
                         onPressed: () {
-
-                          if (_formKey.currentState.validate() && validarCampos() == true) {
+                          if (_formKey.currentState.validate() &&
+                              validarCampos() == true) {
                             Map<String, dynamic> userData = {
                               "nome": _nomeController.text.trim(),
                               "email": _emailController.text.trim(),
-                              "endereco": _estadoController.text.trim(),
+                              "estado": _estadoController.text.trim(),
                               "telefone": _telefoneController.text.trim()
                             };
 
@@ -144,6 +169,48 @@ class _SignUpScreenState extends State<SignUpScreen> {
             },
           ),
         ));
+  }
+
+  criaDropDownButton() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Text(
+                "Estado",
+                style: TextStyle(fontSize: 17, color: Colors.black54),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              DropdownButton<String>(
+                  items: _estados.map((String dropDownStringItem) {
+                    return DropdownMenuItem<String>(
+                      value: dropDownStringItem,
+                      child: Text(dropDownStringItem),
+                    );
+                  }).toList(),
+                  onChanged: (String novoItemSelecionado) {
+                    _dropDownItemSelected(novoItemSelecionado);
+                    setState(() {
+                      this._itemSelecionado = novoItemSelecionado;
+                      _estadoController.text = novoItemSelecionado;
+                    });
+                  },
+                  value: _itemSelecionado),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  void _dropDownItemSelected(String novoItem) {
+    setState(() {
+      this._itemSelecionado = novoItem;
+    });
   }
 
   bool validarCampos() {
