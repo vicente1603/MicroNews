@@ -214,7 +214,8 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                           medicineName = nameController.text;
                         }
                         if (dosageController.text == "") {
-                          dosage = 0;
+                          _newEntryBloc.submitError(EntryError.Dosage);
+                          return;
                         }
                         if (dosageController.text != "") {
                           dosage = int.parse(dosageController.text);
@@ -229,7 +230,8 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                           _newEntryBloc.submitError(EntryError.Interval);
                           return;
                         }
-                        if (_newEntryBloc.selectedTimeOfDay$.value == "None") {
+                        if (_newEntryBloc.selectedTimeOfDay$.value ==
+                            "Nenhum") {
                           _newEntryBloc.submitError(EntryError.StartTime);
                           return;
                         }
@@ -425,14 +427,14 @@ class _IntervalSelectionState extends State<IntervalSelection> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-             Text(
-                "Lembrar a cada ",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
+            Text(
+              "Lembrar a cada ",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
               ),
+            ),
             DropdownButton<int>(
               iconEnabledColor: Colors.blueAccent,
               hint: _selected == 0
@@ -466,14 +468,16 @@ class _IntervalSelectionState extends State<IntervalSelection> {
                 });
               },
             ),
-            Expanded(child: Text(
-              _selected == 1 ? " hora" : " horas",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+            Expanded(
+              child: Text(
+                _selected == 1 ? " hora" : " horas",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),),
+            ),
           ],
         ),
       ),
