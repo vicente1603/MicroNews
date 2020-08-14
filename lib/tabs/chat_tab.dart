@@ -81,13 +81,17 @@ class _CampoTextoState extends State<CampoTexto> {
     });
   }
 
-  void _sendMessage({String text, String imgUrl, String nomeUsuario}) async {
+  void _sendMessage(
+      {String text,
+      String imgUrl,
+      String nomeUsuario,
+      String fotoUsuario}) async {
     Firestore.instance.collection("mensagens_chat").add({
       "texto": text,
       "imgUrl": imgUrl,
       "remetente": nomeUsuario,
       "uid": uid,
-//    "senderPhotoUrl": googleSignIn.currentUser.photoUrl,
+      "fotoRemetenteUrl": fotoUsuario,
       "horaDataEnvio": DateTime.now().millisecondsSinceEpoch
     });
   }
@@ -126,7 +130,7 @@ class _CampoTextoState extends State<CampoTexto> {
                             await task.onComplete;
                         String url = await taskSnapshot.ref.getDownloadURL();
                         _sendMessage(
-                            imgUrl: url, nomeUsuario: model.userData["nome"]);
+                            imgUrl: url, nomeUsuario: model.userData["nome"], fotoUsuario: model.userData["foto"]);
                       }),
                 ),
                 Expanded(
@@ -141,7 +145,7 @@ class _CampoTextoState extends State<CampoTexto> {
                     },
                     onSubmitted: (text) {
                       _sendMessage(
-                          text: text, nomeUsuario: model.userData["nome"]);
+                          text: text, nomeUsuario: model.userData["nome"], fotoUsuario: model.userData["foto"]);
                       _reset();
                     },
                   ),
@@ -155,7 +159,7 @@ class _CampoTextoState extends State<CampoTexto> {
                                 ? () {
                                     _sendMessage(
                                         text: _textController.text,
-                                        nomeUsuario: model.userData["nome"]);
+                                        nomeUsuario: model.userData["nome"], fotoUsuario: model.userData["foto"]);
                                     _reset();
                                   }
                                 : null,
@@ -166,7 +170,7 @@ class _CampoTextoState extends State<CampoTexto> {
                                 ? () {
                                     _sendMessage(
                                         text: _textController.text,
-                                        nomeUsuario: model.userData["nome"]);
+                                        nomeUsuario: model.userData["nome"], fotoUsuario: model.userData["foto"]);
                                     _reset();
                                   }
                                 : null,
@@ -217,9 +221,10 @@ class MensagemTile extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(right: 16.0),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "https://ipc.digital/wp-content/uploads/2016/07/icon-user-default.png"),
-              ),
+                  backgroundImage: data["fotoRemetenteUrl"] == null
+                      ? NetworkImage(
+                          "https://ipc.digital/wp-content/uploads/2016/07/icon-user-default.png")
+                      : NetworkImage(data["fotoRemetenteUrl"])),
             ),
             Expanded(
               child: Column(
@@ -241,7 +246,10 @@ class MensagemTile extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      Text(readTimestamp(data["horaDataEnvio"]), style: TextStyle(fontSize: 13),)
+                      Text(
+                        readTimestamp(data["horaDataEnvio"]),
+                        style: TextStyle(fontSize: 13),
+                      )
                     ],
                   )
                 ],

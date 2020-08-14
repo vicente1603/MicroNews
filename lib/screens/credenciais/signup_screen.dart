@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/home_screen.dart';
-import 'package:micro_news/tabs/home_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -21,6 +25,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  String imgUrl;
+  String downloadUrl =
+      "https://ipc.digital/wp-content/uploads/2016/07/icon-user-default.png";
   String nomeEstado = "";
   var _estados = [
     'Acre',
@@ -81,6 +88,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: ListView(
                   padding: EdgeInsets.all(16.0),
                   children: <Widget>[
+                    (imgUrl != null)
+                        ? Image.network(
+                            imgUrl,
+                            height: 200.0,
+                          )
+                        : Container(
+                            child: Image.network(
+                              downloadUrl,
+                              height: 200.0,
+                            ),
+                          ),
+                    SizedBox(height: 16.0),
+                    RaisedButton(
+                      child: Text(
+                        "Adicionar foto",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      color: Colors.blueAccent,
+                      onPressed: () {
+                        uploadImagem();
+                      },
+                    ),
                     TextFormField(
                         controller: _nomeController,
                         decoration: InputDecoration(hintText: "Nome Completo"),
@@ -151,7 +180,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               "nome": _nomeController.text.trim(),
                               "email": _emailController.text.trim(),
                               "estado": _estadoController.text.trim(),
-                              "telefone": _telefoneController.text.trim()
+                              "telefone": _telefoneController.text.trim(),
+                              "foto": downloadUrl
                             };
 
                             model.signUp(
@@ -169,6 +199,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
             },
           ),
         ));
+  }
+
+  uploadImagem() async {
+    final _picker = ImagePicker();
+    PickedFile image;
+
+    image = await _picker.getImage(source: ImageSource.gallery);
+    var file = File(image.path);
+
+    if (image != null) {
+      var snapshot = await FirebaseStorage.instance
+          .ref()
+          .child("imagens_perfil/" +
+              DateTime.now().millisecondsSinceEpoch.toString())
+          .putFile(file)
+          .onComplete;
+
+      downloadUrl = await snapshot.ref.getDownloadURL();
+
+      setState(() {
+        imgUrl = downloadUrl;
+      });
+    } else {
+      print("no");
+    }
   }
 
   criaDropDownButton() {
