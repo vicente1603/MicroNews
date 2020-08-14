@@ -224,7 +224,7 @@ class MensagemTile extends StatelessWidget {
                   backgroundImage: data["fotoRemetenteUrl"] == null
                       ? NetworkImage(
                           "https://ipc.digital/wp-content/uploads/2016/07/icon-user-default.png")
-                      : NetworkImage(data["fotoRemetenteUrl"])),
+                      : NetworkImage(data["fotoRemetenteUrl"]), radius: 30,),
             ),
             Expanded(
               child: Column(

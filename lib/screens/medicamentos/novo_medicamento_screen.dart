@@ -110,7 +110,6 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                 SizedBox(
                   height: 15,
                 ),
-
                 PanelTitle(
                   title: "Tipo do medicamento",
                   isRequired: false,
@@ -120,53 +119,51 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                   child: StreamBuilder<MedicineType>(
                     stream: _newEntryBloc.selectedMedicineType,
                     builder: (context, snapshot) {
-                      return Expanded(
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                MedicineTypeColumn(
-                                    type: MedicineType.Frasco,
-                                    name: "Frasco",
-                                    iconValue: 0xe900,
-                                    isSelected:
-                                        snapshot.data == MedicineType.Frasco
-                                            ? true
-                                            : false),
-                                MedicineTypeColumn(
-                                    type: MedicineType.Pilula,
-                                    name: "Pílula",
-                                    iconValue: 0xe901,
-                                    isSelected:
-                                        snapshot.data == MedicineType.Pilula
-                                            ? true
-                                            : false),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                MedicineTypeColumn(
-                                    type: MedicineType.Seringa,
-                                    name: "Seringa",
-                                    iconValue: 0xe902,
-                                    isSelected:
-                                        snapshot.data == MedicineType.Seringa
-                                            ? true
-                                            : false),
-                                MedicineTypeColumn(
-                                    type: MedicineType.Comprimido,
-                                    name: "Comprimido",
-                                    iconValue: 0xe903,
-                                    isSelected:
-                                        snapshot.data == MedicineType.Comprimido
-                                            ? true
-                                            : false),
-                              ],
-                            )
-                          ],
-                        ),
+                      return Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              MedicineTypeColumn(
+                                  type: MedicineType.Frasco,
+                                  name: "Frasco",
+                                  iconValue: 0xe900,
+                                  isSelected:
+                                      snapshot.data == MedicineType.Frasco
+                                          ? true
+                                          : false),
+                              MedicineTypeColumn(
+                                  type: MedicineType.Pilula,
+                                  name: "Pílula",
+                                  iconValue: 0xe901,
+                                  isSelected:
+                                      snapshot.data == MedicineType.Pilula
+                                          ? true
+                                          : false),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              MedicineTypeColumn(
+                                  type: MedicineType.Seringa,
+                                  name: "Seringa",
+                                  iconValue: 0xe902,
+                                  isSelected:
+                                      snapshot.data == MedicineType.Seringa
+                                          ? true
+                                          : false),
+                              MedicineTypeColumn(
+                                  type: MedicineType.Comprimido,
+                                  name: "Comprimido",
+                                  iconValue: 0xe903,
+                                  isSelected:
+                                      snapshot.data == MedicineType.Comprimido
+                                          ? true
+                                          : false),
+                            ],
+                          )
+                        ],
                       );
                     },
                   ),
@@ -185,110 +182,119 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                 SizedBox(
                   height: 5,
                 ),
+
                 Padding(
                   padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.height * 0.08,
-                    right: MediaQuery.of(context).size.height * 0.08,
+                    left: MediaQuery.of(context).size.height * 0.06,
+                    right: MediaQuery.of(context).size.height * 0.06,
+                    top: 25,
+                    bottom: 25,
                   ),
                   child: Container(
+                    height: 50,
                     child: FlatButton(
                       color: Colors.blueAccent,
                       shape: StadiumBorder(),
+                      onPressed: () {
+                        {
+                          String medicineName;
+                          int dosage;
+                          if (nameController.text == "") {
+                            _newEntryBloc.submitError(EntryError.NameNull);
+                            return;
+                          }
+                          if (nameController.text != "") {
+                            medicineName = nameController.text;
+                          }
+                          if (dosageController.text == "") {
+                            _newEntryBloc.submitError(EntryError.Dosage);
+                            return;
+                          }
+                          if (dosageController.text != "") {
+                            dosage = int.parse(dosageController.text);
+                          }
+                          for (var medicine
+                              in _globalBloc.medicineList$.value) {
+                            if (medicineName == medicine.medicineName) {
+                              _newEntryBloc
+                                  .submitError(EntryError.NameDuplicate);
+                              return;
+                            }
+                          }
+                          if (_newEntryBloc.selectedInterval$.value == 0) {
+                            _newEntryBloc.submitError(EntryError.Interval);
+                            return;
+                          }
+                          if (_newEntryBloc.selectedTimeOfDay$.value ==
+                              "Nenhum") {
+                            _newEntryBloc.submitError(EntryError.StartTime);
+                            return;
+                          }
+                          //---------------------------------------------------------
+                          String medicineType = _newEntryBloc
+                              .selectedMedicineType.value
+                              .toString()
+                              .substring(13);
+                          int interval = _newEntryBloc.selectedInterval$.value;
+                          String startTime =
+                              _newEntryBloc.selectedTimeOfDay$.value;
+
+                          List<int> intIDs = makeIDs(
+                              24 / _newEntryBloc.selectedInterval$.value);
+                          List<String> notificationIDs = intIDs
+                              .map((i) => i.toString())
+                              .toList(); //for Shared preference
+
+                          var id = randomAlphaNumeric(15);
+
+                          Firestore.instance
+                              .collection("users")
+                              .document(uid)
+                              .collection("medicamentos")
+                              .document(id)
+                              .setData({
+                            "id": id,
+                            "idsNotificacoes": notificationIDs,
+                            "nomeMedicamento": medicineName,
+                            "dosagem": dosage,
+                            "tipoMedicamento": medicineType,
+                            "intervalo": interval,
+                            "horaInicio": startTime
+                          });
+
+                          Medicine newEntryMedicine = Medicine(
+                            id: id,
+                            notificationIDs: notificationIDs,
+                            medicineName: medicineName,
+                            dosage: dosage,
+                            medicineType: medicineType,
+                            interval: interval,
+                            startTime: startTime,
+                          );
+
+                          _globalBloc.updateMedicineList(newEntryMedicine);
+                          scheduleNotification(newEntryMedicine);
+
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return MedicamentosTab();
+                              },
+                            ),
+                          );
+                        }
+                      },
                       child: Center(
                         child: Text(
                           "Salvar",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 25,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
-                      onPressed: () {
-                        String medicineName;
-                        int dosage;
-                        if (nameController.text == "") {
-                          _newEntryBloc.submitError(EntryError.NameNull);
-                          return;
-                        }
-                        if (nameController.text != "") {
-                          medicineName = nameController.text;
-                        }
-                        if (dosageController.text == "") {
-                          _newEntryBloc.submitError(EntryError.Dosage);
-                          return;
-                        }
-                        if (dosageController.text != "") {
-                          dosage = int.parse(dosageController.text);
-                        }
-                        for (var medicine in _globalBloc.medicineList$.value) {
-                          if (medicineName == medicine.medicineName) {
-                            _newEntryBloc.submitError(EntryError.NameDuplicate);
-                            return;
-                          }
-                        }
-                        if (_newEntryBloc.selectedInterval$.value == 0) {
-                          _newEntryBloc.submitError(EntryError.Interval);
-                          return;
-                        }
-                        if (_newEntryBloc.selectedTimeOfDay$.value ==
-                            "Nenhum") {
-                          _newEntryBloc.submitError(EntryError.StartTime);
-                          return;
-                        }
-                        //---------------------------------------------------------
-                        String medicineType = _newEntryBloc
-                            .selectedMedicineType.value
-                            .toString()
-                            .substring(13);
-                        int interval = _newEntryBloc.selectedInterval$.value;
-                        String startTime =
-                            _newEntryBloc.selectedTimeOfDay$.value;
-
-                        List<int> intIDs =
-                            makeIDs(24 / _newEntryBloc.selectedInterval$.value);
-                        List<String> notificationIDs = intIDs
-                            .map((i) => i.toString())
-                            .toList(); //for Shared preference
-
-                        var id = randomAlphaNumeric(15);
-
-                        Firestore.instance
-                            .collection("users")
-                            .document(uid)
-                            .collection("medicamentos")
-                            .document(id)
-                            .setData({
-                          "id": id,
-                          "idsNotificacoes": notificationIDs,
-                          "nomeMedicamento": medicineName,
-                          "dosagem": dosage,
-                          "tipoMedicamento": medicineType,
-                          "intervalo": interval,
-                          "horaInicio": startTime
-                        });
-
-                        Medicine newEntryMedicine = Medicine(
-                          id: id,
-                          notificationIDs: notificationIDs,
-                          medicineName: medicineName,
-                          dosage: dosage,
-                          medicineType: medicineType,
-                          interval: interval,
-                          startTime: startTime,
-                        );
-
-                        _globalBloc.updateMedicineList(newEntryMedicine);
-                        scheduleNotification(newEntryMedicine);
-
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) {
-                              return MedicamentosTab();
-                            },
-                          ),
-                        );
-                      },
                     ),
                   ),
                 ),

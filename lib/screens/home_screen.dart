@@ -42,7 +42,7 @@ class HomeScreen extends StatelessWidget {
           drawer: CustomDrawer(_pageController),
         ),
         Scaffold(
-          appBar: AppBar(title: Text("Chat"), centerTitle: true),
+          appBar: AppBar(title: Text("Rede de apoio"), centerTitle: true),
           body: ChatTab(),
           drawer: CustomDrawer(_pageController),
         ),

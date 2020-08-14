@@ -22,17 +22,13 @@ class _MedicamentosTabState extends State<MedicamentosTab> {
     final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
-        elevation: 0.0,
+        elevation: 0,
       ),
       body: Container(
         color: Color(0xFFF6F8FC),
         child: Column(
           children: <Widget>[
-            Flexible(
-              flex: 3,
-              child: TopContainer(),
-            ),
+            TopContainer(),
             SizedBox(
               height: 10,
             ),

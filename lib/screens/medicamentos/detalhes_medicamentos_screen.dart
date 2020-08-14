@@ -92,7 +92,9 @@ class DetalhesMedicamentoScreen extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: new Text('Remover medicamento'),
-            content: new Text('Deseja remover o medicamento ' + medicamento.nomeMedicamento.toString() + "?"),
+            content: new Text('Deseja remover o medicamento ' +
+                medicamento.nomeMedicamento.toString() +
+                "?"),
             actions: <Widget>[
               new GestureDetector(
                 onTap: () => Navigator.of(context).pop(false),
@@ -136,6 +138,7 @@ class DetalhesMedicamentoScreen extends StatelessWidget {
         });
   }
 }
+
 class MainSection extends StatelessWidget {
   final MedicamentosData medicamento;
 

@@ -23,20 +23,21 @@ class HomeTileFaixas extends StatelessWidget {
                 right: 24.0,
               ),
               width: double.infinity,
-              height: 200.0,
             )),
         new Padding(
-          padding: const EdgeInsets.only(right: 10.0, left: 70.0, top: 60.0),
+          padding: const EdgeInsets.only(right: 10.0, left: 70.0, top: 60.0, bottom: 20.0),
           child: new Container(
-            height: 100.0,
-            color: Colors.black45,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: Colors.black45),
             child: ListTile(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => HomeEventosScreen(snapshot, docHome)));
+                      builder: (context) =>
+                          HomeEventosScreen(snapshot, docHome)));
                 },
                 contentPadding:
-                EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                    EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                 leading: Container(
                   padding: EdgeInsets.only(right: 12.0),
                   decoration: new BoxDecoration(
@@ -108,105 +109,105 @@ class HomeTileFaixas extends StatelessWidget {
             ),
           )
         else if (snapshot.data["color"] == "pink")
-            new Positioned(
-              top: 100.0,
-              left: 15.0,
-              child: new Container(
-                height: 40.0,
-                width: 40.0,
-                decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
-                child: new Container(
-                  margin: new EdgeInsets.all(5.0),
-                  height: 30.0,
-                  width: 30.0,
-                  decoration: new BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.pinkAccent),
-                ),
+          new Positioned(
+            top: 100.0,
+            left: 15.0,
+            child: new Container(
+              height: 40.0,
+              width: 40.0,
+              decoration: new BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
               ),
-            )
-          else if (snapshot.data["color"] == "purple")
-              new Positioned(
-                top: 100.0,
-                left: 15.0,
-                child: new Container(
-                  height: 40.0,
-                  width: 40.0,
-                  decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                  child: new Container(
-                    margin: new EdgeInsets.all(5.0),
-                    height: 30.0,
-                    width: 30.0,
-                    decoration: new BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.deepPurpleAccent),
-                  ),
-                ),
-              )
-            else if (snapshot.data["color"] == "red")
-                new Positioned(
-                  top: 100.0,
-                  left: 15.0,
-                  child: new Container(
-                    height: 40.0,
-                    width: 40.0,
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: new Container(
-                      margin: new EdgeInsets.all(5.0),
-                      height: 30.0,
-                      width: 30.0,
-                      decoration: new BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.redAccent),
-                    ),
-                  ),
-                )
-              else if (snapshot.data["color"] == "indigo")
-                  new Positioned(
-                    top: 100.0,
-                    left: 15.0,
-                    child: new Container(
-                      height: 40.0,
-                      width: 40.0,
-                      decoration: new BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      child: new Container(
-                        margin: new EdgeInsets.all(5.0),
-                        height: 30.0,
-                        width: 30.0,
-                        decoration: new BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.indigoAccent),
-                      ),
-                    ),
-                  )
-                else
-                  new Positioned(
-                    top: 100.0,
-                    left: 15.0,
-                    child: new Container(
-                      height: 40.0,
-                      width: 40.0,
-                      decoration: new BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      child: new Container(
-                        margin: new EdgeInsets.all(5.0),
-                        height: 30.0,
-                        width: 30.0,
-                        decoration: new BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.blueAccent),
-                      ),
-                    ),
-                  )
+              child: new Container(
+                margin: new EdgeInsets.all(5.0),
+                height: 30.0,
+                width: 30.0,
+                decoration: new BoxDecoration(
+                    shape: BoxShape.circle, color: Colors.pinkAccent),
+              ),
+            ),
+          )
+        else if (snapshot.data["color"] == "purple")
+          new Positioned(
+            top: 100.0,
+            left: 15.0,
+            child: new Container(
+              height: 40.0,
+              width: 40.0,
+              decoration: new BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              child: new Container(
+                margin: new EdgeInsets.all(5.0),
+                height: 30.0,
+                width: 30.0,
+                decoration: new BoxDecoration(
+                    shape: BoxShape.circle, color: Colors.deepPurpleAccent),
+              ),
+            ),
+          )
+        else if (snapshot.data["color"] == "red")
+          new Positioned(
+            top: 100.0,
+            left: 15.0,
+            child: new Container(
+              height: 40.0,
+              width: 40.0,
+              decoration: new BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              child: new Container(
+                margin: new EdgeInsets.all(5.0),
+                height: 30.0,
+                width: 30.0,
+                decoration: new BoxDecoration(
+                    shape: BoxShape.circle, color: Colors.redAccent),
+              ),
+            ),
+          )
+        else if (snapshot.data["color"] == "indigo")
+          new Positioned(
+            top: 100.0,
+            left: 15.0,
+            child: new Container(
+              height: 40.0,
+              width: 40.0,
+              decoration: new BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              child: new Container(
+                margin: new EdgeInsets.all(5.0),
+                height: 30.0,
+                width: 30.0,
+                decoration: new BoxDecoration(
+                    shape: BoxShape.circle, color: Colors.indigoAccent),
+              ),
+            ),
+          )
+        else
+          new Positioned(
+            top: 100.0,
+            left: 15.0,
+            child: new Container(
+              height: 40.0,
+              width: 40.0,
+              decoration: new BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              child: new Container(
+                margin: new EdgeInsets.all(5.0),
+                height: 30.0,
+                width: 30.0,
+                decoration: new BoxDecoration(
+                    shape: BoxShape.circle, color: Colors.blueAccent),
+              ),
+            ),
+          )
       ],
     );
   }
