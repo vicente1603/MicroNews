@@ -8,6 +8,7 @@ import 'package:micro_news/models/errors.dart';
 import 'package:micro_news/models/medicamento.dart';
 import 'package:micro_news/models/tipo_medicamento.dart';
 import 'package:micro_news/models/usuario_model.dart';
+import 'package:micro_news/tabs/consultas_tab.dart';
 import 'package:micro_news/tabs/medicamentos_tab.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -49,7 +50,6 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
     if (UserModel.of(context).isLoggedIn()) {
       String uid = UserModel.of(context).firebaseUser.uid;
       final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
-
       return Scaffold(
         key: _scaffoldKey,
         resizeToAvoidBottomPadding: false,
@@ -182,128 +182,104 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                 SizedBox(
                   height: 5,
                 ),
-
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.height * 0.06,
-                    right: MediaQuery.of(context).size.height * 0.06,
-                    top: 25,
-                    bottom: 25,
-                  ),
-                  child: Container(
-                    height: 50,
-                    child: FlatButton(
-                      color: Colors.blueAccent,
-                      shape: StadiumBorder(),
-                      onPressed: () {
-                        {
-                          String medicineName;
-                          int dosage;
-                          if (nameController.text == "") {
-                            _newEntryBloc.submitError(EntryError.NameNull);
-                            return;
-                          }
-                          if (nameController.text != "") {
-                            medicineName = nameController.text;
-                          }
-                          if (dosageController.text == "") {
-                            _newEntryBloc.submitError(EntryError.Dosage);
-                            return;
-                          }
-                          if (dosageController.text != "") {
-                            dosage = int.parse(dosageController.text);
-                          }
-                          for (var medicine
-                              in _globalBloc.medicineList$.value) {
-                            if (medicineName == medicine.medicineName) {
-                              _newEntryBloc
-                                  .submitError(EntryError.NameDuplicate);
-                              return;
-                            }
-                          }
-                          if (_newEntryBloc.selectedInterval$.value == 0) {
-                            _newEntryBloc.submitError(EntryError.Interval);
-                            return;
-                          }
-                          if (_newEntryBloc.selectedTimeOfDay$.value ==
-                              "Nenhum") {
-                            _newEntryBloc.submitError(EntryError.StartTime);
-                            return;
-                          }
-                          //---------------------------------------------------------
-                          String medicineType = _newEntryBloc
-                              .selectedMedicineType.value
-                              .toString()
-                              .substring(13);
-                          int interval = _newEntryBloc.selectedInterval$.value;
-                          String startTime =
-                              _newEntryBloc.selectedTimeOfDay$.value;
-
-                          List<int> intIDs = makeIDs(
-                              24 / _newEntryBloc.selectedInterval$.value);
-                          List<String> notificationIDs = intIDs
-                              .map((i) => i.toString())
-                              .toList(); //for Shared preference
-
-                          var id = randomAlphaNumeric(15);
-
-                          Firestore.instance
-                              .collection("users")
-                              .document(uid)
-                              .collection("medicamentos")
-                              .document(id)
-                              .setData({
-                            "id": id,
-                            "idsNotificacoes": notificationIDs,
-                            "nomeMedicamento": medicineName,
-                            "dosagem": dosage,
-                            "tipoMedicamento": medicineType,
-                            "intervalo": interval,
-                            "horaInicio": startTime
-                          });
-
-                          Medicine newEntryMedicine = Medicine(
-                            id: id,
-                            notificationIDs: notificationIDs,
-                            medicineName: medicineName,
-                            dosage: dosage,
-                            medicineType: medicineType,
-                            interval: interval,
-                            startTime: startTime,
-                          );
-
-                          _globalBloc.updateMedicineList(newEntryMedicine);
-                          scheduleNotification(newEntryMedicine);
-
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) {
-                                return MedicamentosTab();
-                              },
-                            ),
-                          );
-                        }
-                      },
-                      child: Center(
-                        child: Text(
-                          "Salvar",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                SizedBox(
+                  height: 70.0,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 10),
+                    child: RaisedButton(
+                      child: Text(
+                        "Adicionar",
+                        style: TextStyle(color: Colors.white, fontSize: 25),
                       ),
+                      color: Colors.blueAccent,
+                      onPressed: () {
+                        adicionarMedicamento(uid, _globalBloc);
+                      },
                     ),
                   ),
-                ),
+                )
               ],
             ),
           ),
         ),
       );
     }
+  }
+
+  void adicionarMedicamento(uid, _globalBloc) {
+    String medicineName;
+    int dosage;
+    if (nameController.text == "") {
+      _newEntryBloc.submitError(EntryError.NameNull);
+      return;
+    }
+    if (nameController.text != "") {
+      medicineName = nameController.text;
+    }
+    if (dosageController.text == "") {
+      _newEntryBloc.submitError(EntryError.Dosage);
+      return;
+    }
+    if (dosageController.text != "") {
+      dosage = int.parse(dosageController.text);
+    }
+    for (var medicine in _globalBloc.medicineList$.value) {
+      if (medicineName == medicine.medicineName) {
+        _newEntryBloc.submitError(EntryError.NameDuplicate);
+        return;
+      }
+    }
+    if (_newEntryBloc.selectedInterval$.value == 0) {
+      _newEntryBloc.submitError(EntryError.Interval);
+      return;
+    }
+    if (_newEntryBloc.selectedTimeOfDay$.value == "Nenhum") {
+      _newEntryBloc.submitError(EntryError.StartTime);
+      return;
+    }
+    //---------------------------------------------------------
+    String medicineType =
+        _newEntryBloc.selectedMedicineType.value.toString().substring(13);
+    int interval = _newEntryBloc.selectedInterval$.value;
+    String startTime = _newEntryBloc.selectedTimeOfDay$.value;
+
+    List<int> intIDs = makeIDs(24 / _newEntryBloc.selectedInterval$.value);
+    List<String> notificationIDs =
+        intIDs.map((i) => i.toString()).toList(); //for Shared preference
+
+    var id = randomAlphaNumeric(15);
+
+    Firestore.instance
+        .collection("users")
+        .document(uid)
+        .collection("medicamentos")
+        .document(id)
+        .setData({
+      "id": id,
+      "idsNotificacoes": notificationIDs,
+      "nomeMedicamento": medicineName,
+      "dosagem": dosage,
+      "tipoMedicamento": medicineType,
+      "intervalo": interval,
+      "horaInicio": startTime
+    });
+
+    Medicine newEntryMedicine = Medicine(
+      id: id,
+      notificationIDs: notificationIDs,
+      medicineName: medicineName,
+      dosage: dosage,
+      medicineType: medicineType,
+      interval: interval,
+      startTime: startTime,
+    );
+
+    _globalBloc.updateMedicineList(newEntryMedicine);
+    scheduleNotification(newEntryMedicine);
+
+    Navigator.of(context).pushReplacementNamed('/tab_medicamentos');
+
   }
 
   void initializeErrorListen() {
@@ -504,7 +480,7 @@ class _SelectTimeState extends State<SelectTime> {
     final NewEntryBloc _newEntryBloc = Provider.of<NewEntryBloc>(context);
     final TimeOfDay picked = await showTimePicker(
       context: context,
-      initialTime: _time,
+      initialTime: TimeOfDay.now(),
     );
     if (picked != null && picked != _time) {
       setState(() {

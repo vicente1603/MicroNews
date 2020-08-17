@@ -106,26 +106,14 @@ class _AddEventPageState extends State<AddEventPage> {
                   controller: _horario,
                   onTap: () {
                     {
-                      DatePicker.showTimePicker(context,
-                          theme: DatePickerTheme(
-                            containerHeight: 210.0,
-                          ),
-                          showTitleActions: true, onConfirm: (time) {
-                        _time = '${time.hour} : ${time.minute}';
-                        setState(() {
-                          _horario.text = _time;
-                        });
-                      }, currentTime: DateTime.now(), locale: LocaleType.en);
-                      setState(() {
-                        _horario.text = _time;
-                      });
+                      _selectTime(context);
                     }
                   },
                 ),
               ),
               const SizedBox(height: 10.0),
               ListTile(
-                title: Text("Data: (DD/MM/YYYY)"),
+                title: Text("Data:"),
                 subtitle: Text("${_data.day} / ${_data.month} / ${_data.year}"),
                 onTap: () async {
                   DateTime picked = await showDatePicker(
@@ -143,54 +131,68 @@ class _AddEventPageState extends State<AddEventPage> {
               SizedBox(height: 10.0),
               processing
                   ? Center(child: CircularProgressIndicator())
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Material(
-                        elevation: 5.0,
-                        borderRadius: BorderRadius.circular(30.0),
-                        color: Theme.of(context).primaryColor,
-                        child: MaterialButton(
-                          onPressed: () async {
-                            if (_formKey.currentState.validate()) {
-                              setState(() {
-                                processing = true;
-                              });
-                              if (widget.note != null) {
-                                await eventDBS.updateItem(EventModel(
-                                    id: widget.note.id,
-                                    titulo: _titulo.text,
-                                    descricao: _descricao.text,
-                                    local: _local.text,
-                                    horario: _horario.text,
-                                    data: widget.note.data));
-                              } else {
-                                await eventDBS.createItem(EventModel(
-                                    titulo: _titulo.text,
-                                    descricao: _descricao.text,
-                                    local: _local.text,
-                                    horario: _horario.text,
-                                    data: _data));
-                              }
-                              Navigator.pop(context);
-                              setState(() {
-                                processing = false;
-                              });
-                            }
-                          },
-                          child: Text(
-                            "Salvar",
-                            style: style.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
+                  : SizedBox(
+                height: 50,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: RaisedButton(
+                    child: Text(
+                      "Adicionar",
+                      style: TextStyle(color: Colors.white, fontSize: 25),
                     ),
+                    color: Colors.blueAccent,
+                    onPressed: () async {
+                      if (_formKey.currentState.validate()) {
+                        setState(() {
+                          processing = true;
+                        });
+                        if (widget.note != null) {
+                          await eventDBS.updateItem(EventModel(
+                              id: widget.note.id,
+                              titulo: _titulo.text,
+                              descricao: _descricao.text,
+                              local: _local.text,
+                              horario: _horario.text,
+                              data: widget.note.data));
+                        } else {
+                          await eventDBS.createItem(EventModel(
+                              titulo: _titulo.text,
+                              descricao: _descricao.text,
+                              local: _local.text,
+                              horario: _horario.text,
+                              data: _data));
+                        }
+                        Navigator.pop(context);
+                        setState(() {
+                          processing = false;
+                        });
+                      }
+                    },
+                  ),
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<TimeOfDay> _selectTime(BuildContext context) async {
+    String _time;
+    bool _clicked = false;
+    final TimeOfDay picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null && picked != _time) {
+      setState(() {
+        _time = '${picked.hour}:${picked.minute}';
+        _clicked = true;
+        _horario.text = _time;
+      });
+    }
+    return picked;
   }
 
   @override

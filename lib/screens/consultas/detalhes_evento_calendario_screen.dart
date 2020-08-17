@@ -49,30 +49,24 @@ class EventDetailsPage extends StatelessWidget {
                   height: 15,
                 ),
                 ExtendedSection(event: event),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.height * 0.06,
-                    right: MediaQuery.of(context).size.height * 0.06,
-                    top: 25,
-                  ),
-                  child: Container(
-                    height: 50,
-                    child: FlatButton(
-                      color: Colors.blueAccent,
-                      shape: StadiumBorder(),
+                SizedBox(
+                  height: 15,
+                ),
+                SizedBox(
+                  height: 50,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: RaisedButton(
                       onPressed: () {
                         openAlertBox(context, _globalBloc, uid);
                       },
                       child: Center(
                         child: Text(
                           "Remover",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: TextStyle(color: Colors.white, fontSize: 25),
                         ),
                       ),
+                      color: Colors.redAccent,
                     ),
                   ),
                 ),
@@ -90,8 +84,7 @@ class EventDetailsPage extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: new Text('Remover evento'),
-            content:
-                new Text('Deseja remover o evento ' + event.titulo + "?"),
+            content: new Text('Deseja remover o evento ' + event.titulo + "?"),
             actions: <Widget>[
               new GestureDetector(
                 onTap: () => Navigator.of(context).pop(false),

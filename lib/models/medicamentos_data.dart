@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class MedicamentosData{
 
   String id;
-  List<dynamic> idsNoticacoes;
+  List<dynamic> idsNotificacoes;
   String nomeMedicamento;
   int dosagem;
   String tipoMedicamento;
@@ -12,7 +12,7 @@ class MedicamentosData{
 
   MedicamentosData.fromDocument(DocumentSnapshot snapshot){
     id = snapshot.documentID;
-    idsNoticacoes = snapshot.data["idsNoticacoes"];
+    idsNotificacoes = snapshot.data["idsNotificacoes"];
     nomeMedicamento = snapshot.data["nomeMedicamento"];
     dosagem = snapshot.data["dosagem"];
     tipoMedicamento = snapshot.data["tipoMedicamento"];
