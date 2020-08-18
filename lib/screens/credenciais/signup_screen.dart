@@ -89,14 +89,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   padding: EdgeInsets.all(16.0),
                   children: <Widget>[
                     (imgUrl != null)
-                        ? Image.network(
-                            imgUrl,
-                            height: 200.0,
+                        ? Container(
+                            margin: EdgeInsets.all(10),
+                            child: CircleAvatar(
+                              radius: 100,
+                              child: ClipOval(
+                                child: Image.network(
+                                  imgUrl,
+                                ),
+                              ),
+                            ),
                           )
                         : Container(
-                            child: Image.network(
-                              downloadUrl,
-                              height: 200.0,
+                            margin: EdgeInsets.all(10),
+                            child: CircleAvatar(
+                              radius: 100,
+                              child: ClipOval(
+                                child: Image.network(
+                                  downloadUrl,
+                                ),
+                              ),
                             ),
                           ),
                     SizedBox(height: 16.0),

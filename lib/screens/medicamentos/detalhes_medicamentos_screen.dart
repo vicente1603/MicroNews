@@ -50,33 +50,24 @@ class DetalhesMedicamentoScreen extends StatelessWidget {
                     height: 15,
                   ),
                   ExtendedSection(medicamento: medicamento),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.height * 0.06,
-                      right: MediaQuery.of(context).size.height * 0.06,
-                      top: 25,
-                    ),
-                    child: Container(
-                      height: 50,
-                      child: FlatButton(
-                        color: Colors.blueAccent,
-                        shape: StadiumBorder(),
-                        onPressed: () {
-                          openAlertBox(context, _globalBloc, uid);
-                        },
+                  SizedBox(
+                    height: 50,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: RaisedButton(
                         child: Center(
                           child: Text(
                             "Remover",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: TextStyle(color: Colors.white, fontSize: 25),
                           ),
                         ),
+                        color: Colors.redAccent,
+                        onPressed: () {
+                          openAlertBox(context, _globalBloc, uid);
+                        },
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
@@ -112,7 +103,7 @@ class DetalhesMedicamentoScreen extends StatelessWidget {
 
                   Medicine tobeRemoved = Medicine(
                     id: medicamento.id,
-                    notificationIDs: medicamento.idsNoticacoes,
+                    notificationIDs: medicamento.idsNotificacoes,
                     medicineName: medicamento.nomeMedicamento,
                     dosage: medicamento.dosagem,
                     medicineType: medicamento.tipoMedicamento,
@@ -120,7 +111,7 @@ class DetalhesMedicamentoScreen extends StatelessWidget {
                     startTime: medicamento.horaInicio,
                   );
 
-                  _globalBloc.updateMedicineList(tobeRemoved);
+                  _globalBloc.removeMedicine(tobeRemoved);
 
                   Navigator.pushReplacement(
                     context,
