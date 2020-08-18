@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:random_string/random_string.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MicroNews());
@@ -36,6 +37,8 @@ class _MicroNewsState extends State<MicroNews> {
       child: ScopedModel<UserModel>(
           model: UserModel(),
           child: MaterialApp(
+            localizationsDelegates: [GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate],
+            supportedLocales: [Locale("pt")],
             title: "MicroNews",
             theme: ThemeData(
                 primarySwatch: Colors.blue, primaryColor: Colors.blueAccent),

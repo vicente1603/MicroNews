@@ -120,7 +120,8 @@ class _AddEventPageState extends State<AddEventPage> {
                       context: context,
                       initialDate: _data,
                       firstDate: DateTime(_data.year - 5),
-                      lastDate: DateTime(_data.year + 5));
+                      lastDate: DateTime(_data.year + 5),
+                      locale: Locale("pt"));
                   if (picked != null) {
                     setState(() {
                       _data = picked;
@@ -132,45 +133,45 @@ class _AddEventPageState extends State<AddEventPage> {
               processing
                   ? Center(child: CircularProgressIndicator())
                   : SizedBox(
-                height: 50,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: RaisedButton(
-                    child: Text(
-                      "Adicionar",
-                      style: TextStyle(color: Colors.white, fontSize: 25),
+                      height: 50,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: RaisedButton(
+                          child: Text(
+                            "Adicionar",
+                            style: TextStyle(color: Colors.white, fontSize: 25),
+                          ),
+                          color: Colors.blueAccent,
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              setState(() {
+                                processing = true;
+                              });
+                              if (widget.note != null) {
+                                await eventDBS.updateItem(EventModel(
+                                    id: widget.note.id,
+                                    titulo: _titulo.text,
+                                    descricao: _descricao.text,
+                                    local: _local.text,
+                                    horario: _horario.text,
+                                    data: widget.note.data));
+                              } else {
+                                await eventDBS.createItem(EventModel(
+                                    titulo: _titulo.text,
+                                    descricao: _descricao.text,
+                                    local: _local.text,
+                                    horario: _horario.text,
+                                    data: _data));
+                              }
+                              Navigator.pop(context);
+                              setState(() {
+                                processing = false;
+                              });
+                            }
+                          },
+                        ),
+                      ),
                     ),
-                    color: Colors.blueAccent,
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        setState(() {
-                          processing = true;
-                        });
-                        if (widget.note != null) {
-                          await eventDBS.updateItem(EventModel(
-                              id: widget.note.id,
-                              titulo: _titulo.text,
-                              descricao: _descricao.text,
-                              local: _local.text,
-                              horario: _horario.text,
-                              data: widget.note.data));
-                        } else {
-                          await eventDBS.createItem(EventModel(
-                              titulo: _titulo.text,
-                              descricao: _descricao.text,
-                              local: _local.text,
-                              horario: _horario.text,
-                              data: _data));
-                        }
-                        Navigator.pop(context);
-                        setState(() {
-                          processing = false;
-                        });
-                      }
-                    },
-                  ),
-                ),
-              ),
             ],
           ),
         ),

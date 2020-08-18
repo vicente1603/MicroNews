@@ -71,8 +71,10 @@ class CreditosTab extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  "Av. Marechal Rondon, s/n, Jd. Rosa Elze - São Cristovão/SE",
+                Expanded(
+                  child: Text(
+                    "Av. Marechal Rondon, s/n, Jd. Rosa Elze - São Cristovão/SE",
+                  ),
                 )
               ],
             ),

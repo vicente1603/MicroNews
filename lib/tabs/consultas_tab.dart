@@ -69,6 +69,7 @@ class _ConsultasTabState extends State<ConsultasTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     TableCalendar(
+                      locale: ("pt"),
                       events: _eventos,
                       initialCalendarFormat: CalendarFormat.month,
                       calendarStyle: CalendarStyle(
@@ -82,7 +83,7 @@ class _ConsultasTabState extends State<ConsultasTab> {
                       headerStyle: HeaderStyle(
                           centerHeaderTitle: true,
                           formatButtonDecoration: BoxDecoration(
-                              color: Colors.orangeAccent,
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(20)),
                           formatButtonTextStyle: TextStyle(color: Colors.white),
                           formatButtonShowsNext: false),
