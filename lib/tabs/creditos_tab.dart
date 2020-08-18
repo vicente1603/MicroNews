@@ -62,7 +62,7 @@ class CreditosTab extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                )
+                ),
               ],
             ),
             SizedBox(
@@ -74,6 +74,7 @@ class CreditosTab extends StatelessWidget {
                 Expanded(
                   child: Text(
                     "Av. Marechal Rondon, s/n, Jd. Rosa Elze - São Cristovão/SE",
+                    textAlign: TextAlign.center,
                   ),
                 )
               ],
@@ -84,16 +85,14 @@ class CreditosTab extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Expanded(
-                  child: Text(
-                    "Coautores:",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                Text(
+                  "Coautores:",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
-                )
+                ),
               ],
             ),
             SizedBox(

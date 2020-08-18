@@ -83,7 +83,7 @@ class _ConsultasTabState extends State<ConsultasTab> {
                       headerStyle: HeaderStyle(
                           centerHeaderTitle: true,
                           formatButtonDecoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Colors.blueAccent,
                               borderRadius: BorderRadius.circular(20)),
                           formatButtonTextStyle: TextStyle(color: Colors.white),
                           formatButtonShowsNext: false),
@@ -117,25 +117,70 @@ class _ConsultasTabState extends State<ConsultasTab> {
                                 style: TextStyle(color: Colors.white),
                               ))),
                     ),
-                    ..._eventosSelecionados.map((event) => Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Card(
-                        child: ListTile(
-                          leading: Icon(Icons.calendar_today),
-                          title: Text(event.titulo),
-                          trailing: Icon(Icons.arrow_forward_ios),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => EventDetailsPage(
-                                      event: event,
-                                    )));
-                          },
+                    (_eventosSelecionados.length > 0)
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                                left: 16.0,
+                                right: 16.0,
+                                top: 10.0,
+                                bottom: 10.0),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text(
+                                    "Consultas do dia",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 20.0),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        : Padding(
+                            padding: EdgeInsets.only(
+                                left: 16.0,
+                                right: 16.0,
+                                top: 10.0,
+                                bottom: 10.0),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text(
+                                    "Nenhuma consulta para esse dia",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 20.0),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                    ..._eventosSelecionados.map(
+                      (event) => Padding(
+                        padding: EdgeInsets.only(
+                            left: 16.0, right: 16.0, bottom: 5.0),
+                        child: Card(
+                          shadowColor: Colors.blueAccent,
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.calendar_today,
+                              color: Colors.blueAccent,
+                            ),
+                            title:
+                                Text(event.titulo, textAlign: TextAlign.center),
+                            trailing: Icon(Icons.arrow_forward_ios),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => EventDetailsPage(
+                                            event: event,
+                                          )));
+                            },
+                          ),
                         ),
                       ),
                     ),
-                        )
+                    SizedBox(height: 15.0)
                   ],
                 ),
               );
@@ -143,6 +188,7 @@ class _ConsultasTabState extends State<ConsultasTab> {
           ),
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
+            backgroundColor: Colors.blueAccent,
             onPressed: () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => AddEventPage()));
