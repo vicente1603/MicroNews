@@ -14,13 +14,29 @@ class DetalheDicaScreen extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
         title: Text(title),
+        actions: <Widget>[
+          FlatButton(
+            child: IconButton(
+              icon: Icon(Icons.share, color: Colors.white),
+            ),
+            textColor: Colors.white,
+            onPressed: () {
+              final RenderBox box = context.findRenderObject();
+
+              Share.share(title,
+                  subject: description,
+                  sharePositionOrigin:
+                      box.localToGlobal(Offset.zero) & box.size);
+            },
+          )
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(colors: [
-              Colors.blueAccent,
-              Colors.white,
-            ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+          Colors.blueAccent,
+          Colors.white,
+        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
         padding: new EdgeInsets.symmetric(horizontal: 32.0),
         child: ListView(
           padding: new EdgeInsets.fromLTRB(0.0, 32.0, 0.0, 32.0),
@@ -40,30 +56,7 @@ class DetalheDicaScreen extends StatelessWidget {
                     fontSize: 20,
                   ),
                   textAlign: TextAlign.justify,
-                ),
-                const Padding(padding: EdgeInsets.only(top: 24.0)),
-                Builder(
-                  builder: (BuildContext context) {
-                    return RaisedButton(
-                      child: const Text('Share'),
-                      onPressed: () {
-                        // A builder is used to retrieve the context immediately
-                        // surrounding the RaisedButton.
-                        //
-                        // The context's `findRenderObject` returns the first
-                        // RenderObject in its descendent tree when it's not
-                        // a RenderObjectWidget. The RaisedButton's RenderObject
-                        // has its position and size after it's built.
-                        final RenderBox box = context.findRenderObject();
-
-                        Share.share(title,
-                            subject: description,
-                            sharePositionOrigin:
-                            box.localToGlobal(Offset.zero) & box.size);
-                      },
-                    );
-                  },
-                ),
+                )
               ],
             ),
           ],
