@@ -19,6 +19,7 @@ class HomeEventosScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(snapshot.data["title"]),
+          elevation: 0,
           backgroundColor: Colors.blueAccent,
           centerTitle: true,
         ),

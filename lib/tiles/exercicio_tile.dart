@@ -33,7 +33,7 @@ class ExercicioTile extends StatelessWidget {
 
   _buildTextContainer(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    var categoryText = _applyTextEffects(
+    var titleText = _applyTextEffects(
       translationFactor: 300.0,
       child: Text(
         exercicio.title,
@@ -47,7 +47,7 @@ class ExercicioTile extends StatelessWidget {
       ),
     );
 
-    var titleText = _applyTextEffects(
+    var contentText = _applyTextEffects(
       translationFactor: 200.0,
       child: Padding(
         padding: const EdgeInsets.only(top: 20.0),
@@ -86,8 +86,8 @@ class ExercicioTile extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          categoryText,
           titleText,
+          contentText,
         ],
       ),
     );

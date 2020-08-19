@@ -32,12 +32,17 @@ class _MicroNewsState extends State<MicroNews> {
   Widget build(BuildContext context) {
     var doc;
 
+
+
     return Provider<GlobalBloc>.value(
       value: globalBloc,
       child: ScopedModel<UserModel>(
           model: UserModel(),
           child: MaterialApp(
-            localizationsDelegates: [GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate],
+            localizationsDelegates: [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate
+            ],
             supportedLocales: [Locale("pt")],
             title: "MicroNews",
             theme: ThemeData(
@@ -46,7 +51,8 @@ class _MicroNewsState extends State<MicroNews> {
             home: _introScreen(),
             routes: <String, WidgetBuilder>{
               '/tab_consultas': (BuildContext context) => new ConsultasTab(),
-              '/tab_medicamentos' : (BuildContext context) => new MedicamentosTab(),
+              '/tab_medicamentos': (BuildContext context) =>
+                  new MedicamentosTab(),
             },
           )),
     );

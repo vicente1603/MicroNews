@@ -1,22 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DicasData{
-
+class DicasData {
   String category;
   String id;
   String title;
   String description;
-  List<dynamic> usuarios_like;
-  int likes;
+  String image;
 
-  DicasData.fromDocument(DocumentSnapshot snapshot){
-
+  DicasData.fromDocument(DocumentSnapshot snapshot) {
     id = snapshot.documentID;
     title = snapshot.data["title"];
     description = snapshot.data["description"];
-    usuarios_like = snapshot.data["usuarios_like"];
-    likes = snapshot.data["likes"];
-
+    image = snapshot.data["image"];
   }
-
 }
