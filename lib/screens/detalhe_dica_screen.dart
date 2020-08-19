@@ -23,8 +23,7 @@ class DetalheDicaScreen extends StatelessWidget {
             onPressed: () {
               final RenderBox box = context.findRenderObject();
 
-              Share.share(title,
-                  subject: description,
+              Share.share(title.toUpperCase() + ": \n \n" + description,
                   sharePositionOrigin:
                       box.localToGlobal(Offset.zero) & box.size);
             },

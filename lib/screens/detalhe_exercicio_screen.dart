@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 
 class DetalheExercicioScreen extends StatelessWidget {
   String title;
@@ -13,6 +14,21 @@ class DetalheExercicioScreen extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
         title: Text(title),
+        actions: <Widget>[
+          FlatButton(
+            child: IconButton(
+              icon: Icon(Icons.share, color: Colors.white),
+            ),
+            textColor: Colors.white,
+            onPressed: () {
+              final RenderBox box = context.findRenderObject();
+
+              Share.share(title.toUpperCase() + ": \n \n" + description,
+                  sharePositionOrigin:
+                  box.localToGlobal(Offset.zero) & box.size);
+            },
+          )
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
