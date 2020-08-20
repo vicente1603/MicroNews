@@ -30,6 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       "https://ipc.digital/wp-content/uploads/2016/07/icon-user-default.png";
   String nomeEstado = "";
   var _estados = [
+    'SELECIONE',
     'Acre',
     'Alagoas',
     'Amapá',
@@ -58,7 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     'Sergipe',
     'Tocantins',
   ];
-  var _itemSelecionado = 'Acre';
+  var _itemSelecionado = 'SELECIONE';
 
   var maskTelefone = MaskTextInputFormatter(
       mask: "(##) #####-####", filter: {"#": RegExp(r'[0-9]')});
@@ -294,6 +295,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _confirmarSenhaController.text.trim()) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text("As senhas não são iguais."),
+        backgroundColor: Colors.redAccent,
+        duration: Duration(seconds: 2),
+      ));
+      valido = false;
+    } else if (_itemSelecionado == "SELECIONE") {
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text("Selecione um estado."),
         backgroundColor: Colors.redAccent,
         duration: Duration(seconds: 2),
       ));
