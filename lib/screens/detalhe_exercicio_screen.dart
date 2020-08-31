@@ -23,7 +23,7 @@ class DetalheExercicioScreen extends StatelessWidget {
             onPressed: () {
               final RenderBox box = context.findRenderObject();
 
-              Share.share(title.toUpperCase() + ": \n \n" + description,
+              Share.share(title.toUpperCase() + ": \n \n" + description.replaceAll("•", "\n"),
                   sharePositionOrigin:
                   box.localToGlobal(Offset.zero) & box.size);
             },
