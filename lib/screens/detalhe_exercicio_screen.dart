@@ -50,7 +50,7 @@ class DetalheExercicioScreen extends StatelessWidget {
                     )),
                 Separator(),
                 new Text(
-                  description,
+                  description.replaceAll("•", "\n"),
                   style: TextStyle(
                     fontSize: 20,
                   ),
