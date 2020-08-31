@@ -43,14 +43,17 @@ class DetalheDicaScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Text("Descrição:",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    )),
+                new Text(
+                  "Descrição:",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
                 Separator(),
                 new Text(
-                  description,
+                  description.replaceAll("•", "\n"),
                   style: TextStyle(
                     fontSize: 20,
                   ),

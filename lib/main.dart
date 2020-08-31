@@ -32,8 +32,6 @@ class _MicroNewsState extends State<MicroNews> {
   Widget build(BuildContext context) {
     var doc;
 
-
-
     return Provider<GlobalBloc>.value(
       value: globalBloc,
       child: ScopedModel<UserModel>(
