@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:micro_news/blocs/app_bloc.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/credenciais/signup_screen.dart';
@@ -162,6 +161,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (remember == true) {
       writeContentPass();
       writeContentEmail();
+    }else {
+      cleanContentEmail();
+      cleanContentSenha();
     }
 
     Navigator.of(context)
@@ -206,6 +208,15 @@ class _LoginScreenState extends State<LoginScreen> {
       final file = await _localFileEmail;
       String contents = await file.readAsString();
       _emailController.text = contents;
+
+      if (contents == "") {
+        remember = false;
+      } else {
+        remember = true;
+      }
+
+      setState(() {});
+
       return contents;
     } catch (e) {
       return 'Error';
@@ -217,6 +228,32 @@ class _LoginScreenState extends State<LoginScreen> {
       final file = await _localFilePass;
       String contents = await file.readAsString();
       _senhaController.text = contents;
+      return contents;
+    } catch (e) {
+      return 'Error';
+    }
+  }
+
+  Future<String> cleanContentEmail() async {
+    try {
+      final file = await _localFileEmail;
+      file.writeAsString("");
+      String contents = await file.readAsString();
+      _emailController.text = contents;
+      remember = false;
+      return contents;
+    } catch (e) {
+      return 'Error';
+    }
+  }
+
+  Future<String> cleanContentSenha() async {
+    try {
+      final file = await _localFilePass;
+      file.writeAsString("");
+      String contents = await file.readAsString();
+      _senhaController.text = contents;
+      remember = false;
       return contents;
     } catch (e) {
       return 'Error';
