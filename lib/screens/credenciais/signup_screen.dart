@@ -7,6 +7,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:micro_news/tabs/home_tab.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -320,7 +321,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     ));
     Future.delayed(Duration(seconds: 2)).then((_) {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomeScreen()));
+          MaterialPageRoute(builder: (context) => HomeTab()));
     });
   }
 

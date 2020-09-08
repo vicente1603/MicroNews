@@ -6,16 +6,42 @@ import 'package:micro_news/screens/consultas/novo_evento_calendario_screen.dart'
 import 'package:micro_news/models/evento_calendario_model.dart';
 import 'package:micro_news/services/firestore.dart';
 import 'package:micro_news/models/usuario_model.dart';
+import 'package:micro_news/widgets/custom_drawer_guitar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../screens/consultas/detalhes_evento_calendario_screen.dart';
 
-class ConsultasTab extends StatefulWidget {
+class ConsultasTab extends StatelessWidget {
   @override
-  _ConsultasTabState createState() => _ConsultasTabState();
+  Widget build(BuildContext context) {
+    AppBar appBar = AppBar(
+      leading: Builder(
+        builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () => CustomGuitarDrawer.of(context).open(),
+          );
+        },
+      ),
+    );
+    Widget child = _ConsultasTab(appBar: appBar);
+
+    child = CustomGuitarDrawer(child: child);
+
+    return child;
+  }
 }
 
-class _ConsultasTabState extends State<ConsultasTab> {
+
+class _ConsultasTab extends StatefulWidget {
+  final AppBar appBar;
+
+  _ConsultasTab({Key key, @required this.appBar}) : super(key: key);
+  @override
+  __ConsultasTabState createState() => __ConsultasTabState();
+}
+
+class __ConsultasTabState extends State<_ConsultasTab> {
   CalendarController _controller;
   SharedPreferences prefs;
   TextEditingController _eventController;
@@ -55,6 +81,7 @@ class _ConsultasTabState extends State<ConsultasTab> {
               toMap: (event) => event.toMap());
 
       return Scaffold(
+        appBar: widget.appBar,
           body: StreamBuilder<List<EventModel>>(
             stream: eventosCalendario.streamList(),
             builder: (context, snapshot) {
@@ -95,7 +122,7 @@ class _ConsultasTabState extends State<ConsultasTab> {
                       },
                       builders: CalendarBuilders(
                           selectedDayBuilder: (context, date, events) =>
-                              Container(
+                             Container(
                                   margin: const EdgeInsets.all(4.0),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(

@@ -1,8 +1,41 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_news/models/usuario_model.dart';
+import 'package:micro_news/widgets/custom_drawer_guitar.dart';
 
 class AlimentacaoTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    AppBar appBar = AppBar(
+      leading: Builder(
+        builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () => CustomGuitarDrawer.of(context).open(),
+          );
+        },
+      ),
+      backgroundColor: Colors.blueAccent,
+      bottom: TabBar(
+        tabs: [
+          Tab(text: "Recomendados"),
+          Tab(text: "Não Recomendados"),
+        ],
+      ),
+    );
+    Widget child = _AlimentacaoTab(appBar: appBar);
+
+    child = CustomGuitarDrawer(child: child);
+
+    return child;
+  }
+}
+
+class _AlimentacaoTab extends StatelessWidget {
+  final AppBar appBar;
+
+  _AlimentacaoTab({Key key, @required this.appBar}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     int likes;
@@ -15,15 +48,7 @@ class AlimentacaoTab extends StatelessWidget {
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-          appBar: AppBar(
-              backgroundColor: Colors.blueAccent,
-              elevation: 0,
-              title: TabBar(
-                tabs: [
-                  Tab(text: "Recomendados"),
-                  Tab(text: "Não Recomendados"),
-                ],
-              )),
+          appBar: appBar,
           body: TabBarView(
             children: [
               //recomendados
@@ -72,7 +97,10 @@ class AlimentacaoTab extends StatelessWidget {
                                         ),
                                         child: Card(
                                           child: ListTileRecomendados(
-                                              description, id, likes, usuarios_like),
+                                              description,
+                                              id,
+                                              likes,
+                                              usuarios_like),
                                         ),
                                       );
                                     });
@@ -128,7 +156,10 @@ class AlimentacaoTab extends StatelessWidget {
                                         ),
                                         child: Card(
                                           child: ListTileNaoRecomendados(
-                                              description, id, likes, usuarios_like),
+                                              description,
+                                              id,
+                                              likes,
+                                              usuarios_like),
                                         ),
                                       );
                                     });
@@ -175,7 +206,8 @@ class ListTileRecomendados extends StatefulWidget {
   String description;
   List<dynamic> usuarios_like;
 
-  ListTileRecomendados(this.description, this.id, this.likes, this.usuarios_like);
+  ListTileRecomendados(
+      this.description, this.id, this.likes, this.usuarios_like);
 
   @override
   _ListTileRecomendadosState createState() => _ListTileRecomendadosState();
@@ -203,7 +235,10 @@ class _ListTileRecomendadosState extends State<ListTileRecomendados> {
       title: Row(
         children: <Widget>[
           Expanded(
-            child: Text(description, textAlign: TextAlign.center,),
+            child: Text(
+              description,
+              textAlign: TextAlign.center,
+            ),
           ),
         ],
       ),
@@ -212,8 +247,8 @@ class _ListTileRecomendadosState extends State<ListTileRecomendados> {
         children: <Widget>[
           IconButton(
             onPressed: () {
-              if(!usuarios_like.contains(UserModel.of(context).firebaseUser.uid)){
-
+              if (!usuarios_like
+                  .contains(UserModel.of(context).firebaseUser.uid)) {
                 usuarios_like.add(UserModel.of(context).firebaseUser.uid);
 
                 Firestore.instance
@@ -228,8 +263,7 @@ class _ListTileRecomendadosState extends State<ListTileRecomendados> {
                 setState(() {
                   likes++;
                 });
-              }else{
-
+              } else {
                 usuarios_like.remove(UserModel.of(context).firebaseUser.uid);
 
                 Firestore.instance
@@ -246,7 +280,9 @@ class _ListTileRecomendadosState extends State<ListTileRecomendados> {
                 });
               }
             },
-            icon: usuarios_like.contains(UserModel.of(context).firebaseUser.uid) ? Icon(Icons.star) : Icon(Icons.star_border),
+            icon: usuarios_like.contains(UserModel.of(context).firebaseUser.uid)
+                ? Icon(Icons.star)
+                : Icon(Icons.star_border),
             alignment: Alignment.centerRight,
           ),
           Text(likes.toString()),
@@ -266,7 +302,8 @@ class ListTileNaoRecomendados extends StatefulWidget {
   String description;
   List<dynamic> usuarios_like;
 
-  ListTileNaoRecomendados(this.description, this.id, this.likes, this.usuarios_like);
+  ListTileNaoRecomendados(
+      this.description, this.id, this.likes, this.usuarios_like);
 
   @override
   _ListTileNaoRecomendadosState createState() =>
@@ -292,62 +329,66 @@ class _ListTileNaoRecomendadosState extends State<ListTileNaoRecomendados> {
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.only(top: 5, left: 10),
-        title: Row(
-          children: <Widget>[
-            Expanded(
-              child: Text(description, textAlign: TextAlign.center,),
+      title: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              description,
+              textAlign: TextAlign.center,
             ),
-          ],
-        ),
-        subtitle: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            IconButton(
-              onPressed: () {
-                if(!usuarios_like.contains(UserModel.of(context).firebaseUser.uid)){
+          ),
+        ],
+      ),
+      subtitle: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            onPressed: () {
+              if (!usuarios_like
+                  .contains(UserModel.of(context).firebaseUser.uid)) {
+                usuarios_like.add(UserModel.of(context).firebaseUser.uid);
 
-                  usuarios_like.add(UserModel.of(context).firebaseUser.uid);
+                Firestore.instance
+                    .collection("alimentos")
+                    .document("KyI3uFMimX8qM73NTkOV")
+                    .collection("nao_recomendados")
+                    .document(id)
+                    .updateData({
+                  "usuarios_like": usuarios_like,
+                  "likes": likes + 1,
+                });
+                setState(() {
+                  likes++;
+                });
+              } else {
+                usuarios_like.remove(UserModel.of(context).firebaseUser.uid);
 
-                  Firestore.instance
-                      .collection("alimentos")
-                      .document("KyI3uFMimX8qM73NTkOV")
-                      .collection("nao_recomendados")
-                      .document(id)
-                      .updateData({
-                    "usuarios_like": usuarios_like,
-                    "likes": likes + 1,
-                  });
-                  setState(() {
-                    likes++;
-                  });
-                }else{
-
-                  usuarios_like.remove(UserModel.of(context).firebaseUser.uid);
-
-                  Firestore.instance
-                      .collection("alimentos")
-                      .document("KyI3uFMimX8qM73NTkOV")
-                      .collection("nao_recomendados")
-                      .document(id)
-                      .updateData({
-                    "usuarios_like": usuarios_like,
-                    "likes": likes - 1,
-                  });
-                  setState(() {
-                    likes--;
-                  });
-                }
-              },
-              icon: usuarios_like.contains(UserModel.of(context).firebaseUser.uid) ? Icon(Icons.star) : Icon(Icons.star_border),
-              alignment: Alignment.centerRight,
-            ),
-            Text(likes.toString()),
-          ],
-        ),
-        leading: CircleAvatar(
-          backgroundColor: Colors.white,
-          child: Image.network("https://img.icons8.com/color/2x/brigadeiro.png"),
-        ),
-      );
+                Firestore.instance
+                    .collection("alimentos")
+                    .document("KyI3uFMimX8qM73NTkOV")
+                    .collection("nao_recomendados")
+                    .document(id)
+                    .updateData({
+                  "usuarios_like": usuarios_like,
+                  "likes": likes - 1,
+                });
+                setState(() {
+                  likes--;
+                });
+              }
+            },
+            icon: usuarios_like.contains(UserModel.of(context).firebaseUser.uid)
+                ? Icon(Icons.star)
+                : Icon(Icons.star_border),
+            alignment: Alignment.centerRight,
+          ),
+          Text(likes.toString()),
+        ],
+      ),
+      leading: CircleAvatar(
+        backgroundColor: Colors.white,
+        child: Image.network("https://img.icons8.com/color/2x/brigadeiro.png"),
+      ),
+    );
   }
 }

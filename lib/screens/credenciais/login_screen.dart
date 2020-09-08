@@ -3,6 +3,7 @@ import 'package:micro_news/blocs/app_bloc.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/credenciais/signup_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:micro_news/tabs/home_tab.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -167,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+        .pushReplacement(MaterialPageRoute(builder: (context) => HomeTab()));
   }
 
   void _onFail() {

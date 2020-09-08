@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/credenciais/login_screen.dart';
 import 'package:micro_news/tiles/drawer_tile.dart';
@@ -20,6 +21,36 @@ class CustomDrawer extends StatelessWidget {
             Colors.white,
           ], begin: Alignment.topLeft, end: Alignment.bottomLeft)),
         );
+
+    openAlertBox(BuildContext context, UserModel model) {
+      return showCupertinoDialog(
+          context: context,
+          builder: (context) {
+            return CupertinoAlertDialog(
+              content: Text("Deseja sair do aplicativo?",
+                  style: TextStyle(fontSize: 20)),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: Text("NÃO"),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: Text("SIM"),
+                  onPressed: () {
+                    model.signOut();
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => LoginScreen()));
+                  },
+                  isDestructiveAction: true,
+                ),
+              ],
+            );
+          });
+    }
 
     return Drawer(
       child: Stack(
@@ -46,7 +77,6 @@ class CustomDrawer extends StatelessWidget {
                           children: <Widget>[
                             Expanded(
                               child: Text(
-//                                "Olá, Vicente José Santiago Costa Oliveira",
                                 "Olá, ${!model.isLoggedIn() ? "" : model.userData["nome"]}",
                                 style: TextStyle(
                                     fontSize: 30.0,
@@ -67,10 +97,7 @@ class CustomDrawer extends StatelessWidget {
                                 fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
-                            model.signOut();
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => LoginScreen()));
+                            openAlertBox(context, model);
                           },
                         ),
                       ],
@@ -87,8 +114,8 @@ class CustomDrawer extends StatelessWidget {
               DrawerTile(Icons.calendar_today, "Consultas e Terapias",
                   pageController, 3),
               DrawerTile(Icons.alarm_add, "Medicamentos", pageController, 4),
-              DrawerTile(Icons.child_care, "Desenvolvimento",
-                  pageController, 5),
+              DrawerTile(
+                  Icons.child_care, "Desenvolvimento", pageController, 5),
               DrawerTile(Icons.restaurant, "Alimentação", pageController, 6),
               DrawerTile(Icons.accessibility, "Exercícios", pageController, 7),
               DrawerTile(

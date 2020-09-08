@@ -11,15 +11,48 @@ import 'package:micro_news/screens/desenvolvimento_infantil/registro_p_cefalico.
 import 'package:micro_news/tiles/imc_tile.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:micro_news/tiles/p_cefalico_tile.dart';
+import 'package:micro_news/widgets/custom_drawer_guitar.dart';
 
-class DesenvolvimentoInfantilTab extends StatefulWidget {
+class DesenvolvimentoInfantilTab extends StatelessWidget {
   @override
-  _DesenvolvimentoInfantilTabState createState() =>
-      _DesenvolvimentoInfantilTabState();
+  Widget build(BuildContext context) {
+    AppBar appBar = AppBar(
+      bottom: TabBar(
+        indicatorColor: Colors.white,
+        indicatorWeight: 2,
+        tabs: <Widget>[
+          Tab(text: "IMC"),
+          Tab(text: "Perímetro Cefálico"),
+        ],
+      ),
+      leading: Builder(
+        builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () => CustomGuitarDrawer.of(context).open(),
+          );
+        },
+      ),
+    );
+    Widget child = _DesenvolvimentoInfantilTab(appBar: appBar);
+
+    child = CustomGuitarDrawer(child: child);
+
+    return child;
+  }
 }
 
-class _DesenvolvimentoInfantilTabState
-    extends State<DesenvolvimentoInfantilTab> {
+class _DesenvolvimentoInfantilTab extends StatefulWidget {
+  final AppBar appBar;
+
+  _DesenvolvimentoInfantilTab({Key key, @required this.appBar}) : super(key: key);
+  @override
+  __DesenvolvimentoInfantilTabState createState() =>
+      __DesenvolvimentoInfantilTabState();
+}
+
+class __DesenvolvimentoInfantilTabState
+    extends State<_DesenvolvimentoInfantilTab> {
   Function(DateTime) onItemClicked;
 
   List<charts.Series<Imc, DateTime>> _seriesLineIMCData;
@@ -311,18 +344,7 @@ class _DesenvolvimentoInfantilTabState
       return DefaultTabController(
         length: 2,
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.blueAccent,
-            elevation: 0,
-            title: TabBar(
-              indicatorColor: Colors.white,
-              indicatorWeight: 2,
-              tabs: <Widget>[
-                Tab(text: "IMC"),
-                Tab(text: "Perímetro Cefálico"),
-              ],
-            ),
-          ),
+          appBar: widget.appBar,
           body: TabBarView(
             children: <Widget>[
               //IMC

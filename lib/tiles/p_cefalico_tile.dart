@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:micro_news/models/usuario_model.dart';
@@ -72,20 +73,22 @@ class _ListTilePCefalicoState extends State<ListTilePCefalico> {
   }
 
   openAlertBox(BuildContext context, String uid) {
-    return showDialog(
+    return showCupertinoDialog(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
+        builder: (context) {
+          return CupertinoAlertDialog(
             title: new Text('Remover'),
             content: new Text("Deseja remover o perímetro cefálico?"),
             actions: <Widget>[
-              new GestureDetector(
-                onTap: () => Navigator.of(context).pop(false),
+              CupertinoDialogAction(
                 child: Text("NÃO"),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
               ),
-              SizedBox(height: 16),
-              new GestureDetector(
-                onTap: () {
+              CupertinoDialogAction(
+                child: Text("SIM"),
+                onPressed: () {
                   Firestore.instance
                       .collection("users")
                       .document(uid)
@@ -98,7 +101,7 @@ class _ListTilePCefalicoState extends State<ListTilePCefalico> {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => DesenvolvimentoInfantilTab()));
                 },
-                child: Text("SIM"),
+                isDestructiveAction: true,
               ),
             ],
           );

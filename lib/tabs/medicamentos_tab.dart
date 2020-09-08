@@ -5,14 +5,41 @@ import 'package:micro_news/models/medicamentos_data.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/medicamentos/detalhes_medicamentos_screen.dart';
 import 'package:micro_news/screens/medicamentos/novo_medicamento_screen.dart';
+import 'package:micro_news/widgets/custom_drawer_guitar.dart';
 import 'package:provider/provider.dart';
 
-class MedicamentosTab extends StatefulWidget {
+class MedicamentosTab extends StatelessWidget {
   @override
-  _MedicamentosTabState createState() => _MedicamentosTabState();
+  Widget build(BuildContext context) {
+    AppBar appBar = AppBar(
+      leading: Builder(
+        builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () => CustomGuitarDrawer.of(context).open(),
+          );
+        },
+      ),
+      elevation: 0,
+    );
+    Widget child = _MedicamentosTab(appBar: appBar);
+
+    child = CustomGuitarDrawer(child: child);
+
+    return child;
+  }
 }
 
-class _MedicamentosTabState extends State<MedicamentosTab> {
+class _MedicamentosTab extends StatefulWidget {
+  final AppBar appBar;
+
+  _MedicamentosTab({Key key, @required this.appBar}) : super(key: key);
+
+  @override
+  __MedicamentosTabState createState() => __MedicamentosTabState();
+}
+
+class __MedicamentosTabState extends State<_MedicamentosTab> {
   void initState() {
     super.initState();
   }
@@ -21,9 +48,7 @@ class _MedicamentosTabState extends State<MedicamentosTab> {
   Widget build(BuildContext context) {
     final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-      ),
+      appBar: widget.appBar,
       body: Container(
         color: Color(0xFFF6F8FC),
         child: Column(

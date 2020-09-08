@@ -1,15 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:micro_news/widgets/custom_drawer_guitar.dart';
 
 class CreditosTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    AppBar appBar = AppBar(
+      elevation: 0,
+      leading: Builder(
+        builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () => CustomGuitarDrawer.of(context).open(),
+          );
+        },
+      ),
+    );
+    Widget child = _CreditosTab(appBar: appBar);
+
+    child = CustomGuitarDrawer(child: child);
+
+    return child;
+  }
+}
+
+
+class _CreditosTab extends StatelessWidget {
+  final AppBar appBar;
+
+  _CreditosTab({Key key, @required this.appBar}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBar,
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(colors: [
-          Colors.blueAccent,
-          Colors.white,
-        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+              Colors.blueAccent,
+              Colors.white,
+            ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
         child: ListView(
           padding: EdgeInsets.all(16.0),
           children: <Widget>[

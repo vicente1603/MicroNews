@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/tabs/desenvolvimento_infantil_tab.dart';
-import 'dart:math' as math;
 import 'package:random_string/random_string.dart';
 
 class RegistroPCefalicoScreen extends StatefulWidget {
@@ -19,12 +18,6 @@ class _RegistroPCefalicoScreenState extends State<RegistroPCefalicoScreen> {
   double diametro;
   DateTime data;
 
-  void _resetFields() {
-    diametroController.text = "";
-    setState(() {
-      _formKey = GlobalKey<FormState>();
-    });
-  }
 
   void _salvar(diametro, uid) {
     var id = randomAlphaNumeric(15);
@@ -59,12 +52,6 @@ class _RegistroPCefalicoScreenState extends State<RegistroPCefalicoScreen> {
           title: Text("Registrar Perímetro Cefálico"),
           centerTitle: true,
           backgroundColor: Colors.blueAccent,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: _resetFields,
-            )
-          ],
         ),
         backgroundColor: Colors.white,
         body: SingleChildScrollView(

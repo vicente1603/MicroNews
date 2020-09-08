@@ -39,6 +39,7 @@ class _MicroNewsState extends State<MicroNews> {
           child: MaterialApp(
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate
             ],
             supportedLocales: [Locale("pt")],
@@ -47,11 +48,6 @@ class _MicroNewsState extends State<MicroNews> {
                 primarySwatch: Colors.blue, primaryColor: Colors.blueAccent),
             debugShowCheckedModeBanner: false,
             home: _introScreen(),
-            routes: <String, WidgetBuilder>{
-              '/tab_consultas': (BuildContext context) => new ConsultasTab(),
-              '/tab_medicamentos': (BuildContext context) =>
-                  new MedicamentosTab(),
-            },
           )),
     );
   }

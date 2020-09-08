@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:micro_news/tabs/consultas_tab.dart';
 import '../../models/evento_calendario_model.dart';
 import '../../services/firestore.dart';
 
@@ -163,7 +164,9 @@ class _AddEventPageState extends State<AddEventPage> {
                                     horario: _horario.text,
                                     data: _data));
                               }
-                              Navigator.pop(context);
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => ConsultasTab()));
                               setState(() {
                                 processing = false;
                               });

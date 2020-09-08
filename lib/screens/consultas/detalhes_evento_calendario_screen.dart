@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:micro_news/blocs/app_bloc.dart';
@@ -22,17 +23,9 @@ class EventDetailsPage extends StatelessWidget {
       resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.blueAccent,
-        ),
         centerTitle: true,
         title: Text(
-          "Detalhes do evento",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-          ),
+          "Detalhes do evento"
         ),
         elevation: 0.0,
       ),
@@ -79,27 +72,30 @@ class EventDetailsPage extends StatelessWidget {
   }
 
   openAlertBox(BuildContext context, GlobalBloc _globalBloc, String uid) {
-    return showDialog(
+    return showCupertinoDialog(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
+        builder: (context) {
+          return CupertinoAlertDialog(
             title: new Text('Remover evento'),
             content: new Text('Deseja remover o evento ' + event.titulo + "?"),
             actions: <Widget>[
-              new GestureDetector(
-                onTap: () => Navigator.of(context).pop(false),
+              CupertinoDialogAction(
                 child: Text("NÃO"),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
               ),
-              SizedBox(height: 16),
-              new GestureDetector(
-                onTap: () {
+              CupertinoDialogAction(
+                child: Text("SIM"),
+                onPressed: () {
                   eventDBS.removeItem(event.id);
                   Future.delayed(Duration(seconds: 2)).then((_) {
+
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => ConsultasTab()));
                   });
                 },
-                child: Text("SIM"),
+                isDestructiveAction: true,
               ),
             ],
           );

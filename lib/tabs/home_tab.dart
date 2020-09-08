@@ -1,41 +1,77 @@
+import 'package:flutter/cupertino.dart';
 import 'package:micro_news/models/consultas_data.dart';
+import 'package:micro_news/models/usuario_model.dart';
+import 'package:micro_news/screens/credenciais/login_screen.dart';
 import 'package:micro_news/tiles/consultas_tile.dart';
 import 'package:micro_news/tiles/home_tile.dart';
 import 'package:micro_news/widgets/custom_drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:micro_news/widgets/custom_drawer_guitar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    AppBar appBar = AppBar(
+      leading: Builder(
+        builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () => CustomGuitarDrawer.of(context).open(),
+          );
+        },
+      ),
+    );
+    Widget child = _HomeTab(appBar: appBar);
+    child = CustomGuitarDrawer(child: child);
+
+    return child;
+  }
+}
+
+class _HomeTab extends StatelessWidget {
+  final AppBar appBar;
+
+  _HomeTab({Key key, @required this.appBar}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Future<bool> _onBackPressed() {
-      return showDialog(
-            context: context,
-            builder: (context) => new AlertDialog(
-              title: new Text('Tem certeza??'),
-              content: new Text('Deseja sair do aplicativo?'),
+      return showCupertinoDialog(
+          context: context,
+          builder: (context) {
+            return CupertinoAlertDialog(
+              content: Text("Deseja sair do aplicativo?",
+                  style: TextStyle(fontSize: 20)),
               actions: <Widget>[
-                new GestureDetector(
-                  onTap: () => Navigator.of(context).pop(false),
+                CupertinoDialogAction(
                   child: Text("NÃO"),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
                 ),
-                SizedBox(height: 16),
-                new GestureDetector(
-                  onTap: () => Navigator.of(context).pop(true),
+                CupertinoDialogAction(
                   child: Text("SIM"),
+                  onPressed: () {
+                    UserModel model = new UserModel();
+                    model.signOut();
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                  },
+                  isDestructiveAction: true,
                 ),
               ],
-            ),
-          ) ??
-          false;
+            );
+          });
     }
 
     return new WillPopScope(
         onWillPop: _onBackPressed,
         child: Scaffold(
+          appBar: appBar,
           body: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [

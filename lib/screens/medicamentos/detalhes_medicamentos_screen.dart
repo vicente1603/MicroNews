@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:micro_news/blocs/app_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:micro_news/models/medicamentos_data.dart';
 import 'package:micro_news/models/medicamento.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/tabs/medicamentos_tab.dart';
+import 'package:micro_news/tiles/drawer_tile.dart';
 import 'package:provider/provider.dart';
 
 class DetalhesMedicamentoScreen extends StatelessWidget {
@@ -23,18 +25,8 @@ class DetalhesMedicamentoScreen extends StatelessWidget {
         resizeToAvoidBottomPadding: false,
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(
-            color: Colors.blueAccent,
-          ),
           centerTitle: true,
-          title: Text(
-            "Detalhes do medicamento",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 18,
-            ),
-          ),
+          title: Text("Detalhes do medicamento"),
           elevation: 0.0,
         ),
         body: SingleChildScrollView(
@@ -78,22 +70,24 @@ class DetalhesMedicamentoScreen extends StatelessWidget {
   }
 
   openAlertBox(BuildContext context, GlobalBloc _globalBloc, String uid) {
-    return showDialog(
+    return showCupertinoDialog(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
+        builder: (context) {
+          return CupertinoAlertDialog(
             title: new Text('Remover medicamento'),
             content: new Text('Deseja remover o medicamento ' +
                 medicamento.nomeMedicamento.toString() +
                 "?"),
             actions: <Widget>[
-              new GestureDetector(
-                onTap: () => Navigator.of(context).pop(false),
+              CupertinoDialogAction(
                 child: Text("NÃO"),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
               ),
-              SizedBox(height: 16),
-              new GestureDetector(
-                onTap: () {
+              CupertinoDialogAction(
+                child: Text("SIM"),
+                onPressed: () {
                   Firestore.instance
                       .collection("users")
                       .document(uid)
@@ -113,16 +107,12 @@ class DetalhesMedicamentoScreen extends StatelessWidget {
 
                   _globalBloc.removeMedicine(tobeRemoved);
 
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return MedicamentosTab();
-                      },
-                    ),
-                  );
+//                  Navigator.of(context).popUntil((route) => route.isFirst);
+
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => MedicamentosTab()));
                 },
-                child: Text("SIM"),
+                isDestructiveAction: true,
               ),
             ],
           );

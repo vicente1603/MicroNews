@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/tabs/desenvolvimento_infantil_tab.dart';
-import 'dart:math' as math;
 import 'package:random_string/random_string.dart';
 
 class RegistroImcScreen extends StatefulWidget {
@@ -23,16 +22,7 @@ class _RegistroImcScreenState extends State<RegistroImcScreen> {
   DateTime data;
   int cor;
 
-  void _resetFields() {
-    pesoController.text = "";
-    alturaController.text = "";
-    setState(() {
-      _info = "Informe seus dados!";
-      _formKey = GlobalKey<FormState>();
-    });
-  }
-
-  void _calculate(uid) {
+  void _calcular(uid) {
     setState(() {
       peso = double.parse(pesoController.text);
       altura = double.parse(alturaController.text) / 100;
@@ -81,87 +71,74 @@ class _RegistroImcScreenState extends State<RegistroImcScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (UserModel.of(context).isLoggedIn()) {
-      String uid = UserModel.of(context).firebaseUser.uid;
-
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("Registrar IMC"),
-          centerTitle: true,
-          backgroundColor: Colors.blueAccent,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: _resetFields,
-            )
-          ],
-        ),
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Icon(Icons.person_outline,
-                    size: 120.0, color: Colors.blueAccent),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                      labelText: "Peso (kg)",
-                      labelStyle: TextStyle(color: Colors.blueAccent)),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.blueAccent, fontSize: 25.0),
-                  controller: pesoController,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return "Insira seu Peso!";
-                    }
-                  },
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                      labelText: "Altura (cm)",
-                      labelStyle: TextStyle(color: Colors.blueAccent)),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.blueAccent, fontSize: 25.0),
-                  controller: alturaController,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return "Insira sua Altura!";
-                    }
-                  },
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                  child: Container(
-                    height: 50.0,
-                    child: RaisedButton(
-                      onPressed: () {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Registrar IMC"),
+        centerTitle: true,
+        backgroundColor: Colors.blueAccent,
+      ),
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Icon(Icons.person_outline, size: 120.0, color: Colors.blueAccent),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    labelText: "Peso (kg)",
+                    labelStyle: TextStyle(color: Colors.blueAccent)),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.blueAccent, fontSize: 25.0),
+                controller: pesoController,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Insira seu Peso!";
+                  }
+                },
+              ),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    labelText: "Altura (cm)",
+                    labelStyle: TextStyle(color: Colors.blueAccent)),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.blueAccent, fontSize: 25.0),
+                controller: alturaController,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Insira sua Altura!";
+                  }
+                },
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                child: Container(
+                  height: 50.0,
+                  child: RaisedButton(
+                    onPressed: () {
+                      if (UserModel.of(context).isLoggedIn()) {
+                        String uid = UserModel.of(context).firebaseUser.uid;
                         if (_formKey.currentState.validate()) {
-                          _calculate(uid);
+                          _calcular(uid);
                         }
-                      },
-                      child: Text(
-                        "Calcular",
-                        style: TextStyle(color: Colors.white, fontSize: 25.0),
-                      ),
-                      color: Colors.blueAccent,
+                      }
+                    },
+                    child: Text(
+                      "Adicionar",
+                      style: TextStyle(color: Colors.white, fontSize: 25.0),
                     ),
+                    color: Colors.blueAccent,
                   ),
                 ),
-                Text(
-                  _info,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.blueAccent, fontSize: 25.0),
-                )
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-      );
-    }
+      ),
+    );
   }
 }

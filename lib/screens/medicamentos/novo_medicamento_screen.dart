@@ -10,6 +10,7 @@ import 'package:micro_news/models/tipo_medicamento.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/tabs/consultas_tab.dart';
 import 'package:micro_news/tabs/medicamentos_tab.dart';
+import 'package:micro_news/widgets/custom_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:random_string/random_string.dart';
@@ -52,21 +53,10 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
       final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
       return Scaffold(
         key: _scaffoldKey,
-        resizeToAvoidBottomPadding: false,
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(
-            color: Colors.blueAccent,
-          ),
           centerTitle: true,
-          title: Text(
-            "Novo medicamento",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 18,
-            ),
-          ),
+          title: Text("Novo medicamento"),
           elevation: 0.0,
         ),
         body: Container(
@@ -278,8 +268,8 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
     _globalBloc.updateMedicineList(newEntryMedicine);
     scheduleNotification(newEntryMedicine);
 
-    Navigator.of(context).pushReplacementNamed('/tab_medicamentos');
-
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => MedicamentosTab()));
   }
 
   void initializeErrorListen() {

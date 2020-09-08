@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:micro_news/models/usuario_model.dart';
+import 'package:micro_news/screens/home_screen.dart';
+import 'package:micro_news/tabs/chat_tab.dart';
 import 'package:micro_news/tabs/desenvolvimento_infantil_tab.dart';
+import 'package:micro_news/widgets/custom_drawer.dart';
 
 class ListTileImc extends StatefulWidget {
   String id;
@@ -104,20 +108,22 @@ class _ListTileImcState extends State<ListTileImc> {
   }
 
   openAlertBox(BuildContext context, String uid) {
-    return showDialog(
+    return showCupertinoDialog(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
+        builder: (context) {
+          return CupertinoAlertDialog(
             title: new Text('Remover'),
             content: new Text("Deseja remover o imc?"),
             actions: <Widget>[
-              new GestureDetector(
-                onTap: () => Navigator.of(context).pop(false),
+              CupertinoDialogAction(
                 child: Text("NÃO"),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
               ),
-              SizedBox(height: 16),
-              new GestureDetector(
-                onTap: () {
+              CupertinoDialogAction(
+                child: Text("SIM"),
+                onPressed: () {
                   Firestore.instance
                       .collection("users")
                       .document(uid)
@@ -127,16 +133,15 @@ class _ListTileImcState extends State<ListTileImc> {
                       .document(id)
                       .delete();
 
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => DesenvolvimentoInfantilTab()));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => DesenvolvimentoInfantilTab()));
                 },
-                child: Text("SIM"),
+                isDestructiveAction: true,
               ),
             ],
           );
         });
   }
-
 
   String converterTimestamp(int timestamp) {
     var date = DateTime.fromMillisecondsSinceEpoch(timestamp);

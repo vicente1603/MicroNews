@@ -7,22 +7,49 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:micro_news/helper/convert_time.dart';
 import 'package:micro_news/models/usuario_model.dart';
+import 'package:micro_news/widgets/custom_drawer_guitar.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 String uid;
 
-class ChatTab extends StatefulWidget {
+class ChatTab extends StatelessWidget {
   @override
-  _ChatTabState createState() => _ChatTabState();
+  Widget build(BuildContext context) {
+    AppBar appBar = AppBar(
+      leading: Builder(
+        builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () => CustomGuitarDrawer.of(context).open(),
+          );
+        },
+      ),
+    );
+    Widget child = _ChatTab(appBar: appBar);
+
+    child = CustomGuitarDrawer(child: child);
+
+    return child;
+  }
 }
 
-class _ChatTabState extends State<ChatTab> {
+class _ChatTab extends StatefulWidget {
+  final AppBar appBar;
+
+  _ChatTab({Key key, @required this.appBar}) : super(key: key);
+
+  @override
+  __ChatTabState createState() => __ChatTabState();
+}
+
+class __ChatTabState extends State<_ChatTab> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       bottom: false,
       top: false,
       child: Scaffold(
+        appBar: widget.appBar,
         body: Column(
           children: <Widget>[
             Expanded(
@@ -130,7 +157,9 @@ class _CampoTextoState extends State<CampoTexto> {
                             await task.onComplete;
                         String url = await taskSnapshot.ref.getDownloadURL();
                         _sendMessage(
-                            imgUrl: url, nomeUsuario: model.userData["nome"], fotoUsuario: model.userData["foto"]);
+                            imgUrl: url,
+                            nomeUsuario: model.userData["nome"],
+                            fotoUsuario: model.userData["foto"]);
                       }),
                 ),
                 Expanded(
@@ -145,7 +174,9 @@ class _CampoTextoState extends State<CampoTexto> {
                     },
                     onSubmitted: (text) {
                       _sendMessage(
-                          text: text, nomeUsuario: model.userData["nome"], fotoUsuario: model.userData["foto"]);
+                          text: text,
+                          nomeUsuario: model.userData["nome"],
+                          fotoUsuario: model.userData["foto"]);
                       _reset();
                     },
                   ),
@@ -159,7 +190,8 @@ class _CampoTextoState extends State<CampoTexto> {
                                 ? () {
                                     _sendMessage(
                                         text: _textController.text,
-                                        nomeUsuario: model.userData["nome"], fotoUsuario: model.userData["foto"]);
+                                        nomeUsuario: model.userData["nome"],
+                                        fotoUsuario: model.userData["foto"]);
                                     _reset();
                                   }
                                 : null,
@@ -170,7 +202,8 @@ class _CampoTextoState extends State<CampoTexto> {
                                 ? () {
                                     _sendMessage(
                                         text: _textController.text,
-                                        nomeUsuario: model.userData["nome"], fotoUsuario: model.userData["foto"]);
+                                        nomeUsuario: model.userData["nome"],
+                                        fotoUsuario: model.userData["foto"]);
                                     _reset();
                                   }
                                 : null,
@@ -221,10 +254,12 @@ class MensagemTile extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(right: 16.0),
               child: CircleAvatar(
-                  backgroundImage: data["fotoRemetenteUrl"] == null
-                      ? NetworkImage(
-                          "https://ipc.digital/wp-content/uploads/2016/07/icon-user-default.png")
-                      : NetworkImage(data["fotoRemetenteUrl"]), radius: 30,),
+                backgroundImage: data["fotoRemetenteUrl"] == null
+                    ? NetworkImage(
+                        "https://ipc.digital/wp-content/uploads/2016/07/icon-user-default.png")
+                    : NetworkImage(data["fotoRemetenteUrl"]),
+                radius: 30,
+              ),
             ),
             Expanded(
               child: Column(
