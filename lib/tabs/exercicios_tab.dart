@@ -15,6 +15,15 @@ class ExerciciosTab extends StatelessWidget {
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
       elevation: 0,
+      centerTitle: true,
+      title: Text(
+        "Exercícios",
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 25.0,
+            color: Colors.white),
+        textAlign: TextAlign.center,
+      ),
       leading: Builder(
         builder: (context) {
           return IconButton(

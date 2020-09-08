@@ -8,6 +8,15 @@ class JogosTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
+      centerTitle: true,
+      title: Text(
+        "Jogos infantis",
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 25.0,
+            color: Colors.white),
+        textAlign: TextAlign.center,
+      ),
       leading: Builder(
         builder: (context) {
           return IconButton(

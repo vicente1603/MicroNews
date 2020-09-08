@@ -101,20 +101,20 @@ class CustomGuitarDrawerState extends State<CustomGuitarDrawer>
                     color: Colors.white,
                   ),
                 ),
-                Positioned(
-                  top: 16.0 + MediaQuery.of(context).padding.top,
-                  left: animationController.value *
-                      MediaQuery.of(context).size.width,
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    "MicroNews®",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25.0,
-                        color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
+//                Positioned(
+//                  top: 16.0 + MediaQuery.of(context).padding.top,
+//                  left: animationController.value *
+//                      MediaQuery.of(context).size.width,
+//                  width: MediaQuery.of(context).size.width,
+//                  child: Text(
+//                    "MicroNews®",
+//                    style: TextStyle(
+//                        fontWeight: FontWeight.bold,
+//                        fontSize: 25.0,
+//                        color: Colors.white),
+//                    textAlign: TextAlign.center,
+//                  ),
+//                ),
               ],
             ),
           );
@@ -283,7 +283,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(Icons.calendar_today, size: 32.0),
-                  title: Text("Consultas e Terapias",
+                  title: Text("Consultas e terapias",
                       style: TextStyle(fontSize: 16.0, color: Colors.black)),
                   onTap: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -328,7 +328,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(Icons.videogame_asset, size: 32.0),
-                  title: Text("Jogos Infantis",
+                  title: Text("Jogos infantis",
                       style: TextStyle(fontSize: 16.0, color: Colors.black)),
                   onTap: () {
                     Navigator.of(context).pushReplacement(

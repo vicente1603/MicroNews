@@ -25,6 +25,15 @@ class DesenvolvimentoInfantilTab extends StatelessWidget {
           Tab(text: "Perímetro Cefálico"),
         ],
       ),
+      centerTitle: true,
+      title: Text(
+        "Desenvolvimento infantil",
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 25.0,
+            color: Colors.white),
+        textAlign: TextAlign.center,
+      ),
       leading: Builder(
         builder: (context) {
           return IconButton(
