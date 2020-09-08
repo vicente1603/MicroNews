@@ -69,7 +69,7 @@ class CustomGuitarDrawerState extends State<CustomGuitarDrawer>
         animation: animationController,
         builder: (context, _) {
           return Material(
-            color: Colors.blueGrey,
+            color: Colors.blueAccent[100],
             child: Stack(
               children: <Widget>[
                 Transform.translate(
@@ -185,163 +185,172 @@ openAlertBox(BuildContext context, UserModel model) {
 }
 
 class MyDrawer extends StatelessWidget {
+  bool paginaSelecionada = false;
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [
+        Colors.blueAccent,
+        Colors.white,
+      ], begin: Alignment.topLeft, end: Alignment.bottomLeft)),
       width: 300,
       height: double.infinity,
-      child: Material(
-        color: Colors.blueAccent,
-        child: SafeArea(
-          child: Theme(
-            data: ThemeData(brightness: Brightness.dark),
-            child: ListView(
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(bottom: 8.0),
-                      padding: EdgeInsets.only(top: 40.0),
-                      child: ScopedModelDescendant<UserModel>(
-                        builder: (context, child, model) {
-                          return Column(
+      child: SafeArea(
+        child: ListView(
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(bottom: 8.0),
+                  padding: EdgeInsets.only(top: 40.0),
+                  child: ScopedModelDescendant<UserModel>(
+                    builder: (context, child, model) {
+                      return Column(
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(!model.isLoggedIn()
+                                ? "https://ipc.digital/wp-content/uploads/2016/07/icon-user-default.png"
+                                : model.userData["foto"]),
+                            radius: 40,
+                          ),
+                          SizedBox(height: 10.0),
+                          Row(
                             children: <Widget>[
-                              CircleAvatar(
-                                backgroundImage: NetworkImage(!model
-                                        .isLoggedIn()
-                                    ? "https://ipc.digital/wp-content/uploads/2016/07/icon-user-default.png"
-                                    : model.userData["foto"]),
-                                radius: 40,
-                              ),
-                              SizedBox(height: 10.0),
-                              Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Text(
-                                      "Olá, ${!model.isLoggedIn() ? "" : model.userData["nome"]}",
-                                      style: TextStyle(
-                                          fontSize: 30.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black54),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10.0),
-                              GestureDetector(
+                              Expanded(
                                 child: Text(
-                                  "Sair",
+                                  "Olá, ${!model.isLoggedIn() ? "" : model.userData["nome"]}",
                                   style: TextStyle(
-                                      color: Colors.redAccent,
-                                      fontSize: 25.0,
-                                      fontWeight: FontWeight.bold),
+                                      fontSize: 30.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black54),
+                                  textAlign: TextAlign.center,
                                 ),
-                                onTap: () {
-                                  openAlertBox(context, model);
-                                },
                               ),
                             ],
-                          );
-                        },
-                      ),
-                    ),
-                    Divider(
-                      thickness: 1,
-                      color: Colors.blueGrey,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.home),
-                      title: Text("Ínicio"),
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => HomeTab()));
-                      },
-                    ),
-                    ListTile(
-                        leading: Icon(Icons.chat),
-                        title: Text("Rede de apoio"),
-                        onTap: () {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => ChatTab()));
-                        }),
-                    ListTile(
-                      leading: Icon(Icons.help),
-                      title: Text("Dicas"),
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => DicasTab()));
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.calendar_today),
-                      title: Text("Consultas e Terapias"),
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => ConsultasTab()));
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.alarm_add),
-                      title: Text("Medicamentos"),
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => MedicamentosTab()));
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.child_care),
-                      title: Text("Desenvolvimento"),
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) =>
-                                DesenvolvimentoInfantilTab()));
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.restaurant),
-                      title: Text("Alimentação"),
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => AlimentacaoTab()));
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.accessibility),
-                      title: Text("Exercícios"),
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => ExerciciosTab()));
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.videogame_asset),
-                      title: Text("Jogos Infantis"),
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => JogosTab()));
-                      },
-                    ),
-                    Divider(
-                      thickness: 1,
-                      color: Colors.blueGrey,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.star),
-                      title: Text("Créditos"),
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => CreditosTab()));
-                      },
-                    ),
-                  ],
-                )
+                          ),
+                          SizedBox(height: 10.0),
+                          GestureDetector(
+                            child: Text(
+                              "Sair",
+                              style: TextStyle(
+                                  color: Colors.redAccent,
+                                  fontSize: 25.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onTap: () {
+                              openAlertBox(context, model);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                Divider(
+                  thickness: 1,
+                  color: Colors.blueGrey,
+                ),
+                ListTile(
+                  leading: Icon(Icons.home, size: 32.0),
+                  title: Text("Ínicio",
+                      style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => HomeTab()));
+                    paginaSelecionada = true;
+                  },
+                ),
+                ListTile(
+                    leading: Icon(Icons.chat, size: 32.0),
+                    title: Text("Rede de apoio",
+                        style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => ChatTab()));
+                    }),
+                ListTile(
+                  leading: Icon(Icons.help, size: 32.0),
+                  title: Text("Dicas",
+                      style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => DicasTab()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.calendar_today, size: 32.0),
+                  title: Text("Consultas e Terapias",
+                      style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => ConsultasTab()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.alarm_add, size: 32.0),
+                  title: Text("Medicamentos",
+                      style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => MedicamentosTab()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.child_care, size: 32.0),
+                  title: Text("Desenvolvimento",
+                      style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => DesenvolvimentoInfantilTab()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.restaurant, size: 32.0),
+                  title: Text("Alimentação",
+                      style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => AlimentacaoTab()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.accessibility, size: 32.0),
+                  title: Text("Exercícios",
+                      style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => ExerciciosTab()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.videogame_asset, size: 32.0),
+                  title: Text("Jogos Infantis",
+                      style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => JogosTab()));
+                  },
+                ),
+                Divider(
+                  thickness: 1,
+                  color: Colors.blueGrey,
+                ),
+                ListTile(
+                  leading: Icon(Icons.star, size: 32.0),
+                  title: Text("Créditos",
+                      style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => CreditosTab()));
+                  },
+                ),
               ],
-            ),
-          ),
+            )
+          ],
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/widgets/custom_drawer_guitar.dart';
@@ -17,6 +18,8 @@ class AlimentacaoTab extends StatelessWidget {
       ),
       backgroundColor: Colors.blueAccent,
       bottom: TabBar(
+        indicatorColor: Colors.white,
+        indicatorWeight: 2,
         tabs: [
           Tab(text: "Recomendados"),
           Tab(text: "Não Recomendados"),
@@ -31,11 +34,16 @@ class AlimentacaoTab extends StatelessWidget {
   }
 }
 
-class _AlimentacaoTab extends StatelessWidget {
+class _AlimentacaoTab extends StatefulWidget {
   final AppBar appBar;
 
   _AlimentacaoTab({Key key, @required this.appBar}) : super(key: key);
 
+  @override
+  __AlimentacaoTabState createState() => __AlimentacaoTabState();
+}
+
+class __AlimentacaoTabState extends State<_AlimentacaoTab> {
   @override
   Widget build(BuildContext context) {
     int likes;
@@ -48,7 +56,7 @@ class _AlimentacaoTab extends StatelessWidget {
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-          appBar: appBar,
+          appBar: widget.appBar,
           body: TabBarView(
             children: [
               //recomendados
@@ -174,30 +182,30 @@ class _AlimentacaoTab extends StatelessWidget {
       ),
     );
   }
+}
 
-  Future getAlimentosRecomendados() async {
-    var firestore = Firestore.instance;
+Future getAlimentosRecomendados() async {
+  var firestore = Firestore.instance;
 
-    QuerySnapshot qn = await firestore
-        .collection("alimentos")
-        .document("KyI3uFMimX8qM73NTkOV")
-        .collection("recomendados")
-        .getDocuments();
+  QuerySnapshot qn = await firestore
+      .collection("alimentos")
+      .document("KyI3uFMimX8qM73NTkOV")
+      .collection("recomendados")
+      .getDocuments();
 
-    return qn.documents;
-  }
+  return qn.documents;
+}
 
-  Future getAlimentosNaoRecomendados() async {
-    var firestore = Firestore.instance;
+Future getAlimentosNaoRecomendados() async {
+  var firestore = Firestore.instance;
 
-    QuerySnapshot qn = await firestore
-        .collection("alimentos")
-        .document("KyI3uFMimX8qM73NTkOV")
-        .collection("nao_recomendados")
-        .getDocuments();
+  QuerySnapshot qn = await firestore
+      .collection("alimentos")
+      .document("KyI3uFMimX8qM73NTkOV")
+      .collection("nao_recomendados")
+      .getDocuments();
 
-    return qn.documents;
-  }
+  return qn.documents;
 }
 
 class ListTileRecomendados extends StatefulWidget {
@@ -279,6 +287,8 @@ class _ListTileRecomendadosState extends State<ListTileRecomendados> {
                   likes--;
                 });
               }
+//              Navigator.pushReplacement(
+//                  context, MaterialPageRoute(builder: (_) => AlimentacaoTab()));
             },
             icon: usuarios_like.contains(UserModel.of(context).firebaseUser.uid)
                 ? Icon(Icons.star)
@@ -374,8 +384,11 @@ class _ListTileNaoRecomendadosState extends State<ListTileNaoRecomendados> {
                 });
                 setState(() {
                   likes--;
+                  getAlimentosNaoRecomendados();
                 });
               }
+//              Navigator.pushReplacement(
+//                  context, MaterialPageRoute(builder: (_) => AlimentacaoTab()));
             },
             icon: usuarios_like.contains(UserModel.of(context).firebaseUser.uid)
                 ? Icon(Icons.star)
