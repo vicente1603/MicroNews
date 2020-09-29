@@ -58,12 +58,9 @@ dependencies:
   flutter_speed_dial: ^1.2.5
   share: ^0.6.4+3
   mask_text_input_formatter: ^1.1.0
-  flutter_local_notifications:
-  flare_flutter:
-    git:
-      url: git://github.com/2d-inc/Flare-Flutter.git
-      ref: dev
-      path: flare_flutter
+  giffy_dialog: ^1.8.0
+  flare_flutter: ^2.0.6
+  flutter_local_notifications: ^1.4.4+4
 
 dev_dependencies:
   flutter_test:

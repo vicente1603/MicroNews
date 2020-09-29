@@ -346,7 +346,7 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
       'repeatDailyAtTime channel name',
       'repeatDailyAtTime description',
       importance: Importance.Max,
-      sound: 'sound',
+      sound: RawResourceAndroidNotificationSound('sound'),
       ledColor: Color(0xFF3EB16F),
       ledOffMs: 1000,
       ledOnMs: 1000,

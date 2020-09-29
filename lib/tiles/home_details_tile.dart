@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:micro_news/models/home_data.dart';
 import 'package:micro_news/models/usuario_model.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 
 class HomeDetailTile extends StatelessWidget {
   final String docHome;
@@ -64,7 +66,8 @@ class HomeDetailTile extends StatelessWidget {
                                     docFaixas,
                                     eventos.marcacao,
                                     eventos.id,
-                                    eventos.usuarios_like),
+                                    eventos.usuarios_like,
+                                    eventos.usuarios_deslike),
                               ),
                             ],
                           ),
@@ -84,9 +87,10 @@ class Counter extends StatefulWidget {
   String docFaixas;
   String id;
   List<dynamic> usuarios_like;
+  List<dynamic> usuarios_deslike;
 
-  Counter(
-      this.docHome, this.docFaixas, this.marcacao, this.id, this.usuarios_like);
+  Counter(this.docHome, this.docFaixas, this.marcacao, this.id,
+      this.usuarios_like, this.usuarios_deslike);
 
   static _CounterState of(BuildContext context) =>
       context.ancestorStateOfType(const TypeMatcher<_CounterState>());
@@ -101,6 +105,7 @@ class _CounterState extends State<Counter> {
   String docFaixas;
   String id;
   List<dynamic> usuarios_like;
+  List<dynamic> usuarios_deslike;
 
   @override
   void initState() {
@@ -109,6 +114,7 @@ class _CounterState extends State<Counter> {
     docFaixas = widget.docFaixas;
     id = widget.id;
     usuarios_like = widget.usuarios_like;
+    usuarios_deslike = widget.usuarios_deslike;
     super.initState();
   }
 
@@ -118,15 +124,17 @@ class _CounterState extends State<Counter> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        IconButton(
-          icon: usuarios_like.contains(UserModel.of(context).firebaseUser.uid)
-              ? Icon(Icons.child_care, size: 40.0, color: Colors.blueAccent,)
-              : Icon(Icons.child_care, size: 40.0),
-          color: Colors.black38,
+        FlatButton(
+          child: usuarios_like.contains(UserModel.of(context).firebaseUser.uid)
+              ? Image.asset("assets/images/smile_color.png",
+                  width: 60, height: 100)
+              : Image.asset("assets/images/smile_pb.png",
+                  width: 60, height: 100),
           onPressed: () {
             if (!usuarios_like
                 .contains(UserModel.of(context).firebaseUser.uid)) {
               usuarios_like.add(UserModel.of(context).firebaseUser.uid);
+              usuarios_deslike.remove(UserModel.of(context).firebaseUser.uid);
 
               Firestore.instance
                   .collection("home")
@@ -137,13 +145,50 @@ class _CounterState extends State<Counter> {
                   .document(id)
                   .updateData({
                 "usuarios_like": usuarios_like,
-                "marcacoes": marcacao + 1,
+                "usuarios_deslike": usuarios_deslike,
               });
 
-              setState(() {
-                marcacao++;
-              });
-            } else {
+              usuarios_deslike.remove(UserModel.of(context).firebaseUser.uid);
+
+              setState(() {});
+
+              showDialog(
+                  context: context,
+                  builder: (_) => NetworkGiffyDialog(
+                    image: Image.network(
+                      "https://cdn.dribbble.com/users/514480/screenshots/2088977/children.gif",
+                      fit: BoxFit.cover,
+                    ),
+                    entryAnimation: EntryAnimation.TOP,
+                    title: Text(
+                      'Muito bem!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 25.0, fontWeight: FontWeight.w600),
+                    ),
+                    description: Text(
+                      'Continue estimulando sua criança.',
+                      textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0),
+                    ),
+                    onOkButtonPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                  ));
+
+            }
+          },
+        ),
+//        SizedBox(width: 60.0),
+        FlatButton(
+          child: usuarios_deslike
+                  .contains(UserModel.of(context).firebaseUser.uid)
+              ? Image.asset("assets/images/sad_color.png",
+                  width: 53, height: 90)
+              : Image.asset("assets/images/sad_pb.png", width: 53, height: 90),
+          onPressed: () {
+            if (!usuarios_deslike
+                .contains(UserModel.of(context).firebaseUser.uid)) {
+              usuarios_deslike.add(UserModel.of(context).firebaseUser.uid);
               usuarios_like.remove(UserModel.of(context).firebaseUser.uid);
 
               Firestore.instance
@@ -155,23 +200,46 @@ class _CounterState extends State<Counter> {
                   .document(id)
                   .updateData({
                 "usuarios_like": usuarios_like,
-                "marcacoes": marcacao - 1,
+                "usuarios_deslike": usuarios_deslike,
               });
 
-              setState(() {
-                marcacao--;
-              });
+              usuarios_like.remove(UserModel.of(context).firebaseUser.uid);
+
+              setState(() {});
+
+              showDialog(
+                  context: context,
+                  builder: (_) => NetworkGiffyDialog(
+                    image: Image.network(
+                      "https://i.pinimg.com/originals/61/b2/d3/61b2d33f39927afa72e5f57a28cc7c83.gif",
+                      fit: BoxFit.cover,
+                    ),
+                    entryAnimation: EntryAnimation.TOP,
+                    title: Text(
+                      'Não se preocupe',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 25.0, fontWeight: FontWeight.w600),
+                    ),
+                    description: Text(
+                      'Continue estimulando sua criança e ela vai conseguir!',
+                      textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0),
+                    ),
+                    onOkButtonPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                  ));
             }
           },
         ),
-        Padding(
-          padding: EdgeInsets.only(right: 10.0),
-        ),
-        Text(marcacao.toString(),
-            style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.black38)),
+//        Padding(
+//          padding: EdgeInsets.only(right: 10.0),
+//        ),
+//        Text(marcacao.toString(),
+//            style: TextStyle(
+//                fontSize: 20.0,
+//                fontWeight: FontWeight.bold,
+//                color: Colors.black38)),
       ],
     );
   }

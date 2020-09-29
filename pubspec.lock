@@ -221,21 +221,17 @@ packages:
   flare_dart:
     dependency: transitive
     description:
-      path: flare_dart
-      ref: dev
-      resolved-ref: "64510c5723c8fafdd83dde9b88468bc78b2a5b47"
-      url: "git://github.com/2d-inc/Flare-Flutter.git"
-    source: git
-    version: "2.3.3"
+      name: flare_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.4"
   flare_flutter:
     dependency: "direct main"
     description:
-      path: flare_flutter
-      ref: dev
-      resolved-ref: "64510c5723c8fafdd83dde9b88468bc78b2a5b47"
-      url: "git://github.com/2d-inc/Flare-Flutter.git"
-    source: git
-    version: "2.0.1"
+      name: flare_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.6"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -268,7 +264,14 @@ packages:
       name: flutter_local_notifications
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.1+3"
+    version: "1.4.4+4"
+  flutter_local_notifications_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   flutter_localizations:
     dependency: "direct dev"
     description: flutter
@@ -319,6 +322,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "8.5.0"
+  giffy_dialog:
+    dependency: "direct main"
+    description:
+      name: giffy_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.8.0"
   glob:
     dependency: transitive
     description:
