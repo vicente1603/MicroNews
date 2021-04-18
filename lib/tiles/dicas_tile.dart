@@ -1,5 +1,5 @@
-import 'package:micro_news/models/dicas_data.dart';
 import 'package:flutter/material.dart';
+import 'package:micro_news/models/dicas_data.dart';
 import 'package:micro_news/screens/detalhe_dica_screen.dart';
 import 'package:micro_news/widgets/page_transformer.dart';
 
