@@ -213,7 +213,7 @@ class MyDrawer extends StatelessWidget {
                         children: <Widget>[
                           CircleAvatar(
                             backgroundImage: NetworkImage(!model.isLoggedIn()
-                                ? "https://ipc.digital/wp-content/uploads/2016/07/icon-user-default.png"
+                                ? "https://icon-library.com/images/default-user-icon/default-user-icon-4.jpg"
                                 : model.userData["foto"]),
                             radius: 40,
                           ),

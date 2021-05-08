@@ -18,13 +18,11 @@ class ChatTab extends StatelessWidget {
     AppBar appBar = AppBar(
       centerTitle: true,
       title: Text(
-          "Rede de apoio",
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 25.0,
-              color: Colors.white),
-          textAlign: TextAlign.center,
-        ),
+        "Rede de apoio",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.white),
+        textAlign: TextAlign.center,
+      ),
       leading: Builder(
         builder: (context) {
           return IconButton(
@@ -265,7 +263,7 @@ class MensagemTile extends StatelessWidget {
               child: CircleAvatar(
                 backgroundImage: data["fotoRemetenteUrl"] == null
                     ? NetworkImage(
-                        "https://ipc.digital/wp-content/uploads/2016/07/icon-user-default.png")
+                        "https://icon-library.com/images/default-user-icon/default-user-icon-4.jpg")
                     : NetworkImage(data["fotoRemetenteUrl"]),
                 radius: 30,
               ),

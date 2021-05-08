@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:micro_news/models/usuario_model.dart';
-import 'package:micro_news/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_news/tabs/home_tab.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -28,7 +26,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   String imgUrl;
   String downloadUrl =
-      "https://ipc.digital/wp-content/uploads/2016/07/icon-user-default.png";
+      "https://icon-library.com/images/default-user-icon/default-user-icon-4.jpg";
   String nomeEstado = "";
   var _estados = [
     'SELECIONE',
@@ -320,8 +318,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       duration: Duration(seconds: 2),
     ));
     Future.delayed(Duration(seconds: 2)).then((_) {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomeTab()));
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => HomeTab()));
     });
   }
 
