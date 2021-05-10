@@ -61,6 +61,7 @@ dependencies:
   giffy_dialog: ^1.8.0
   flare_flutter: ^2.0.6
   flutter_local_notifications: ^1.4.4+4
+  local_auth: ^0.6.3+4
 
 dev_dependencies:
   flutter_test:
