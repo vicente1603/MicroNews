@@ -1,12 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_news/blocs/app_bloc.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/credenciais/login_screen.dart';
-import 'package:micro_news/tabs/consultas_tab.dart';
-import 'package:micro_news/tabs/medicamentos_tab.dart';
 import 'package:provider/provider.dart';
-import 'package:random_string/random_string.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -30,7 +26,7 @@ class _MicroNewsState extends State<MicroNews> {
 
   @override
   Widget build(BuildContext context) {
-    var doc;
+    // var doc;
 
     return Provider<GlobalBloc>.value(
       value: globalBloc,

@@ -39,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool loginAutorizado = false;
   bool remember = false;
   final LocalAuthentication _localAuthentication = LocalAuthentication();
+  UserModel user = new UserModel();
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -75,6 +76,8 @@ class _LoginScreenState extends State<LoginScreen> {
           ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
           child: ScopedModelDescendant<UserModel>(
               builder: (context, child, model) {
+            user = model;
+
             if (model.isLoading)
               return Center(
                 child: CircularProgressIndicator(),
@@ -198,6 +201,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.blueAccent,
                       onPressed: () {
                         if (_formKey.currentState.validate()) {}
+
+                        print("model:");
+                        print(model);
 
                         model.signIn(
                             email: _emailController.text.trim(),
@@ -411,7 +417,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
     setState(() {
       if (isAuthorized) {
-        UserModel user = UserModel();
+        print("usuario:");
+        print(user);
+
         user.signIn(
             email: _emailController.text.trim(),
             pass: _senhaController.text.trim(),
