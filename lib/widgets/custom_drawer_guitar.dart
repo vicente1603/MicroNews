@@ -107,7 +107,7 @@ class CustomGuitarDrawerState extends State<CustomGuitarDrawer>
 //                      MediaQuery.of(context).size.width,
 //                  width: MediaQuery.of(context).size.width,
 //                  child: Text(
-//                    "MicroNews®",
+//                    "MicroNews",
 //                    style: TextStyle(
 //                        fontWeight: FontWeight.bold,
 //                        fontSize: 25.0,

@@ -13,7 +13,7 @@ class HomeTab extends StatelessWidget {
     AppBar appBar = AppBar(
       centerTitle: true,
       title: Text(
-        "MicroNews®",
+        "MicroNews",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.white),
         textAlign: TextAlign.center,

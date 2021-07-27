@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: Colors.blueAccent,
-          title: Text("MicroNews®",
+          title: Text("MicroNews",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0)),
           centerTitle: true,
           actions: <Widget>[

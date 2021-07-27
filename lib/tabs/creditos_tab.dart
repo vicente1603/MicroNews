@@ -10,9 +10,7 @@ class CreditosTab extends StatelessWidget {
       title: Text(
         "Créditos",
         style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25.0,
-            color: Colors.white),
+            fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.white),
         textAlign: TextAlign.center,
       ),
       leading: Builder(
@@ -32,7 +30,6 @@ class CreditosTab extends StatelessWidget {
   }
 }
 
-
 class _CreditosTab extends StatelessWidget {
   final AppBar appBar;
 
@@ -45,9 +42,9 @@ class _CreditosTab extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(colors: [
-              Colors.blueAccent,
-              Colors.white,
-            ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+          Colors.blueAccent,
+          Colors.white,
+        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
         child: ListView(
           padding: EdgeInsets.all(16.0),
           children: <Widget>[
@@ -62,7 +59,7 @@ class _CreditosTab extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "MicroNews®",
+                  "MicroNews",
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 )
               ],
