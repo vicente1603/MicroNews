@@ -1,12 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:micro_news/models/consultas_data.dart';
 import 'package:micro_news/models/usuario_model.dart';
 import 'package:micro_news/screens/credenciais/login_screen.dart';
-import 'package:micro_news/tiles/consultas_tile.dart';
 import 'package:micro_news/tiles/home_tile.dart';
-import 'package:micro_news/widgets/custom_drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_news/widgets/custom_drawer_guitar.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -17,11 +13,9 @@ class HomeTab extends StatelessWidget {
     AppBar appBar = AppBar(
       centerTitle: true,
       title: Text(
-        "MicroNews®",
+        "MicroNews",
         style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25.0,
-            color: Colors.white),
+            fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.white),
         textAlign: TextAlign.center,
       ),
       leading: Builder(
