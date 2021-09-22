@@ -18,12 +18,6 @@ Future<void> _createWidget(WidgetTester tester) async {
     ScopedModel<UserModel>(
         model: UserModel(),
         child: MaterialApp(
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate
-          ],
-          supportedLocales: [Locale("pt")],
           title: "MicroNews",
           theme: ThemeData(
               primarySwatch: Colors.blue, primaryColor: Colors.blueAccent),

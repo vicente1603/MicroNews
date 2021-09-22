@@ -222,7 +222,7 @@ class MyDrawer extends StatelessWidget {
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                  "Olá, ${!model.isLoggedIn() ? "" : model.userData["nome"]}",
+                                  "Hello, ${!model.isLoggedIn() ? "" : model.userData["nome"]}",
                                   style: TextStyle(
                                       fontSize: 30.0,
                                       fontWeight: FontWeight.bold,
@@ -235,7 +235,7 @@ class MyDrawer extends StatelessWidget {
                           SizedBox(height: 10.0),
                           GestureDetector(
                             child: Text(
-                              "Sair",
+                              "Exit",
                               style: TextStyle(
                                   color: Colors.redAccent,
                                   fontSize: 25.0,

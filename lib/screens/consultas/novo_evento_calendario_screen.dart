@@ -121,8 +121,7 @@ class _AddEventPageState extends State<AddEventPage> {
                       context: context,
                       initialDate: _data,
                       firstDate: DateTime(_data.year - 5),
-                      lastDate: DateTime(_data.year + 5),
-                      locale: Locale("pt"));
+                      lastDate: DateTime(_data.year + 5));
                   if (picked != null) {
                     setState(() {
                       _data = picked;

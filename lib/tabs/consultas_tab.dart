@@ -19,9 +19,7 @@ class ConsultasTab extends StatelessWidget {
       title: Text(
         "Consultas e terapias",
         style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25.0,
-            color: Colors.white),
+            fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.white),
         textAlign: TextAlign.center,
       ),
       leading: Builder(
@@ -40,7 +38,6 @@ class ConsultasTab extends StatelessWidget {
     return child;
   }
 }
-
 
 class _ConsultasTab extends StatefulWidget {
   final AppBar appBar;
@@ -90,7 +87,7 @@ class __ConsultasTabState extends State<_ConsultasTab> {
               toMap: (event) => event.toMap());
 
       return Scaffold(
-        appBar: widget.appBar,
+          appBar: widget.appBar,
           body: StreamBuilder<List<EventModel>>(
             stream: eventosCalendario.streamList(),
             builder: (context, snapshot) {
@@ -105,7 +102,6 @@ class __ConsultasTabState extends State<_ConsultasTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     TableCalendar(
-                      locale: ("pt"),
                       events: _eventos,
                       initialCalendarFormat: CalendarFormat.month,
                       calendarStyle: CalendarStyle(
@@ -131,7 +127,7 @@ class __ConsultasTabState extends State<_ConsultasTab> {
                       },
                       builders: CalendarBuilders(
                           selectedDayBuilder: (context, date, events) =>
-                             Container(
+                              Container(
                                   margin: const EdgeInsets.all(4.0),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
