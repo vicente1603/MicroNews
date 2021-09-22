@@ -29,9 +29,7 @@ class DesenvolvimentoInfantilTab extends StatelessWidget {
       title: Text(
         "Desenvolvimento infantil",
         style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25.0,
-            color: Colors.white),
+            fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.white),
         textAlign: TextAlign.center,
       ),
       leading: Builder(
@@ -54,7 +52,8 @@ class DesenvolvimentoInfantilTab extends StatelessWidget {
 class _DesenvolvimentoInfantilTab extends StatefulWidget {
   final AppBar appBar;
 
-  _DesenvolvimentoInfantilTab({Key key, @required this.appBar}) : super(key: key);
+  _DesenvolvimentoInfantilTab({Key key, @required this.appBar})
+      : super(key: key);
   @override
   __DesenvolvimentoInfantilTabState createState() =>
       __DesenvolvimentoInfantilTabState();
@@ -167,7 +166,7 @@ class __DesenvolvimentoInfantilTabState
             children: <Widget>[Text("Peso: $peso")],
           ),
           Row(
-            children: <Widget>[Text(" Altura: $altura")],
+            children: <Widget>[Text("Altura: $altura")],
           ),
           Row(
             children: <Widget>[Text("Imc: " + imc.toStringAsPrecision(3))],

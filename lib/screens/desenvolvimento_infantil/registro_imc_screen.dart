@@ -25,7 +25,7 @@ class _RegistroImcScreenState extends State<RegistroImcScreen> {
   void _calcular(uid) {
     setState(() {
       peso = double.parse(pesoController.text);
-      altura = double.parse(alturaController.text);
+      altura = double.parse(alturaController.text) / 100;
       imc = peso / (altura * altura);
       if (imc < 18.6) {
         _info = "Abaixo do Peso (${imc.toStringAsPrecision(4)})";
@@ -103,7 +103,7 @@ class _RegistroImcScreenState extends State<RegistroImcScreen> {
               TextFormField(
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                    labelText: "Altura (m)",
+                    labelText: "Altura (cm)",
                     labelStyle: TextStyle(color: Colors.blueAccent)),
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.blueAccent, fontSize: 25.0),
