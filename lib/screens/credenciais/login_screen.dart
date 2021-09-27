@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
           actions: <Widget>[
             FlatButton(
               child: Text(
-                "CRIAR CONTA",
+                "SIGN UP",
                 style: TextStyle(fontSize: 15.0),
               ),
               textColor: Colors.white,
@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 16.0),
                   TextFormField(
                     controller: _senhaController,
-                    decoration: InputDecoration(hintText: "Senha"),
+                    decoration: InputDecoration(hintText: "Password"),
                     obscureText: true,
                     validator: (text) {
                       if (text.isEmpty || text.length < 6)
@@ -121,13 +121,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                         },
                       ),
-                      Text("Lembrar-me"),
+                      Text("Remember me"),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("Leitor biométrico", style: TextStyle(fontSize: 17)),
+                      Text("Login with biometric",
+                          style: TextStyle(fontSize: 17)),
                       SizedBox(width: 15),
                       AnimatedContainer(
                         duration: Duration(milliseconds: 0),
@@ -187,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ));
                         }
                       },
-                      child: Text("Esqueci minha senha",
+                      child: Text("Recover my password",
                           textAlign: TextAlign.right),
                       padding: EdgeInsets.zero,
                     ),
@@ -196,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 44.0,
                     child: RaisedButton(
-                      child: Text("Entrar", style: TextStyle(fontSize: 18.0)),
+                      child: Text("Login", style: TextStyle(fontSize: 18.0)),
                       textColor: Colors.white,
                       color: Colors.blueAccent,
                       onPressed: () {

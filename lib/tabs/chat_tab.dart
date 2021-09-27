@@ -18,7 +18,7 @@ class ChatTab extends StatelessWidget {
     AppBar appBar = AppBar(
       centerTitle: true,
       title: Text(
-        "Rede de apoio",
+        "Support network",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.white),
         textAlign: TextAlign.center,
@@ -172,8 +172,8 @@ class _CampoTextoState extends State<CampoTexto> {
                 Expanded(
                   child: TextField(
                     controller: _textController,
-                    decoration: InputDecoration.collapsed(
-                        hintText: "Enviar uma mensagem"),
+                    decoration:
+                        InputDecoration.collapsed(hintText: "Send a message"),
                     onChanged: (text) {
                       setState(() {
                         _isComposing = text.length > 0;

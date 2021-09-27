@@ -256,7 +256,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(Icons.home, size: 32.0),
-                  title: Text("Ínicio",
+                  title: Text("Home",
                       style: TextStyle(fontSize: 16.0, color: Colors.black)),
                   onTap: () {
                     Navigator.of(context).pushReplacement(
@@ -266,7 +266,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                     leading: Icon(Icons.chat, size: 32.0),
-                    title: Text("Rede de apoio",
+                    title: Text("Support network",
                         style: TextStyle(fontSize: 16.0, color: Colors.black)),
                     onTap: () {
                       Navigator.of(context).pushReplacement(
@@ -274,7 +274,7 @@ class MyDrawer extends StatelessWidget {
                     }),
                 ListTile(
                   leading: Icon(Icons.help, size: 32.0),
-                  title: Text("Dicas",
+                  title: Text("Tips",
                       style: TextStyle(fontSize: 16.0, color: Colors.black)),
                   onTap: () {
                     Navigator.of(context).pushReplacement(
@@ -283,7 +283,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(Icons.calendar_today, size: 32.0),
-                  title: Text("Consultas e terapias",
+                  title: Text("Consultations and therapies",
                       style: TextStyle(fontSize: 16.0, color: Colors.black)),
                   onTap: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -292,7 +292,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(Icons.alarm_add, size: 32.0),
-                  title: Text("Medicamentos",
+                  title: Text("Medicines",
                       style: TextStyle(fontSize: 16.0, color: Colors.black)),
                   onTap: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -301,7 +301,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(Icons.child_care, size: 32.0),
-                  title: Text("Desenvolvimento",
+                  title: Text("Development",
                       style: TextStyle(fontSize: 16.0, color: Colors.black)),
                   onTap: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -310,7 +310,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(Icons.restaurant, size: 32.0),
-                  title: Text("Alimentação",
+                  title: Text("Food",
                       style: TextStyle(fontSize: 16.0, color: Colors.black)),
                   onTap: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -319,7 +319,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(Icons.accessibility, size: 32.0),
-                  title: Text("Exercícios",
+                  title: Text("Exercises",
                       style: TextStyle(fontSize: 16.0, color: Colors.black)),
                   onTap: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -328,7 +328,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(Icons.videogame_asset, size: 32.0),
-                  title: Text("Jogos infantis",
+                  title: Text("Children's games",
                       style: TextStyle(fontSize: 16.0, color: Colors.black)),
                   onTap: () {
                     Navigator.of(context).pushReplacement(
@@ -341,7 +341,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(Icons.star, size: 32.0),
-                  title: Text("Créditos",
+                  title: Text("Credits",
                       style: TextStyle(fontSize: 16.0, color: Colors.black)),
                   onTap: () {
                     Navigator.of(context).pushReplacement(
