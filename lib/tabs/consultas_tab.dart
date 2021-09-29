@@ -17,7 +17,7 @@ class ConsultasTab extends StatelessWidget {
     AppBar appBar = AppBar(
       centerTitle: true,
       title: Text(
-        "Consultas e terapias",
+        "Consultations and therapies",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.white),
         textAlign: TextAlign.center,
@@ -160,7 +160,7 @@ class __ConsultasTabState extends State<_ConsultasTab> {
                               children: <Widget>[
                                 Expanded(
                                   child: Text(
-                                    "Consultas do dia",
+                                    "Appointments of day",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(fontSize: 20.0),
                                   ),
@@ -178,7 +178,7 @@ class __ConsultasTabState extends State<_ConsultasTab> {
                               children: <Widget>[
                                 Expanded(
                                   child: Text(
-                                    "Nenhuma consulta para esse dia",
+                                    "No appointment for that day",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(fontSize: 20.0),
                                   ),

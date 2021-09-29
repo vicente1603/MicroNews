@@ -10,7 +10,7 @@ class AlimentacaoTab extends StatelessWidget {
     AppBar appBar = AppBar(
       centerTitle: true,
       title: Text(
-        "Alimentação",
+        "Nutrition",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.white),
         textAlign: TextAlign.center,
@@ -28,8 +28,8 @@ class AlimentacaoTab extends StatelessWidget {
         indicatorColor: Colors.white,
         indicatorWeight: 2,
         tabs: [
-          Tab(text: "Recomendados"),
-          Tab(text: "Não Recomendados"),
+          Tab(text: "Recommended"),
+          Tab(text: "Not Recommended"),
         ],
       ),
     );

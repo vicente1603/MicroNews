@@ -155,26 +155,26 @@ class _CounterState extends State<Counter> {
               showDialog(
                   context: context,
                   builder: (_) => NetworkGiffyDialog(
-                    image: Image.network(
-                      "https://cdn.dribbble.com/users/514480/screenshots/2088977/children.gif",
-                      fit: BoxFit.cover,
-                    ),
-                    entryAnimation: EntryAnimation.TOP,
-                    title: Text(
-                      'Muito bem!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 25.0, fontWeight: FontWeight.w600),
-                    ),
-                    description: Text(
-                      'Continue estimulando sua criança.',
-                      textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0),
-                    ),
-                    onOkButtonPressed: () {
-                      Navigator.of(context).pop(true);
-                    },
-                  ));
-
+                        image: Image.network(
+                          "https://cdn.dribbble.com/users/514480/screenshots/2088977/children.gif",
+                          fit: BoxFit.cover,
+                        ),
+                        entryAnimation: EntryAnimation.TOP,
+                        title: Text(
+                          'Very well!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 25.0, fontWeight: FontWeight.w600),
+                        ),
+                        description: Text(
+                          'Keep encouraging your child.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 18.0),
+                        ),
+                        onOkButtonPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
+                      ));
             }
           },
         ),
@@ -210,25 +210,26 @@ class _CounterState extends State<Counter> {
               showDialog(
                   context: context,
                   builder: (_) => NetworkGiffyDialog(
-                    image: Image.network(
-                      "https://i.pinimg.com/originals/61/b2/d3/61b2d33f39927afa72e5f57a28cc7c83.gif",
-                      fit: BoxFit.cover,
-                    ),
-                    entryAnimation: EntryAnimation.TOP,
-                    title: Text(
-                      'Não se preocupe',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 25.0, fontWeight: FontWeight.w600),
-                    ),
-                    description: Text(
-                      'Continue estimulando sua criança e ela vai conseguir!',
-                      textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0),
-                    ),
-                    onOkButtonPressed: () {
-                      Navigator.of(context).pop(true);
-                    },
-                  ));
+                        image: Image.network(
+                          "https://i.pinimg.com/originals/61/b2/d3/61b2d33f39927afa72e5f57a28cc7c83.gif",
+                          fit: BoxFit.cover,
+                        ),
+                        entryAnimation: EntryAnimation.TOP,
+                        title: Text(
+                          'Não se preocupe',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 25.0, fontWeight: FontWeight.w600),
+                        ),
+                        description: Text(
+                          'Continue estimulando sua criança e ela vai conseguir!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 18.0),
+                        ),
+                        onOkButtonPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
+                      ));
             }
           },
         ),

@@ -14,11 +14,9 @@ class MedicamentosTab extends StatelessWidget {
     AppBar appBar = AppBar(
       centerTitle: true,
       title: Text(
-        "Medicamentos",
+        "Medicines",
         style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25.0,
-            color: Colors.white),
+            fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.white),
         textAlign: TextAlign.center,
       ),
       leading: Builder(
@@ -124,7 +122,7 @@ class TopContainer extends StatelessWidget {
               padding: EdgeInsets.only(top: 2.0),
               child: Center(
                 child: Text(
-                  "Número de medicamentos",
+                  "Number of medicines",
                   style: TextStyle(
                     fontSize: 17,
                     color: Colors.white,
@@ -184,7 +182,7 @@ class BottomContainer extends StatelessWidget {
               color: Color(0xFFF6F8FC),
               child: Center(
                 child: Text(
-                  "Toque no + para adicionar um medicamento",
+                  "Touch in + for add a new medicine",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 24,
@@ -320,8 +318,8 @@ class MedicamentoCard extends StatelessWidget {
                 ),
                 Text(
                   medicamento.intervalo == 1
-                      ? "A cada " + medicamento.intervalo.toString() + " hora"
-                      : "A cada " + medicamento.intervalo.toString() + " horas",
+                      ? "every " + medicamento.intervalo.toString() + " hour"
+                      : "every " + medicamento.intervalo.toString() + " hours",
                   style: TextStyle(
                       fontSize: 16,
                       color: Color(0xFFC9C9C9),

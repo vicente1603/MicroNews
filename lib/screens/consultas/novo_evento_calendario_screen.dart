@@ -45,7 +45,7 @@ class _AddEventPageState extends State<AddEventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.note != null ? "Editar Evento" : "Adicionar Evento"),
+        title: Text(widget.note != null ? "Editar Evento" : "Add Event"),
       ),
       key: _key,
       body: Form(
@@ -61,7 +61,7 @@ class _AddEventPageState extends State<AddEventPage> {
                   controller: _titulo,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    labelText: 'Título',
+                    labelText: 'Title',
                     prefixIcon: Icon(Icons.title),
                   ),
                   validator: (text) => text.isEmpty ? 'Título inválido' : null,
@@ -75,7 +75,7 @@ class _AddEventPageState extends State<AddEventPage> {
                   minLines: 1,
                   maxLines: 5,
                   decoration: InputDecoration(
-                    labelText: 'Descrição',
+                    labelText: 'Description',
                     prefixIcon: Icon(Icons.description),
                   ),
                   validator: (text) =>
@@ -101,7 +101,7 @@ class _AddEventPageState extends State<AddEventPage> {
                 child: TextField(
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.access_time),
-                    labelText: "Horário",
+                    labelText: "Schedule",
                     hintText: _horario.text,
                   ),
                   controller: _horario,
@@ -114,7 +114,7 @@ class _AddEventPageState extends State<AddEventPage> {
               ),
               const SizedBox(height: 10.0),
               ListTile(
-                title: Text("Data:"),
+                title: Text("Date:"),
                 subtitle: Text("${_data.day} / ${_data.month} / ${_data.year}"),
                 onTap: () async {
                   DateTime picked = await showDatePicker(
@@ -138,7 +138,7 @@ class _AddEventPageState extends State<AddEventPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: RaisedButton(
                           child: Text(
-                            "Adicionar",
+                            "Add",
                             style: TextStyle(color: Colors.white, fontSize: 25),
                           ),
                           color: Colors.blueAccent,

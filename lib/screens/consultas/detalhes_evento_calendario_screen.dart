@@ -24,9 +24,7 @@ class EventDetailsPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          "Detalhes do evento"
-        ),
+        title: Text("Details event"),
         elevation: 0.0,
       ),
       body: SingleChildScrollView(
@@ -55,7 +53,7 @@ class EventDetailsPage extends StatelessWidget {
                       },
                       child: Center(
                         child: Text(
-                          "Remover",
+                          "Remove",
                           style: TextStyle(color: Colors.white, fontSize: 25),
                         ),
                       ),
@@ -76,7 +74,7 @@ class EventDetailsPage extends StatelessWidget {
         context: context,
         builder: (context) {
           return CupertinoAlertDialog(
-            title: new Text('Remover evento'),
+            title: new Text('Remove event'),
             content: new Text('Deseja remover o evento ' + event.titulo + "?"),
             actions: <Widget>[
               CupertinoDialogAction(
@@ -90,7 +88,6 @@ class EventDetailsPage extends StatelessWidget {
                 onPressed: () {
                   eventDBS.removeItem(event.id);
                   Future.delayed(Duration(seconds: 2)).then((_) {
-
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => ConsultasTab()));
                   });
@@ -140,13 +137,13 @@ class MainSection extends StatelessWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: MainInfoTab(
-                    fieldTitle: "Título",
+                    fieldTitle: "Title",
                     fieldInfo: event.titulo,
                   ),
                 ),
               ),
               MainInfoTab(
-                fieldTitle: "Data",
+                fieldTitle: "Date",
                 fieldInfo: dataFormatada,
               )
             ],
@@ -169,14 +166,14 @@ class ExtendedSection extends StatelessWidget {
         shrinkWrap: true,
         children: <Widget>[
           ExtendedInfoTab(
-            fieldTitle: "Descrição",
+            fieldTitle: "Description",
             fieldInfo: event.descricao,
           ),
           ExtendedInfoTab(
             fieldTitle: "Local",
             fieldInfo: event.local,
           ),
-          ExtendedInfoTab(fieldTitle: "Horário", fieldInfo: event.horario),
+          ExtendedInfoTab(fieldTitle: "Schedule", fieldInfo: event.horario),
         ],
       ),
     );

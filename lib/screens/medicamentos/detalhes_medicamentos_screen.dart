@@ -26,7 +26,7 @@ class DetalhesMedicamentoScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Detalhes do medicamento"),
+          title: Text("Medicine Details"),
           elevation: 0.0,
         ),
         body: SingleChildScrollView(
@@ -49,7 +49,7 @@ class DetalhesMedicamentoScreen extends StatelessWidget {
                       child: RaisedButton(
                         child: Center(
                           child: Text(
-                            "Remover",
+                            "Remove",
                             style: TextStyle(color: Colors.white, fontSize: 25),
                           ),
                         ),
@@ -74,7 +74,7 @@ class DetalhesMedicamentoScreen extends StatelessWidget {
         context: context,
         builder: (context) {
           return CupertinoAlertDialog(
-            title: new Text('Remover medicamento'),
+            title: new Text('Remove medicine'),
             content: new Text('Deseja remover o medicamento ' +
                 medicamento.nomeMedicamento.toString() +
                 "?"),
@@ -129,7 +129,7 @@ class MainSection extends StatelessWidget {
   }) : super(key: key);
 
   Hero makeIcon(double size) {
-    if (medicamento.tipoMedicamento == "Frasco") {
+    if (medicamento.tipoMedicamento == "Bottle") {
       return Hero(
         tag: medicamento.nomeMedicamento + medicamento.tipoMedicamento,
         child: Icon(
@@ -138,7 +138,7 @@ class MainSection extends StatelessWidget {
           size: size,
         ),
       );
-    } else if (medicamento.tipoMedicamento == "Pilula") {
+    } else if (medicamento.tipoMedicamento == "Pill") {
       return Hero(
         tag: medicamento.nomeMedicamento + medicamento.tipoMedicamento,
         child: Icon(
@@ -147,7 +147,7 @@ class MainSection extends StatelessWidget {
           size: size,
         ),
       );
-    } else if (medicamento.tipoMedicamento == "Seringa") {
+    } else if (medicamento.tipoMedicamento == "Syringe") {
       return Hero(
         tag: medicamento.nomeMedicamento + medicamento.tipoMedicamento,
         child: Icon(
@@ -156,7 +156,7 @@ class MainSection extends StatelessWidget {
           size: size,
         ),
       );
-    } else if (medicamento.tipoMedicamento == "Comprimido") {
+    } else if (medicamento.tipoMedicamento == "tablet") {
       return Hero(
         tag: medicamento.nomeMedicamento + medicamento.tipoMedicamento,
         child: Icon(
@@ -193,13 +193,13 @@ class MainSection extends StatelessWidget {
                   child: Material(
                     color: Colors.transparent,
                     child: MainInfoTab(
-                      fieldTitle: "Nome do medicamento",
+                      fieldTitle: "Name",
                       fieldInfo: medicamento.nomeMedicamento,
                     ),
                   ),
                 ),
                 MainInfoTab(
-                  fieldTitle: "Dosagem",
+                  fieldTitle: "Dosage",
                   fieldInfo: medicamento.dosagem == 0
                       ? "Não especificado"
                       : medicamento.dosagem.toString() + " mg",
@@ -261,20 +261,20 @@ class ExtendedSection extends StatelessWidget {
         shrinkWrap: true,
         children: <Widget>[
           ExtendedInfoTab(
-            fieldTitle: "Tipo do medicamento",
+            fieldTitle: "Medicine type",
             fieldInfo: medicamento.tipoMedicamento == "Nenhum"
                 ? "Não especificado"
                 : medicamento.tipoMedicamento,
           ),
           ExtendedInfoTab(
-            fieldTitle: "Intervalo da dose",
-            fieldInfo: "A cada " +
+            fieldTitle: "Dose range",
+            fieldInfo: "Even " +
                 medicamento.intervalo.toString() +
-                " horas  | " +
-                " ${medicamento.intervalo == 24 ? "Uma vez ao dia" : (24 / medicamento.intervalo).floor().toString() + " vezes ao dia"}",
+                " hours  | " +
+                " ${medicamento.intervalo == 24 ? "One time of day" : (24 / medicamento.intervalo).floor().toString() + " times of day"}",
           ),
           ExtendedInfoTab(
-              fieldTitle: "Horário de ínicio",
+              fieldTitle: "Start time",
               fieldInfo: medicamento.horaInicio[0] +
                   medicamento.horaInicio[1] +
                   ":" +

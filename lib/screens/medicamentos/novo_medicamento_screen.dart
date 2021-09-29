@@ -56,7 +56,7 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Novo medicamento"),
+          title: Text("New Medicine"),
           elevation: 0.0,
         ),
         body: Container(
@@ -68,7 +68,7 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
               ),
               children: <Widget>[
                 PanelTitle(
-                  title: "Nome do medicamento",
+                  title: "Medicine name",
                   isRequired: true,
                 ),
                 TextFormField(
@@ -83,7 +83,7 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                   ),
                 ),
                 PanelTitle(
-                  title: "Dosagem",
+                  title: "Dosage",
                   isRequired: false,
                 ),
                 TextFormField(
@@ -101,7 +101,7 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                   height: 15,
                 ),
                 PanelTitle(
-                  title: "Tipo do medicamento",
+                  title: "Medicine type",
                   isRequired: false,
                 ),
                 Padding(
@@ -116,7 +116,7 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                             children: <Widget>[
                               MedicineTypeColumn(
                                   type: MedicineType.Frasco,
-                                  name: "Frasco",
+                                  name: "Bottle",
                                   iconValue: 0xe900,
                                   isSelected:
                                       snapshot.data == MedicineType.Frasco
@@ -124,7 +124,7 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                                           : false),
                               MedicineTypeColumn(
                                   type: MedicineType.Pilula,
-                                  name: "Pílula",
+                                  name: "Pill",
                                   iconValue: 0xe901,
                                   isSelected:
                                       snapshot.data == MedicineType.Pilula
@@ -137,7 +137,7 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                             children: <Widget>[
                               MedicineTypeColumn(
                                   type: MedicineType.Seringa,
-                                  name: "Seringa",
+                                  name: "Syringe",
                                   iconValue: 0xe902,
                                   isSelected:
                                       snapshot.data == MedicineType.Seringa
@@ -145,7 +145,7 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                                           : false),
                               MedicineTypeColumn(
                                   type: MedicineType.Comprimido,
-                                  name: "Comprimido",
+                                  name: "Tablet",
                                   iconValue: 0xe903,
                                   isSelected:
                                       snapshot.data == MedicineType.Comprimido
@@ -159,13 +159,13 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                   ),
                 ),
                 PanelTitle(
-                  title: "Selecão de intervalo",
+                  title: "Range selection",
                   isRequired: true,
                 ),
                 //ScheduleCheckBoxes(),
                 IntervalSelection(),
                 PanelTitle(
-                  title: "Horário de ínicio",
+                  title: "Start time",
                   isRequired: true,
                 ),
                 SelectTime(),
@@ -179,7 +179,7 @@ class _NovoMedicamentoScreenState extends State<NovoMedicamentoScreen> {
                         horizontal: 16.0, vertical: 10),
                     child: RaisedButton(
                       child: Text(
-                        "Adicionar",
+                        "Add",
                         style: TextStyle(color: Colors.white, fontSize: 25),
                       ),
                       color: Colors.blueAccent,
@@ -400,7 +400,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Lembrar a cada ",
+              "Remember even ",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,
@@ -411,7 +411,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
               iconEnabledColor: Colors.blueAccent,
               hint: _selected == 0
                   ? Text(
-                      "Selecione",
+                      "Select",
                       style: TextStyle(
                           fontSize: 10,
                           color: Colors.black,
@@ -442,7 +442,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
             ),
             Expanded(
               child: Text(
-                _selected == 1 ? " hora" : " horas",
+                _selected == 1 ? " hour" : " hours",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
@@ -497,7 +497,7 @@ class _SelectTimeState extends State<SelectTime> {
           child: Center(
             child: Text(
               _clicked == false
-                  ? "Selecione o horário"
+                  ? "Select time"
                   : "${convertTime(_time.hour.toString())}:${convertTime(_time.minute.toString())}",
               style: TextStyle(
                 color: Colors.blueAccent,
