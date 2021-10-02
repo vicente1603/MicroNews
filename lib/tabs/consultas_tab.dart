@@ -17,7 +17,7 @@ class ConsultasTab extends StatelessWidget {
     AppBar appBar = AppBar(
       centerTitle: true,
       title: Text(
-        "Consultations and therapies",
+        "Consultations and Therapies",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.white),
         textAlign: TextAlign.center,

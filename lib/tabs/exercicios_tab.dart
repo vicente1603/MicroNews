@@ -17,11 +17,9 @@ class ExerciciosTab extends StatelessWidget {
       elevation: 0,
       centerTitle: true,
       title: Text(
-        "Exercícios",
+        "Exercises",
         style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25.0,
-            color: Colors.white),
+            fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.white),
         textAlign: TextAlign.center,
       ),
       leading: Builder(

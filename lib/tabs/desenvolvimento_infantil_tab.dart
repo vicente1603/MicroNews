@@ -22,16 +22,14 @@ class DesenvolvimentoInfantilTab extends StatelessWidget {
         indicatorWeight: 2,
         tabs: <Widget>[
           Tab(text: "IMC"),
-          Tab(text: "Perímetro Cefálico"),
+          Tab(text: "Cephalic Perimeter"),
         ],
       ),
       centerTitle: true,
       title: Text(
-        "Desenvolvimento infantil",
+        "Child Development",
         style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25.0,
-            color: Colors.white),
+            fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.white),
         textAlign: TextAlign.center,
       ),
       leading: Builder(
@@ -54,7 +52,8 @@ class DesenvolvimentoInfantilTab extends StatelessWidget {
 class _DesenvolvimentoInfantilTab extends StatefulWidget {
   final AppBar appBar;
 
-  _DesenvolvimentoInfantilTab({Key key, @required this.appBar}) : super(key: key);
+  _DesenvolvimentoInfantilTab({Key key, @required this.appBar})
+      : super(key: key);
   @override
   __DesenvolvimentoInfantilTabState createState() =>
       __DesenvolvimentoInfantilTabState();
@@ -253,7 +252,7 @@ class __DesenvolvimentoInfantilTabState
             child: Column(
               children: <Widget>[
                 Text(
-                  'IMC',
+                  'BMI',
                   style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
@@ -268,7 +267,7 @@ class __DesenvolvimentoInfantilTabState
                     dateTimeFactory: charts.LocalDateTimeFactory(),
                     animate: true,
                     behaviors: [
-                      new charts.ChartTitle("Data",
+                      new charts.ChartTitle("Date",
                           behaviorPosition: charts.BehaviorPosition.bottom,
                           titleOutsideJustification:
                               charts.OutsideJustification.middleDrawArea),
@@ -300,7 +299,7 @@ class __DesenvolvimentoInfantilTabState
             child: Column(
               children: <Widget>[
                 Text(
-                  'Perímetro Cefálico',
+                  'Cephalic Perimeter',
                   style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
@@ -315,11 +314,11 @@ class __DesenvolvimentoInfantilTabState
                     dateTimeFactory: charts.LocalDateTimeFactory(),
                     animate: true,
                     behaviors: [
-                      new charts.ChartTitle("Data",
+                      new charts.ChartTitle("Date",
                           behaviorPosition: charts.BehaviorPosition.bottom,
                           titleOutsideJustification:
                               charts.OutsideJustification.middleDrawArea),
-                      new charts.ChartTitle("Diâmetro",
+                      new charts.ChartTitle("Diameter",
                           behaviorPosition: charts.BehaviorPosition.start,
                           titleOutsideJustification:
                               charts.OutsideJustification.middleDrawArea),
@@ -370,7 +369,7 @@ class __DesenvolvimentoInfantilTabState
                               children: <Widget>[
                                 Expanded(
                                   child: Text(
-                                    "IMCs Cadastrados",
+                                    "Registered BMIs",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 20,

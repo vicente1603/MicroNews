@@ -54,19 +54,19 @@ class _ListTileImcState extends State<ListTileImc> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("Peso: $peso kg"),
+                  Text("Weight: $peso kg"),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("Altura: $altura m"),
+                  Text("Height: $altura m"),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("Imc: " + imc.toStringAsPrecision(3)),
+                  Text("BMI: " + imc.toStringAsPrecision(3)),
                 ],
               ),
               Row(
@@ -85,7 +85,7 @@ class _ListTileImcState extends State<ListTileImc> {
                 children: <Widget>[
                   Expanded(
                     child: Text(
-                      "Data: $_data",
+                      "Date: $_data",
                       textAlign: TextAlign.center,
                     ),
                   ),

@@ -310,7 +310,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(Icons.restaurant, size: 32.0),
-                  title: Text("Food",
+                  title: Text("Nutrition",
                       style: TextStyle(fontSize: 16.0, color: Colors.black)),
                   onTap: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(

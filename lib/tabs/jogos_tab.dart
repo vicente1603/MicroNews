@@ -10,11 +10,9 @@ class JogosTab extends StatelessWidget {
     AppBar appBar = AppBar(
       centerTitle: true,
       title: Text(
-        "Jogos infantis",
+        "Children's Games",
         style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25.0,
-            color: Colors.white),
+            fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.white),
         textAlign: TextAlign.center,
       ),
       leading: Builder(
