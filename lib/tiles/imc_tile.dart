@@ -60,7 +60,7 @@ class _ListTileImcState extends State<ListTileImc> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("Height: $altura m"),
+                  Text("Height: $altura cm"),
                 ],
               ),
               Row(

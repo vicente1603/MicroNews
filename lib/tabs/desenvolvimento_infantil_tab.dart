@@ -166,7 +166,7 @@ class __DesenvolvimentoInfantilTabState
             children: <Widget>[Text("Peso: $peso")],
           ),
           Row(
-            children: <Widget>[Text(" Altura: $altura")],
+            children: <Widget>[Text("Altura: $altura")],
           ),
           Row(
             children: <Widget>[Text("Imc: " + imc.toStringAsPrecision(3))],
